@@ -1,0 +1,18 @@
+.player {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 12rem;
+    padding: 0.5rem;
+    background-color: #fff;
+
+    &__shirt {
+        height: 1.5rem;
+        margin-right: 0.5rem;
+    }
+
+    &__team {
+        margin-right: 0.5rem;
+        font-weight: bold;
+    }
+}

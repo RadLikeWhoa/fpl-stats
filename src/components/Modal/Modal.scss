@@ -1,0 +1,50 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(#000, 0.8);
+
+    &__element {
+        width: 30rem;
+        background-color: #fff;
+    }
+
+    &__header {
+        padding: 1rem;
+        background-color: #37003c;
+        color: #fff;
+        font-weight: normal;
+    }
+
+    &__body {
+        padding: 1rem;
+    }
+
+    &__footer {
+        padding: 0 1rem 1rem;
+    }
+
+    &__input {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        font: inherit;
+        border: 1px solid #94968c;
+        cursor: pointer;
+
+        &:focus {
+            cursor: text;
+        }
+    }
+
+    .button {
+        display: block;
+        width: 100%;
+    }
+}
