@@ -15,7 +15,7 @@ export type RootState = {
         data: Stats | undefined,
         chips: {
             [key: number]: string,
-        },
+        } | undefined,
     },
     settings: {
         id: number | undefined,

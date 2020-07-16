@@ -10,6 +10,7 @@ const history = createSlice({
     reducers: {
         fetchHistoryStart(state) {
             state.loading = true
+            state.data = undefined
         },
         fetchHistorySuccess(state, action) {
             state.data = action.payload

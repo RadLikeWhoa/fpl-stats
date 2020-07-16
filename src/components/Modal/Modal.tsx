@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import './Modal.scss'
 import { setId } from '../../reducers/settings'
 import { Button } from '../Button'
+import useClickOutside from '../../hooks/clickOutside';
 
 type Props = {
     onClose?: () => void
@@ -18,38 +19,56 @@ const Modal: React.FC<Props> = (props: Props) => {
 
     const dispatch = useDispatch()
 
-    const close = () => {
-        dispatch(setId(Number(value)))
+    const close = useCallback((cancel: boolean) => {
+        if (!cancel) {
+            dispatch(setId(Number(value)))
+        }
 
         if (props.onClose) {
             props.onClose()
         }
-    }
+    }, [ dispatch, props, value ])
+
+    const ref = useClickOutside<HTMLDivElement>(() => close(true))
+
+    useEffect(() => {
+        const listener = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                close(true)
+            }
+        }
+
+        document.addEventListener('keyup', listener)
+
+        return () => document.removeEventListener('keyup', listener)
+    }, [ close ])
 
     return (
-        <div className="modal">
-            <div className="modal__element">
-                <header className="modal__header">
-                    Enter Your Team ID
-                </header>
-                <div className="modal__body">
-                    <input
-                        className="modal__input"
-                        type="text"
-                        placeholder="e.g. 4654486"
-                        value={value}
-                        onChange={e => setValue(e.target.value)}
-                    />
+        <form onSubmit={() => close(false)}>
+            <div className="modal">
+                <div className="modal__element" ref={ref}>
+                    <header className="modal__header">
+                        Enter Your Team ID
+                    </header>
+                    <div className="modal__body">
+                        <input
+                            className="modal__input"
+                            type="text"
+                            placeholder="e.g. 4654486"
+                            value={value}
+                            onChange={e => setValue(e.target.value)}
+                        />
+                    </div>
+                    <footer className="modal__footer">
+                        <Button
+                            label="Show Stats"
+                            type="submit"
+                            disabled={!validateId(value)}
+                        />
+                    </footer>
                 </div>
-                <footer className="modal__footer">
-                    <Button
-                        label="Show Stats"
-                        disabled={!validateId(value)}
-                        onClick={close}
-                    />
-                </footer>
             </div>
-        </div>
+        </form>
     )
 }
 

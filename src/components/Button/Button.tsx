@@ -3,6 +3,7 @@ import './Button.scss'
 
 type Props = {
     label: string
+    type?: 'reset' | 'submit' | 'button'
     disabled?: boolean
     onClick?: () => void
 }
@@ -10,6 +11,7 @@ type Props = {
 const Button: React.FC<Props> = (props: Props) => (
     <button
         className="button"
+        type={props.type || 'button'}
         onClick={props.onClick}
         disabled={props.disabled}
     >

@@ -174,7 +174,7 @@ const renderOverallRankWidget = (history: History, bootstrap: Bootstrap): JSX.El
                 <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
                     <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
                     <YAxis reversed={true} tickFormatter={value => thousandsSeparator(value)} interval="preserveStart" />
-                    <XAxis dataKey="name" interval={0} angle={-90} textAnchor="end" />
+                    <XAxis dataKey="name" angle={-90} textAnchor="end" />
                     <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
                     <Tooltip isAnimationActive={false} formatter={value => [ thousandsSeparator(Number(value)), '' ]} separator="" />
                 </AreaChart>
@@ -201,7 +201,7 @@ const renderPointsWidget = (history: History, bootstrap: Bootstrap): JSX.Element
                     <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" />
                     <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" />
                     <YAxis />
-                    <XAxis dataKey="name" interval={0} angle={-90} textAnchor="end" />
+                    <XAxis dataKey="name" angle={-90} textAnchor="end" />
                     <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
                     <Tooltip isAnimationActive={false} formatter={(value, name) => [ value, name.charAt(0).toUpperCase() + name.slice(1) ]} separator=": " />
                 </AreaChart>
@@ -226,7 +226,7 @@ const renderValueWidget = (history: History, bootstrap: Bootstrap): JSX.Element 
                 <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
                     <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
                     <YAxis tickFormatter={value => `£${value / 10}`} domain={[ 'auto', 'auto' ]} />
-                    <XAxis dataKey="name" interval={0} angle={-90} textAnchor="end" />
+                    <XAxis dataKey="name" angle={-90} textAnchor="end" />
                     <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
                     <Tooltip isAnimationActive={false} formatter={(value, name) => [ `£${Number(value) / 10}`, name.charAt(0).toUpperCase() + name.slice(1) ]} separator=": " />
                 </AreaChart>
@@ -338,7 +338,7 @@ const Dashboard: React.FC = () => {
                         {bootstrap?.events && getPastEvents(bootstrap.events).filter(event => includeInactive || event.top_element_info.points > 0).map(event => (
                             <span className="dashboard__stat" key={event.id}>
                                 {getShortName(event)}
-                                {chips[event.id] && (
+                                {chips && chips[event.id] && (
                                     <div>{getChipAbbreviation(chips[event.id])}</div>
                                 )}
                             </span>

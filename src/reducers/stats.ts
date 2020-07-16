@@ -7,11 +7,13 @@ const stats = createSlice({
     initialState: {
         loading: true,
         data: undefined,
-        chips: {},
+        chips: undefined,
     },
     reducers: {
         buildDataStart(state) {
             state.loading = true
+            state.data = undefined
+            state.chips = undefined
         },
         buildDataSuccess(state, action) {
             state.data = action.payload.data
