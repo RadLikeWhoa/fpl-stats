@@ -1,3 +1,5 @@
+@import "../../styles/mixins";
+
 .dashboard {
     position: relative;
     max-width: 100rem;
@@ -29,18 +31,31 @@
 
         .dashboard__stat {
             font-weight: bold;
+
+            @include up-to("M") {
+                display: none;
+            }
         }
 
         .dashboard__totals .dashboard__stat {
             width: 8rem;
             cursor: pointer;
         }
+
+        @include at-least("M") {
+            width: max-content;
+        }
     }
 
     &__list {
+        width: max-content;
         padding-left: 0;
         margin-bottom: 0;
         list-style: none;
+
+        @include up-to("M") {
+            width: 100%;
+        }
     }
 
     &__item {
@@ -51,6 +66,28 @@
 
         &:last-child {
             border-bottom: 0;
+        }
+
+        @include up-to("M") {
+            flex-wrap: wrap;
+            width: 100%;
+
+            .dashboard__player,
+            .player {
+                width: 100%;
+            }
+
+            .dashboard__totals {
+                display: none;
+            }
+        }
+    }
+
+    &__stats {
+        display: flex;
+
+        @include up-to("M") {
+            width: 100%;
         }
     }
 
@@ -79,6 +116,11 @@
 
         &:last-child {
             border-right: 0;
+        }
+
+        @include up-to("M") {
+            flex: 1;
+            width: auto;
         }
     }
 
@@ -122,16 +164,27 @@
             width: 0.5rem;
             background-image: linear-gradient(to right, rgba(#000, 0.05), rgba(#000, 0));
         }
+
+        @include up-to("M") {
+            width: 100%;
+            height: 4rem;
+
+            &::after {
+                content: none;
+            }
+        }
     }
 
     &__category {
         position: sticky;
-        top: 4rem;
         left: 0;
         z-index: 1;
         display: flex;
         justify-content: space-between;
         width: 100%;
+        // Sass does not recognise the native CSS min function, thus requiring
+        // this hack.
+        width: m#{i}n(100rem, calc(100vw - 3rem));
         padding: 0.5rem;
         font-weight: bold;
         background-color: #EFEFEF;
@@ -141,14 +194,16 @@
         position: sticky;
         left: 0;
 
-        &::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 100%;
-            width: 0.5rem;
-            background-image: linear-gradient(to right, rgba(#000, 0.05), rgba(#000, 0));
+        @include at-least("M") {
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 100%;
+                width: 0.5rem;
+                background-image: linear-gradient(to right, rgba(#000, 0.05), rgba(#000, 0));
+            }
         }
     }
 
@@ -163,6 +218,10 @@
         .widget {
             width: calc(33.333% - 1rem);
             margin-bottom: 2.125rem;
+
+            @include up-to("M") {
+                width: 100%;
+            }
         }
     }
 

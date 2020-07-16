@@ -6,6 +6,10 @@
     padding: 0.5rem;
     background-color: #fff;
 
+    &__detail {
+        width: calc(100% - 2rem);
+    }
+
     &__shirt {
         height: 1.5rem;
         margin-right: 0.5rem;
@@ -14,5 +18,12 @@
     &__team {
         margin-right: 0.5rem;
         font-weight: bold;
+    }
+
+    &__name {
+        max-width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }

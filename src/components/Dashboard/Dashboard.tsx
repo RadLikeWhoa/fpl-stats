@@ -271,16 +271,18 @@ const Dashboard: React.FC = () => {
                                             <div className="dashboard__player">
                                                 <Player id={element.element.id} />
                                             </div>
-                                            {element.data.map(item => (
-                                                <span
-                                                    key={item.event.id}
-                                                    className={classNames('dashboard__stat', {
-                                                        'dashboard__stat--benched': item.multiplier === 0,
-                                                        'dashboard__stat--triple': item.multiplier === 3,
-                                                        'dashboard__stat--started': item.multiplier,
-                                                    })}
-                                                />
-                                            ))}
+                                            <div className="dashboard__stats">
+                                                {element.data.map(item => (
+                                                    <span
+                                                        key={item.event.id}
+                                                        className={classNames('dashboard__stat', {
+                                                            'dashboard__stat--benched': item.multiplier === 0,
+                                                            'dashboard__stat--triple': item.multiplier === 3,
+                                                            'dashboard__stat--started': item.multiplier,
+                                                        })}
+                                                    />
+                                                ))}
+                                            </div>
                                             <div className="dashboard__totals">
                                                 <span className="dashboard__stat">
                                                     {getTotalSelections(element)}

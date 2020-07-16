@@ -5,7 +5,7 @@ import { getPastEvents } from '../utilities'
 const stats = createSlice({
     name: 'stats',
     initialState: {
-        loading: false,
+        loading: true,
         data: undefined,
         chips: {},
     },
