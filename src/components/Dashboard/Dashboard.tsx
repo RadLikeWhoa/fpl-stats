@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Bootstrap, StatData, Stats } from '../../types'
+import { Bootstrap, StatData, Stats, History } from '../../types'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBootstrap } from '../../reducers/bootstrap'
 import { RootState } from '../../reducers'
@@ -8,12 +8,14 @@ import { Checkbox } from '../Checkbox'
 import { Widget } from '../Widget'
 import { Team } from '../Team'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation } from '../../utilities'
+import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName } from '../../utilities'
 import { Modal } from '../Modal'
 import { toggleIncludeInactive } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
 import { Button } from '../Button'
 import classNames from 'classnames'
+import { fetchHistory } from '../../reducers/history'
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
 import './Dashboard.scss'
 
 const sortings: { [ key: string ]: (statData: StatData) => number } = {
@@ -156,8 +158,86 @@ const renderTeamsWidget = (stats: Stats, bootstrap: Bootstrap): JSX.Element => {
     )
 }
 
+const renderOverallRankWidget = (history: History, bootstrap: Bootstrap): JSX.Element => {
+    const data = history.current.map(entry => {
+        const event = bootstrap.events.find(event => event.id === entry.event)
+
+        return {
+            name: `GW ${event ? getShortName(event) : entry.event}`,
+            value: entry.overall_rank,
+        }
+    })
+
+    return (
+        <div className="chart chart--reversed">
+            <ResponsiveContainer height={300} width="100%">
+                <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
+                    <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
+                    <YAxis reversed={true} tickFormatter={value => thousandsSeparator(value)} interval="preserveStart" />
+                    <XAxis dataKey="name" interval={0} angle={-90} textAnchor="end" />
+                    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+                    <Tooltip isAnimationActive={false} formatter={value => [ thousandsSeparator(Number(value)), '' ]} separator="" />
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
+    )
+}
+
+const renderPointsWidget = (history: History, bootstrap: Bootstrap): JSX.Element => {
+    const data = history.current.map(entry => {
+        const event = bootstrap.events.find(event => event.id === entry.event)
+
+        return {
+            name: `GW ${event ? getShortName(event) : entry.event}`,
+            points: entry.points,
+            bench: entry.points_on_bench,
+        }
+    })
+
+    return (
+        <div className="chart">
+            <ResponsiveContainer height={300} width="100%">
+                <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
+                    <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" />
+                    <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" />
+                    <YAxis />
+                    <XAxis dataKey="name" interval={0} angle={-90} textAnchor="end" />
+                    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+                    <Tooltip isAnimationActive={false} formatter={(value, name) => [ value, name.charAt(0).toUpperCase() + name.slice(1) ]} separator=": " />
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
+    )
+}
+
+const renderValueWidget = (history: History, bootstrap: Bootstrap): JSX.Element => {
+    const data = history.current.map(entry => {
+        const event = bootstrap.events.find(event => event.id === entry.event)
+
+        return {
+            name: `GW ${event ? getShortName(event) : entry.event}`,
+            value: entry.value + entry.bank,
+        }
+    })
+
+    return (
+        <div className="chart">
+            <ResponsiveContainer height={300} width="100%">
+                <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
+                    <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
+                    <YAxis tickFormatter={value => `£${value / 10}`} domain={[ 'auto', 'auto' ]} />
+                    <XAxis dataKey="name" interval={0} angle={-90} textAnchor="end" />
+                    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+                    <Tooltip isAnimationActive={false} formatter={(value, name) => [ `£${Number(value) / 10}`, name.charAt(0).toUpperCase() + name.slice(1) ]} separator=": " />
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
+    )
+}
+
 const Dashboard: React.FC = () => {
     const [ filteredStats, setFilteredStats ] = useState<Stats | undefined>(undefined)
+    const [ filteredHistory, setFilteredHistory ] = useState<History | undefined>(undefined)
     const [ isModalOpen, setIsModalOpen ] = useState(true)
     const [ sort, setSort ] = useState('selection')
 
@@ -170,6 +250,9 @@ const Dashboard: React.FC = () => {
 
     const id = useSelector((state: RootState) => state.settings.id)
     const includeInactive = useSelector((state: RootState) => state.settings.includeInactive)
+
+    const history = useSelector((state: RootState) => state.history.data)
+    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
     const dashboardRef = useRef<HTMLDivElement>(null)
 
@@ -192,6 +275,7 @@ const Dashboard: React.FC = () => {
 
         if (bootstrap && id) {
             dispatch(buildData(bootstrap, id))
+            dispatch(fetchHistory(id))
         }
     }, [ id, dispatch, bootstrap ])
 
@@ -212,6 +296,21 @@ const Dashboard: React.FC = () => {
             })),
         }), {}))
     }, [ includeInactive, stats, bootstrap ])
+
+    useEffect(() => {
+        if (!history) {
+            setFilteredHistory(undefined)
+            return
+        }
+
+        setFilteredHistory({
+            ...history,
+            current: history.current.filter(current => {
+                const topPoints = bootstrap?.events.find(event => event.id === current.event)?.top_element_info.points
+                return includeInactive || (topPoints && topPoints > 0)
+            })
+        })
+    }, [ includeInactive, history, bootstrap ])
 
     return (
         <div className="app">
@@ -238,7 +337,7 @@ const Dashboard: React.FC = () => {
                         </span>
                         {bootstrap?.events && getPastEvents(bootstrap.events).filter(event => includeInactive || event.top_element_info.points > 0).map(event => (
                             <span className="dashboard__stat" key={event.id}>
-                                {event.name.split(' ').pop()}
+                                {getShortName(event)}
                                 {chips[event.id] && (
                                     <div>{getChipAbbreviation(chips[event.id])}</div>
                                 )}
@@ -360,6 +459,29 @@ const Dashboard: React.FC = () => {
                     cloaked={!id}
                 >
                     {filteredStats && bootstrap && renderPositionWidget(filteredStats, bootstrap)}
+                </Widget>
+            </div>
+            <div className="dashboard__graphs">
+                <Widget
+                    title="Overall Rank Evolution"
+                    loading={isLoadingHistory}
+                    cloaked={!id}
+                >
+                    {filteredHistory && bootstrap && renderOverallRankWidget(filteredHistory, bootstrap)}
+                </Widget>
+                <Widget
+                    title="Gameweek Points"
+                    loading={isLoadingHistory}
+                    cloaked={!id}
+                >
+                    {filteredHistory && bootstrap && renderPointsWidget(filteredHistory, bootstrap)}
+                </Widget>
+                <Widget
+                    title="Team Value Evolution"
+                    loading={isLoadingHistory}
+                    cloaked={!id}
+                >
+                    {filteredHistory && bootstrap && renderValueWidget(filteredHistory, bootstrap)}
                 </Widget>
             </div>
             {id !== undefined && (

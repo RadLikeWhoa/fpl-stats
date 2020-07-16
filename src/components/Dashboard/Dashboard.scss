@@ -217,7 +217,6 @@
 
         .widget {
             width: calc(33.333% - 1rem);
-            margin-bottom: 2.125rem;
 
             @include up-to("M") {
                 width: 100%;
@@ -239,6 +238,15 @@
 
         .spinner__item {
             background-color: #333;
+        }
+    }
+
+    &__graphs {
+        max-width: 100rem;
+        margin: 0 auto;
+
+        .widget__content {
+            padding: 1.5rem 1.5rem 1rem 0;
         }
     }
 }
@@ -283,6 +291,22 @@
             align-items: center;
             max-width: 100rem;
             margin: 0 auto;
+        }
+    }
+}
+
+.chart {
+    .recharts-yAxis .recharts-cartesian-axis-tick:first-child text {
+        font-size: 0;
+    }
+
+    &--reversed {
+        .recharts-yAxis .recharts-cartesian-axis-tick:first-child text {
+            font-size: inherit;
+        }
+
+        .recharts-yAxis .recharts-cartesian-axis-tick:last-child text {
+            font-size: 0;
         }
     }
 }

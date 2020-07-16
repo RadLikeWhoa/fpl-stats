@@ -2,7 +2,8 @@ import { combineReducers } from 'redux'
 import bootstrap from './bootstrap'
 import stats from './stats'
 import settings from './settings'
-import { Bootstrap, Stats } from '../types'
+import { Bootstrap, Stats, History } from '../types'
+import history from './history';
 
 export type RootState = {
     bootstrap: {
@@ -20,10 +21,15 @@ export type RootState = {
         id: number | undefined,
         includeInactive: boolean,
     },
+    history: {
+        loading: boolean,
+        data: History | undefined,
+    },
 }
 
 export default combineReducers({
     bootstrap,
     stats,
     settings,
+    history,
 })
