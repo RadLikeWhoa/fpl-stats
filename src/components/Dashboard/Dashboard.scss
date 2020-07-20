@@ -246,6 +246,10 @@
         .widget {
             width: calc(33.333% - 1rem);
 
+            @include up-to("L") {
+                width: calc(50% - 0.75rem);
+            }
+
             @include up-to("M") {
                 width: 100%;
             }
