@@ -8,20 +8,25 @@ import { Checkbox } from '../Checkbox'
 import { Widget } from '../Widget'
 import { Team } from '../Team'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName } from '../../utilities'
+import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId } from '../../utilities'
 import { Modal } from '../Modal'
-import { toggleIncludeInactive } from '../../reducers/settings'
+import { toggleIncludeInactive, setId } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
 import { Button } from '../Button'
 import classNames from 'classnames'
 import { fetchHistory } from '../../reducers/history'
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
 import Select, { ValueType } from 'react-select'
+import queryString from 'query-string'
 import './Dashboard.scss'
 
 type OptionType = {
     value: string
     label: string
+}
+
+type QueryString = {
+    team?: string
 }
 
 const sortings: { [ key: string ]: (statData: StatData) => number } = {
@@ -276,6 +281,12 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchBootstrap())
+
+        const query: QueryString = queryString.parse(window.location.hash)
+
+        if (query.team && validateTeamId(query.team)) {
+            dispatch(setId(query.team))
+        }
     }, [ dispatch ])
 
     useEffect(() => {
@@ -292,6 +303,8 @@ const Dashboard: React.FC = () => {
         if (bootstrap && id) {
             dispatch(buildData(bootstrap, id))
             dispatch(fetchHistory(id))
+
+            window.location.hash = queryString.stringify({ team: id })
         }
     }, [ id, dispatch, bootstrap ])
 
