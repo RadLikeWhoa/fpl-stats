@@ -76,10 +76,6 @@
             .player {
                 width: 100%;
             }
-
-            .dashboard__totals {
-                display: none;
-            }
         }
     }
 
@@ -141,6 +137,38 @@
             right: 100%;
             width: 0.5rem;
             background-image: linear-gradient(to left, rgba(#000, 0.05), rgba(#000, 0));
+        }
+
+        @include up-to("M") {
+            width: 100%;
+            border-top: 1px solid rgb(239, 239, 239);
+
+            .dashboard__stat {
+                flex-direction: row;
+                width: 33.333%;
+                height: 2rem;
+                font-size: 0.75rem;
+
+                &:nth-child(even) {
+                    display: none;
+                }
+
+                &:nth-child(odd)::after {
+                    margin-left: 0.25rem;
+                }
+
+                &:nth-child(1)::after {
+                    content: "Selected";
+                }
+
+                &:nth-child(3)::after {
+                    content: "Started";
+                }
+
+                &:nth-child(5)::after {
+                    content: "Benched";
+                }
+            }
         }
     }
 
@@ -291,6 +319,74 @@
             align-items: center;
             max-width: 100rem;
             margin: 0 auto;
+
+            @include up-to("M") {
+                flex-direction: column;
+                align-items: flex-start;
+
+                .button {
+                    width: 100%;
+                }
+
+                .checkbox {
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        max-width: 100rem;
+        margin: 0 auto 1.5rem;
+
+        &__label {
+            display: block;
+            flex-shrink: 0;
+            color: #fff;
+            margin-right: 1rem;
+        }
+    }
+
+    &__legend {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        max-width: 100rem;
+        margin: 0 auto 1.5rem;
+        font-size: 0.75rem;
+
+        @include up-to("M") {
+            justify-content: center;
+        }
+    }
+
+    &__color {
+        display: flex;
+        color: #fff;
+
+        &__indicator {
+            height: 1rem;
+            width: 1rem;
+            margin-right: 0.5rem;
+            background-color: #E7E7E5;
+
+            &--benched {
+                background-color: #FCE45A;
+            }
+
+            &--started {
+                background-color: rgba(0, 111, 55, 0.9);
+            }
+
+            &--triple {
+                background-color: #00ff87;
+            }
+        }
+
+        + .app__color {
+            margin-left: 1rem;
         }
     }
 }

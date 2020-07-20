@@ -16,13 +16,29 @@ import { Button } from '../Button'
 import classNames from 'classnames'
 import { fetchHistory } from '../../reducers/history'
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
+import Select, { ValueType } from 'react-select'
 import './Dashboard.scss'
+
+type OptionType = {
+    value: string
+    label: string
+}
 
 const sortings: { [ key: string ]: (statData: StatData) => number } = {
     selection: getTotalSelections,
     start: getTotalStarts,
     bench: getTotalBenched,
+    alphabet: (statData: StatData): number => {
+        return statData.element.web_name.toLowerCase().charCodeAt(0) * -1
+    }
 }
+
+const sortOptions = [
+    { value: 'selection', label: 'Most Selected' },
+    { value: 'start', label: 'Most Started' },
+    { value: 'bench', label: 'Most Benched' },
+    { value: 'alphabet', label: 'Alphabetically' },
+]
 
 const renderSelectionWidget = (stats: Stats): JSX.Element => {
     const elements = Object.values(stats)
@@ -239,7 +255,7 @@ const Dashboard: React.FC = () => {
     const [ filteredStats, setFilteredStats ] = useState<Stats | undefined>(undefined)
     const [ filteredHistory, setFilteredHistory ] = useState<History | undefined>(undefined)
     const [ isModalOpen, setIsModalOpen ] = useState(true)
-    const [ sort, setSort ] = useState('selection')
+    const [ sort, setSort ] = useState<ValueType<OptionType>>(sortOptions[0])
 
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
     const isLoadingBootstrap = useSelector((state: RootState) => state.bootstrap.loading)
@@ -322,6 +338,38 @@ const Dashboard: React.FC = () => {
             })}>
                 <Spinner />
             </div>
+            <div className="app__legend">
+                <div className="app__color">
+                    <div className="app__color__indicator app__color__indicator--started"></div>
+                    Started
+                </div>
+                <div className="app__color">
+                    <div className="app__color__indicator app__color__indicator--benched"></div>
+                    Benched
+                </div>
+                <div className="app__color">
+                    <div className="app__color__indicator app__color__indicator--triple"></div>
+                    TC
+                </div>
+                <div className="app__color">
+                    <div className="app__color__indicator"></div>
+                    Not Selected
+                </div>
+            </div>
+            <div className="app__meta">
+                <label className="app__meta__label">
+                    Sort by
+                </label>
+                <Select
+                    options={sortOptions}
+                    value={sort}
+                    onChange={option => setSort(option)}
+                    styles={{
+                        container: (provided) => ({ ...provided, width: '100%' }),
+                        menu: (provided) => ({ ...provided, zIndex: 20 })
+                    }}
+                />
+            </div>
             <div className={classNames('dashboard', {
                 'dashboard--cloaked': !id,
             })}>
@@ -344,13 +392,13 @@ const Dashboard: React.FC = () => {
                             </span>
                         ))}
                         <div className="dashboard__totals">
-                            <span className="dashboard__stat" onClick={() => setSort('selection')}>
+                            <span className="dashboard__stat">
                                 Selected
                             </span>
-                            <span className="dashboard__stat" onClick={() => setSort('start')}>
+                            <span className="dashboard__stat">
                                 Starting
                             </span>
-                            <span className="dashboard__stat" onClick={() => setSort('bench')}>
+                            <span className="dashboard__stat">
                                 Benched
                             </span>
                         </div>
@@ -364,7 +412,7 @@ const Dashboard: React.FC = () => {
                                 </li>
                                 {statData
                                     .filter(element => element.data.filter(pick => pick.multiplier !== null).length)
-                                    .sort((a, b) => sortings[sort](b) - sortings[sort](a))
+                                    .sort((a, b) => sortings[(sort as OptionType).value](b) - sortings[(sort as OptionType).value](a))
                                     .map(element => (
                                         <li key={element.element.id} className="dashboard__item">
                                             <div className="dashboard__player">
