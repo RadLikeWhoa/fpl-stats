@@ -19,12 +19,10 @@ const Modal: React.FC<Props> = (props: Props) => {
     const dispatch = useDispatch()
 
     const close = useCallback((cancel: boolean) => {
-        if (!id) {
-            return
-        }
-
         if (!cancel) {
             dispatch(setId(Number(value)))
+        } else if (!id) {
+            return
         }
 
         if (props.onClose) {
@@ -47,7 +45,7 @@ const Modal: React.FC<Props> = (props: Props) => {
     }, [ close ])
 
     return (
-        <form onSubmit={() => close(false)}>
+        <form onSubmit={e => { close(false); e.preventDefault() }}>
             <div className="modal">
                 <div className="modal__element" ref={ref}>
                     <header className="modal__header">

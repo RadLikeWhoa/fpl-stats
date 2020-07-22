@@ -23,7 +23,13 @@ export const { fetchBootstrapStart, fetchBootstrapSuccess } = bootstrap.actions
 export const fetchBootstrap = (): ThunkAction<void, Bootstrap, unknown, Action<string>> => async dispatch => {
     dispatch(fetchBootstrapStart())
 
-    const response = await fetch('https://cors-anywhere.herokuapp.com/https://fantasy.premierleague.com/api/bootstrap-static/')
+    const response = await fetch('https://fpl-stats.herokuapp.com/', {
+        headers: {
+            'Target-URL': 'https://fantasy.premierleague.com/api/bootstrap-static/',
+            'Authorization': '',
+        },
+    })
+
     const data = await response.json()
 
     dispatch(fetchBootstrapSuccess(data))
