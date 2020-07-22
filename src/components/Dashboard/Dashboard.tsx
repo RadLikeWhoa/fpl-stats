@@ -8,7 +8,7 @@ import { Checkbox } from '../Checkbox'
 import { Widget } from '../Widget'
 import { Team } from '../Team'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId } from '../../utilities'
+import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, thousandsShorthand } from '../../utilities'
 import { Modal } from '../Modal'
 import { toggleIncludeInactive, setId } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
@@ -192,9 +192,9 @@ const renderOverallRankWidget = (history: History, bootstrap: Bootstrap): JSX.El
     return (
         <div className="chart chart--reversed">
             <ResponsiveContainer height={300} width="100%">
-                <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
+                <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
                     <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
-                    <YAxis reversed={true} tickFormatter={value => thousandsSeparator(value)} interval="preserveStart" />
+                    <YAxis reversed={true} tickFormatter={value => thousandsShorthand(value)} interval="preserveStart" />
                     <XAxis dataKey="name" angle={-90} textAnchor="end" />
                     <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
                     <Tooltip isAnimationActive={false} formatter={value => [ thousandsSeparator(Number(value)), '' ]} separator="" />
@@ -218,7 +218,7 @@ const renderPointsWidget = (history: History, bootstrap: Bootstrap): JSX.Element
     return (
         <div className="chart">
             <ResponsiveContainer height={300} width="100%">
-                <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
+                <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
                     <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" />
                     <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" />
                     <YAxis />
@@ -244,7 +244,7 @@ const renderValueWidget = (history: History, bootstrap: Bootstrap): JSX.Element 
     return (
         <div className="chart">
             <ResponsiveContainer height={300} width="100%">
-                <AreaChart data={data} margin={{ bottom: 45, left: 40, right: 20 }}>
+                <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
                     <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
                     <YAxis tickFormatter={value => `£${value / 10}`} domain={[ 'auto', 'auto' ]} />
                     <XAxis dataKey="name" angle={-90} textAnchor="end" />
@@ -544,6 +544,9 @@ const Dashboard: React.FC = () => {
                 >
                     {filteredHistory && bootstrap && renderValueWidget(filteredHistory, bootstrap)}
                 </Widget>
+            </div>
+            <div className="app__legal">
+                <p>FPL Stats uses data from the official Premier League Fantasy API. This site is not affiliated with the Premier League.</p>
             </div>
             {id !== undefined && (
                 <div className="app__footer">
