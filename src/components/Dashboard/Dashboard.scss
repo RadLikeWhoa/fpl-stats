@@ -286,6 +286,13 @@
 .app {
     position: relative;
 
+    &__content {
+        @supports (padding: m#{a}x(0px)) {
+            padding-left: m#{a}x(0px, env(safe-area-inset-left));
+            padding-right: m#{a}x(0px, env(safe-area-inset-right));
+        }
+    }
+
     &__loading {
         position: fixed;
         top: 0;
@@ -316,6 +323,15 @@
         margin: 0 -1.5rem;
         background-color: #fff;
         box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.15);
+
+        // Sass does not recognise the native CSS max function, thus requiring
+        // this hack.
+
+        @supports(padding: m#{a}x(0px)) {
+            padding-right: m#{a}x(1.5rem, env(safe-area-inset-right));
+            padding-left: m#{a}x(1.5rem, env(safe-area-inset-left));
+            padding-bottom: m#{a}x(1.5rem, env(safe-area-inset-bottom));
+        }
 
         &__content {
             display: flex;

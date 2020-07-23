@@ -351,202 +351,205 @@ const Dashboard: React.FC = () => {
             })}>
                 <Spinner />
             </div>
-            <div className="app__legend">
-                <div className="app__color">
-                    <div className="app__color__indicator app__color__indicator--started"></div>
-                    Started
-                </div>
-                <div className="app__color">
-                    <div className="app__color__indicator app__color__indicator--benched"></div>
-                    Benched
-                </div>
-                <div className="app__color">
-                    <div className="app__color__indicator app__color__indicator--triple"></div>
-                    TC
-                </div>
-                <div className="app__color">
-                    <div className="app__color__indicator"></div>
-                    Not Selected
-                </div>
-            </div>
-            <div className="app__meta">
-                <label className="app__meta__label">
-                    Sort by
-                </label>
-                <Select
-                    options={sortOptions}
-                    value={sort}
-                    onChange={option => setSort(option)}
-                    styles={{
-                        container: (provided) => ({ ...provided, width: '100%' }),
-                        menu: (provided) => ({ ...provided, zIndex: 20 })
-                    }}
-                />
-            </div>
-            <div className={classNames('dashboard', {
-                'dashboard--cloaked': !id,
-            })}>
-                {isLoadingStats && (
-                    <div className="dashboard__loading">
-                        <Spinner />
+            <div className="app__content">
+
+                <div className="app__legend">
+                    <div className="app__color">
+                        <div className="app__color__indicator app__color__indicator--started"></div>
+                        Started
                     </div>
-                )}
-                <div className="dashboard__container" ref={dashboardRef}>
-                    <header className="dashboard__header">
-                        <span className="dashboard__heading">
-                            Player
-                        </span>
-                        {bootstrap?.events && getPastEvents(bootstrap.events).filter(event => includeInactive || event.top_element_info.points > 0).map(event => (
-                            <span className="dashboard__stat" key={event.id}>
-                                {getShortName(event)}
-                                {chips && chips[event.id] && (
-                                    <div>{getChipAbbreviation(chips[event.id])}</div>
-                                )}
-                            </span>
-                        ))}
-                        <div className="dashboard__totals">
-                            <span className="dashboard__stat">
-                                Selected
-                            </span>
-                            <span className="dashboard__stat">
-                                Starting
-                            </span>
-                            <span className="dashboard__stat">
-                                Benched
-                            </span>
-                        </div>
-                    </header>
-                    <ul className="dashboard__list">
-                        {filteredStats && Object.entries(filteredStats).map(([ elementType, statData ]) => (
-                            <div key={elementType}>
-                                <li className="dashboard__category">
-                                    <span>{bootstrap?.element_types.find(el => el.id === Number(elementType))?.plural_name_short}</span>
-                                    <span>{statData.length}</span>
-                                </li>
-                                {statData
-                                    .filter(element => element.data.filter(pick => pick.multiplier !== null).length)
-                                    .sort((a, b) => sortings[(sort as OptionType).value](b) - sortings[(sort as OptionType).value](a))
-                                    .map(element => (
-                                        <li key={element.element.id} className="dashboard__item">
-                                            <div className="dashboard__player">
-                                                <Player id={element.element.id} />
-                                            </div>
-                                            <div className="dashboard__stats">
-                                                {element.data.map(item => (
-                                                    <span
-                                                        key={item.event.id}
-                                                        className={classNames('dashboard__stat', {
-                                                            'dashboard__stat--benched': item.multiplier === 0,
-                                                            'dashboard__stat--triple': item.multiplier === 3,
-                                                            'dashboard__stat--started': item.multiplier,
-                                                        })}
-                                                    />
-                                                ))}
-                                            </div>
-                                            <div className="dashboard__totals">
-                                                <span className="dashboard__stat">
-                                                    {getTotalSelections(element)}
-                                                </span>
-                                                <span className="dashboard__stat">
-                                                    {(getTotalSelections(element) / element.data.length * 100).toFixed(1)}%
-                                                </span>
-                                                <span className="dashboard__stat">
-                                                    {getTotalStarts(element)}
-                                                </span>
-                                                <span className="dashboard__stat">
-                                                    {(getTotalStarts(element) / element.data.length * 100).toFixed(1)}%
-                                                </span>
-                                                <span className="dashboard__stat">
-                                                    {getTotalBenched(element)}
-                                                </span>
-                                                <span className="dashboard__stat">
-                                                    {(getTotalBenched(element) / element.data.length * 100).toFixed(1)}%
-                                                </span>
-                                            </div>
-                                        </li>
-                                    ))
-                                }
-                            </div>
-                        ))}
-                    </ul>
+                    <div className="app__color">
+                        <div className="app__color__indicator app__color__indicator--benched"></div>
+                        Benched
+                    </div>
+                    <div className="app__color">
+                        <div className="app__color__indicator app__color__indicator--triple"></div>
+                        TC
+                    </div>
+                    <div className="app__color">
+                        <div className="app__color__indicator"></div>
+                        Not Selected
+                    </div>
                 </div>
-            </div>
-            <div className="dashboard__widgets">
-                <Widget
-                    title="Top Selections"
-                    loading={isLoadingStats}
-                    cloaked={!id}
-                >
-                    {filteredStats && renderSelectionWidget(filteredStats)}
-                </Widget>
-                <Widget
-                    title="Top Starters"
-                    loading={isLoadingStats}
-                    cloaked={!id}
-                >
-                    {filteredStats && renderStartersWidget(filteredStats)}
-                </Widget>
-                <Widget
-                    title="Top Benchwarmers"
-                    loading={isLoadingStats}
-                    cloaked={!id}
-                >
-                    {filteredStats && renderBenchWidget(filteredStats)}
-                </Widget>
-                <Widget
-                    title="Most Consistent Starters"
-                    loading={isLoadingStats}
-                    cloaked={!id}
-                >
-                    {filteredStats && renderDifferenceWidget(filteredStats, true)}
-                </Widget>
-                <Widget
-                    title="Most Consistent Benchwarmers"
-                    loading={isLoadingStats}
-                    cloaked={!id}
-                >
-                    {filteredStats && renderDifferenceWidget(filteredStats)}
-                </Widget>
-                <Widget
-                    title="Breakdown by Team"
-                    loading={isLoadingStats}
-                    cloaked={!id}
-                >
-                    {filteredStats && bootstrap && renderTeamsWidget(filteredStats, bootstrap)}
-                </Widget>
-                <Widget
-                    title="Breakdown by Position"
-                    loading={isLoadingStats}
-                    cloaked={!id}
-                >
-                    {filteredStats && bootstrap && renderPositionWidget(filteredStats, bootstrap)}
-                </Widget>
-            </div>
-            <div className="dashboard__graphs">
-                <Widget
-                    title="Overall Rank Evolution"
-                    loading={isLoadingHistory}
-                    cloaked={!id}
-                >
-                    {filteredHistory && bootstrap && renderOverallRankWidget(filteredHistory, bootstrap)}
-                </Widget>
-                <Widget
-                    title="Gameweek Points"
-                    loading={isLoadingHistory}
-                    cloaked={!id}
-                >
-                    {filteredHistory && bootstrap && renderPointsWidget(filteredHistory, bootstrap)}
-                </Widget>
-                <Widget
-                    title="Team Value Evolution"
-                    loading={isLoadingHistory}
-                    cloaked={!id}
-                >
-                    {filteredHistory && bootstrap && renderValueWidget(filteredHistory, bootstrap)}
-                </Widget>
-            </div>
-            <div className="app__legal">
-                <p>FPL Stats uses data from the official Premier League Fantasy API. This site is not affiliated with the Premier League.</p>
+                <div className="app__meta">
+                    <label className="app__meta__label">
+                        Sort by
+                    </label>
+                    <Select
+                        options={sortOptions}
+                        value={sort}
+                        onChange={option => setSort(option)}
+                        styles={{
+                            container: (provided) => ({ ...provided, width: '100%' }),
+                            menu: (provided) => ({ ...provided, zIndex: 20 })
+                        }}
+                    />
+                </div>
+                <div className={classNames('dashboard', {
+                    'dashboard--cloaked': !id,
+                })}>
+                    {isLoadingStats && (
+                        <div className="dashboard__loading">
+                            <Spinner />
+                        </div>
+                    )}
+                    <div className="dashboard__container" ref={dashboardRef}>
+                        <header className="dashboard__header">
+                            <span className="dashboard__heading">
+                                Player
+                            </span>
+                            {bootstrap?.events && getPastEvents(bootstrap.events).filter(event => includeInactive || event.top_element_info.points > 0).map(event => (
+                                <span className="dashboard__stat" key={event.id}>
+                                    {getShortName(event)}
+                                    {chips && chips[event.id] && (
+                                        <div>{getChipAbbreviation(chips[event.id])}</div>
+                                    )}
+                                </span>
+                            ))}
+                            <div className="dashboard__totals">
+                                <span className="dashboard__stat">
+                                    Selected
+                                </span>
+                                <span className="dashboard__stat">
+                                    Starting
+                                </span>
+                                <span className="dashboard__stat">
+                                    Benched
+                                </span>
+                            </div>
+                        </header>
+                        <ul className="dashboard__list">
+                            {filteredStats && Object.entries(filteredStats).map(([ elementType, statData ]) => (
+                                <div key={elementType}>
+                                    <li className="dashboard__category">
+                                        <span>{bootstrap?.element_types.find(el => el.id === Number(elementType))?.plural_name_short}</span>
+                                        <span>{statData.length}</span>
+                                    </li>
+                                    {statData
+                                        .filter(element => element.data.filter(pick => pick.multiplier !== null).length)
+                                        .sort((a, b) => sortings[(sort as OptionType).value](b) - sortings[(sort as OptionType).value](a))
+                                        .map(element => (
+                                            <li key={element.element.id} className="dashboard__item">
+                                                <div className="dashboard__player">
+                                                    <Player id={element.element.id} />
+                                                </div>
+                                                <div className="dashboard__stats">
+                                                    {element.data.map(item => (
+                                                        <span
+                                                            key={item.event.id}
+                                                            className={classNames('dashboard__stat', {
+                                                                'dashboard__stat--benched': item.multiplier === 0,
+                                                                'dashboard__stat--triple': item.multiplier === 3,
+                                                                'dashboard__stat--started': item.multiplier,
+                                                            })}
+                                                        />
+                                                    ))}
+                                                </div>
+                                                <div className="dashboard__totals">
+                                                    <span className="dashboard__stat">
+                                                        {getTotalSelections(element)}
+                                                    </span>
+                                                    <span className="dashboard__stat">
+                                                        {(getTotalSelections(element) / element.data.length * 100).toFixed(1)}%
+                                                    </span>
+                                                    <span className="dashboard__stat">
+                                                        {getTotalStarts(element)}
+                                                    </span>
+                                                    <span className="dashboard__stat">
+                                                        {(getTotalStarts(element) / element.data.length * 100).toFixed(1)}%
+                                                    </span>
+                                                    <span className="dashboard__stat">
+                                                        {getTotalBenched(element)}
+                                                    </span>
+                                                    <span className="dashboard__stat">
+                                                        {(getTotalBenched(element) / element.data.length * 100).toFixed(1)}%
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        ))
+                                    }
+                                </div>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+                <div className="dashboard__widgets">
+                    <Widget
+                        title="Top Selections"
+                        loading={isLoadingStats}
+                        cloaked={!id}
+                    >
+                        {filteredStats && renderSelectionWidget(filteredStats)}
+                    </Widget>
+                    <Widget
+                        title="Top Starters"
+                        loading={isLoadingStats}
+                        cloaked={!id}
+                    >
+                        {filteredStats && renderStartersWidget(filteredStats)}
+                    </Widget>
+                    <Widget
+                        title="Top Benchwarmers"
+                        loading={isLoadingStats}
+                        cloaked={!id}
+                    >
+                        {filteredStats && renderBenchWidget(filteredStats)}
+                    </Widget>
+                    <Widget
+                        title="Most Consistent Starters"
+                        loading={isLoadingStats}
+                        cloaked={!id}
+                    >
+                        {filteredStats && renderDifferenceWidget(filteredStats, true)}
+                    </Widget>
+                    <Widget
+                        title="Most Consistent Benchwarmers"
+                        loading={isLoadingStats}
+                        cloaked={!id}
+                    >
+                        {filteredStats && renderDifferenceWidget(filteredStats)}
+                    </Widget>
+                    <Widget
+                        title="Breakdown by Team"
+                        loading={isLoadingStats}
+                        cloaked={!id}
+                    >
+                        {filteredStats && bootstrap && renderTeamsWidget(filteredStats, bootstrap)}
+                    </Widget>
+                    <Widget
+                        title="Breakdown by Position"
+                        loading={isLoadingStats}
+                        cloaked={!id}
+                    >
+                        {filteredStats && bootstrap && renderPositionWidget(filteredStats, bootstrap)}
+                    </Widget>
+                </div>
+                <div className="dashboard__graphs">
+                    <Widget
+                        title="Overall Rank Evolution"
+                        loading={isLoadingHistory}
+                        cloaked={!id}
+                    >
+                        {filteredHistory && bootstrap && renderOverallRankWidget(filteredHistory, bootstrap)}
+                    </Widget>
+                    <Widget
+                        title="Gameweek Points"
+                        loading={isLoadingHistory}
+                        cloaked={!id}
+                    >
+                        {filteredHistory && bootstrap && renderPointsWidget(filteredHistory, bootstrap)}
+                    </Widget>
+                    <Widget
+                        title="Team Value Evolution"
+                        loading={isLoadingHistory}
+                        cloaked={!id}
+                    >
+                        {filteredHistory && bootstrap && renderValueWidget(filteredHistory, bootstrap)}
+                    </Widget>
+                </div>
+                <div className="app__legal">
+                    <p>FPL Stats uses data from the official Premier League Fantasy API. This site is not affiliated with the Premier League.</p>
+                </div>
             </div>
             {id !== undefined && (
                 <div className="app__footer">
