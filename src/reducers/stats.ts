@@ -26,12 +26,7 @@ const stats = createSlice({
 export const { buildDataStart, buildDataSuccess } = stats.actions
 
 const fetchPicks = async (event: number, entry: number): Promise<Picks> => {
-    const response = await fetch('https://fpl-stats.herokuapp.com/', {
-        headers: {
-            'Target-URL': `https://fantasy.premierleague.com/api/entry/${entry}/event/${event}/picks/`,
-            'Authorization': '',
-        },
-    })
+    const response = await fetch(`https://jsonp.afeld.me/?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${entry}/event/${event}/picks/`)}`)
     return await response.json()
 }
 

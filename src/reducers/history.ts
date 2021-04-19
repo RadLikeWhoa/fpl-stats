@@ -24,12 +24,7 @@ export const { fetchHistoryStart, fetchHistorySuccess } = history.actions
 export const fetchHistory = (entry: number): ThunkAction<void, History, unknown, Action<string>> => async dispatch => {
     dispatch(fetchHistoryStart())
 
-    const response = await fetch('https://fpl-stats.herokuapp.com/', {
-        headers: {
-            'Target-URL': `https://fantasy.premierleague.com/api/entry/${entry}/history/`,
-            'Authorization': '',
-        },
-    })
+    const response = await fetch(`https://jsonp.afeld.me/?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${entry}/history/`)}`)
 
     const data = await response.json()
 
