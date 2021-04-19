@@ -4,13 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchBootstrap } from '../../reducers/bootstrap'
 import { RootState } from '../../reducers'
 import { Player } from '../Player'
-import { Checkbox } from '../Checkbox'
 import { Widget } from '../Widget'
 import { Team } from '../Team'
 import { Spinner } from '../Spinner'
 import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, thousandsShorthand } from '../../utilities'
 import { Modal } from '../Modal'
-import { toggleIncludeInactive, setId } from '../../reducers/settings'
+import { setId } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
 import { Button } from '../Button'
 import classNames from 'classnames'
@@ -270,7 +269,6 @@ const Dashboard: React.FC = () => {
     const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     const id = useSelector((state: RootState) => state.settings.id)
-    const includeInactive = useSelector((state: RootState) => state.settings.includeInactive)
 
     const history = useSelector((state: RootState) => state.history.data)
     const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
@@ -320,11 +318,11 @@ const Dashboard: React.FC = () => {
                 ...element,
                 data: element.data.filter(item => {
                     const topPoints = bootstrap?.events.find(event => event.id === item.event.id)?.top_element_info.points
-                    return includeInactive || (topPoints && topPoints > 0)
+                    return topPoints && topPoints > 0
                 }),
             })),
         }), {}))
-    }, [ includeInactive, stats, bootstrap ])
+    }, [ stats, bootstrap ])
 
     useEffect(() => {
         if (!history) {
@@ -336,10 +334,10 @@ const Dashboard: React.FC = () => {
             ...history,
             current: history.current.filter(current => {
                 const topPoints = bootstrap?.events.find(event => event.id === current.event)?.top_element_info.points
-                return includeInactive || (topPoints && topPoints > 0)
+                return topPoints && topPoints > 0
             })
         })
-    }, [ includeInactive, history, bootstrap ])
+    }, [ history, bootstrap ])
 
     return (
         <div className="app">
@@ -398,7 +396,7 @@ const Dashboard: React.FC = () => {
                             <span className="dashboard__heading">
                                 Player
                             </span>
-                            {bootstrap?.events && getPastEvents(bootstrap.events).filter(event => includeInactive || event.top_element_info.points > 0).map(event => (
+                            {bootstrap?.events && getPastEvents(bootstrap.events).filter(event => event.top_element_info.points > 0).map(event => (
                                 <span className="dashboard__stat" key={event.id}>
                                     {getShortName(event)}
                                     {chips && chips[event.id] && (
@@ -554,11 +552,6 @@ const Dashboard: React.FC = () => {
             {id !== undefined && (
                 <div className="app__footer">
                     <div className="app__footer__content">
-                        <Checkbox
-                            label="Include inactive gameweeks"
-                            checked={includeInactive}
-                            onChange={() => dispatch(toggleIncludeInactive())}
-                        />
                         <Button
                             onClick={() => setIsModalOpen(true)}
                             label="Change Team"

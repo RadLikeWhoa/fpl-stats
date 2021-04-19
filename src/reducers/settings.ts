@@ -4,7 +4,6 @@ const settings = createSlice({
     name: 'settings',
     initialState: {
         id: localStorage.getItem('id') || undefined,
-        includeInactive: !!localStorage.getItem('includeInactive') || false,
     },
     reducers: {
         setId(state, action) {
@@ -14,18 +13,9 @@ const settings = createSlice({
                 localStorage.setItem('id', state.id)
             }
         },
-        toggleIncludeInactive(state) {
-            state.includeInactive = !state.includeInactive
-
-            if (state.includeInactive) {
-                localStorage.setItem('includeInactive', 'true')
-            } else {
-                localStorage.removeItem('includeInactive')
-            }
-        },
     },
 })
 
-export const { setId, toggleIncludeInactive } = settings.actions
+export const { setId } = settings.actions
 
 export default settings.reducer

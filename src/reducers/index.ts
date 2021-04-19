@@ -19,7 +19,6 @@ export type RootState = {
     },
     settings: {
         id: number | undefined,
-        includeInactive: boolean,
     },
     history: {
         loading: boolean,
