@@ -6,6 +6,26 @@
     padding: 0.5rem;
     background-color: #fff;
 
+    &--condensed {
+        flex-direction: row-reverse;
+        padding: 0.5rem 0;
+
+        .player__detail {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 0.5em;
+        }
+
+        .player__position,
+        .player__team {
+            display: none;
+        }
+
+        .player__shirt {
+            margin-right: 0;
+        }
+    }
+
     &__detail {
         width: calc(100% - 2rem);
     }

@@ -1,4 +1,5 @@
 import { Element } from './element'
+import { ElementStats } from './element-stats'
 import { Event } from './event'
 
 export type StatData = {
@@ -6,5 +7,7 @@ export type StatData = {
     data: {
         event: Event
         multiplier: number | null
+        points: number | null
+        stats: ElementStats | null
     }[]
 }

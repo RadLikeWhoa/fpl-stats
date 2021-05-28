@@ -1,15 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import './Player.scss'
+import './TotsPlayer.scss'
 
 type Props = {
     id: number
-    condensed?: boolean
-    suffix?: string
+    points: number
 }
 
-const Player: React.FC<Props> = (props: Props) => {
+const TotsPlayer: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     const player = bootstrap?.elements.find(el => el.id === props.id)
@@ -17,23 +16,22 @@ const Player: React.FC<Props> = (props: Props) => {
     const position = bootstrap?.element_types.find(el => el.id === player?.element_type)
 
     return (
-        <div className={`player ${props.condensed ? 'player--condensed' : ''}`}>
+        <div className="tots-player">
             <img
                 src={`https://fantasy.premierleague.com/dist/img/shirts/special/shirt_${team?.code}${position?.singular_name_short === 'GKP' ? '_1' : ''}-66.png`}
                 alt={player?.web_name}
-                className="player__shirt"
+                className="tots-player__shirt"
             />
-            <div className="player__detail">
-                <div className="player__name">
-                    <span>{player?.web_name}{props.suffix && ` (${props.suffix})`}</span>
+            <div className="tots-player__detail">
+                <div className="tots-player__name">
+                    <span>{player?.web_name}</span>
                 </div>
-                <div className="player__info">
-                    <span className="player__team" title={team?.name}>{team?.short_name}</span>
-                    <span className="player__position">{position?.singular_name_short}</span>
+                <div className="tots-player__points">
+                    {props.points}
                 </div>
             </div>
         </div>
     )
 }
 
-export default Player
+export default TotsPlayer

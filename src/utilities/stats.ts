@@ -11,3 +11,7 @@ export const getTotalStarts = (statData: StatData): number => {
 export const getTotalBenched = (statData: StatData): number => {
     return statData.data.filter(pick => pick.multiplier === 0).length
 }
+
+export const getTotalPoints = (statData: StatData): number => {
+    return statData.data.reduce((acc, pick) => acc + (pick.points || 0), 0);
+}
