@@ -495,6 +495,78 @@ const renderStatsWidget = (history: History, stats: Stats, id: number | undefine
     )
 }
 
+const renderHistoryWidget = (history: History): JSX.Element => {
+    const pastSeasonsByRank = [ ...history.past ].sort((a, b) => a.rank - b.rank)
+    const pastSeasonsByPoints = [ ...history.past ].sort((a, b) => b.total_points - a.total_points)
+
+    const bestRankedSeason = pastSeasonsByRank[0]
+    const worstRankedSeason = pastSeasonsByRank[pastSeasonsByRank.length - 1]
+
+    const bestPointSeason = pastSeasonsByPoints[0]
+    const worstPointSeason = pastSeasonsByPoints[pastSeasonsByPoints.length - 1]
+
+    const averageRank = Math.round(pastSeasonsByRank.reduce((acc, curr) => acc + curr.rank, 0) / pastSeasonsByRank.length)
+    const averagePoints = Math.round(pastSeasonsByPoints.reduce((acc, curr) => acc + curr.total_points, 0) / pastSeasonsByPoints.length)
+
+    const top1k = pastSeasonsByRank.filter(season => season.rank <= 1000).length
+    const top10k = pastSeasonsByRank.filter(season => season.rank <= 10000).length
+    const top100k = pastSeasonsByRank.filter(season => season.rank <= 100000).length
+    const top1m = pastSeasonsByRank.filter(season => season.rank <= 1000000).length
+
+    return (
+        <ul className="widget__list">
+            <li className="widget__list__item">
+                <span>Best Season Rank</span>
+                <span>{thousandsSeparator(bestRankedSeason.rank)} ({bestRankedSeason.season_name})</span>
+            </li>
+            <li className="widget__list__item">
+                <span>Best Points Finish</span>
+                <span>{thousandsSeparator(bestPointSeason.total_points)} ({bestPointSeason.season_name})</span>
+            </li>
+            <li className="widget__list__item">
+                <span>Worst Season Rank</span>
+                <span>{thousandsSeparator(worstRankedSeason.rank)} ({worstRankedSeason.season_name})</span>
+            </li>
+            <li className="widget__list__item">
+                <span>Worst Points Finish</span>
+                <span>{thousandsSeparator(worstPointSeason.total_points)} ({worstPointSeason.season_name})</span>
+            </li>
+            <li className="widget__list__item">
+                <span>Average Rank</span>
+                <span>{thousandsSeparator(averageRank)}</span>
+            </li>
+            <li className="widget__list__item">
+                <span>Average Points</span>
+                <span>{thousandsSeparator(averagePoints)}</span>
+            </li>
+            {top1k > 0 && (
+                <li className="widget__list__item">
+                    <span>Top 1K Finishes</span>
+                    <span>{top1k}</span>
+                </li>
+            )}
+            {top10k > 0 && (
+                <li className="widget__list__item">
+                    <span>Top 10K Finishes</span>
+                    <span>{top10k}</span>
+                </li>
+            )}
+            {top100k > 0 && (
+                <li className="widget__list__item">
+                    <span>Top 100K Finishes</span>
+                    <span>{top100k}</span>
+                </li>
+            )}
+            {top1m > 0 && (
+                <li className="widget__list__item">
+                    <span>Top 1M Finishes</span>
+                    <span>{top1m}</span>
+                </li>
+            )}
+        </ul>
+    )
+}
+
 const Dashboard: React.FC = () => {
     const [ isModalOpen, setIsModalOpen ] = useState(true)
     const [ sort, setSort ] = useState<ValueType<OptionType>>(sortOptions[0])
@@ -747,6 +819,15 @@ const Dashboard: React.FC = () => {
                     >
                         {stats && bootstrap && renderPositionWidget(stats, bootstrap)}
                     </Widget>
+                    {history && history.past.length > 0 && (
+                        <Widget
+                            title="Historical Data"
+                            loading={isLoadingHistory}
+                            cloaked={!id}
+                        >
+                            {history && renderHistoryWidget(history)}
+                        </Widget>
+                    )}
                 </div>
                 <div className="dashboard__graphs">
                     <Widget
