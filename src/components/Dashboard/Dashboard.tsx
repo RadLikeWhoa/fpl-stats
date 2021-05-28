@@ -757,8 +757,11 @@ const Dashboard: React.FC = () => {
                                                     <span className="dashboard__stat">
                                                         {(getTotalBenched(element) / element.data.length * 100).toFixed(1)}%
                                                     </span>
-                                                    <span className="dashboard__stat dashboard__stat--wide">
+                                                    <span className="dashboard__stat">
                                                         {getTotalPoints(element)}
+                                                    </span>
+                                                    <span className="dashboard__stat" title="Points per selection">
+                                                        {(getTotalPoints(element) / getTotalSelections(element)).toFixed(1)} p/g
                                                     </span>
                                                 </div>
                                             </li>
