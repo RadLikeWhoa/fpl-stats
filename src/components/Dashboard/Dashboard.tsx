@@ -760,8 +760,8 @@ const Dashboard: React.FC = () => {
                                                     <span className="dashboard__stat">
                                                         {getTotalPoints(element)}
                                                     </span>
-                                                    <span className="dashboard__stat" title="Points per selection">
-                                                        {(getTotalPoints(element) / getTotalSelections(element)).toFixed(1)} p/g
+                                                    <span className="dashboard__stat" title="Points per start">
+                                                        {getTotalStarts(element) > 0 ? (getTotalPoints(element) / getTotalStarts(element)).toFixed(1) : 0} p/g
                                                     </span>
                                                 </div>
                                             </li>
