@@ -16,7 +16,7 @@ const MIN_MID = 2
 const MAX_MID = 5
 
 const MIN_FWD = 1
-const MAX_FWD = 5
+const MAX_FWD = 3
 
 const TotsWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)

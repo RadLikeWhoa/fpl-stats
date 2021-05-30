@@ -30,6 +30,11 @@ const GameweekWidget: React.FC = () => {
     const differences = history.current.map((week, index) => week.points - bootstrap.events[index].average_entry_score)
     const sortedRanks = [ ...history.current ].sort((a, b) => a.rank - b.rank)
 
+    const gws = [ ...history.current ].sort((a, b) => b.points - a.points)
+
+    const bestGW = gws[0]
+    const worstGW = gws[gws.length - 1]
+
     return (
         <Widget
             title="Gameweeks"
@@ -52,6 +57,30 @@ const GameweekWidget: React.FC = () => {
                 <li className="widget__list__item">
                     <span>{meanLabel('GW Rank')}</span>
                     <span>{thousandsSeparator(Math.round(meanValue(history.current.map(week => week.rank))))}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Best Gameweek</span>
+                    <span>
+                        {bestGW.points} pts
+                        {' '}
+                        (
+                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${bestGW.event}/`} target="_blank" rel="noopener noreferrer">
+                                GW {bestGW.event}
+                            </a>
+                        )
+                    </span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Worst Gameweek</span>
+                    <span>
+                        {worstGW.points} pts
+                        {' '}
+                        (
+                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${worstGW.event}/`} target="_blank" rel="noopener noreferrer">
+                                GW {worstGW.event}
+                            </a>
+                        )
+                    </span>
                 </li>
                 <li className="widget__list__item">
                     <span>Best GW Rank</span>

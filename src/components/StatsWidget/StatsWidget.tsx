@@ -25,11 +25,6 @@ const StatsWidget: React.FC = () => {
         )
     }
 
-    const gws = [ ...history.current ].sort((a, b) => b.points - a.points)
-
-    const bestGW = gws[0]
-    const worstGW = gws[gws.length - 1]
-
     const allPlayers = getAllPlayers(stats)
 
     const aggregateStats = (key: keyof ElementStats) => allPlayers.map(player => ({
@@ -99,26 +94,6 @@ const StatsWidget: React.FC = () => {
                 <li className="widget__list__item">
                     <span>Total Points on Bench</span>
                     <span>{totalBenched} pts</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Best Gameweek</span>
-                    <span>
-                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${bestGW.event}/`} target="_blank" rel="noopener noreferrer">
-                            GW {bestGW.event}
-                        </a>
-                        {' '}
-                        ({bestGW.points} pts)
-                    </span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Worst Gameweek</span>
-                    <span>
-                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${worstGW.event}/`} target="_blank" rel="noopener noreferrer">
-                            GW {worstGW.event}
-                        </a>
-                        {' '}
-                        ({worstGW.points} pts)
-                    </span>
                 </li>
                 <li className="widget__list__item">
                     <span>Top Returner</span>
