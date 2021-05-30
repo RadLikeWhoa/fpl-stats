@@ -4,6 +4,7 @@ const settings = createSlice({
     name: 'settings',
     initialState: {
         id: localStorage.getItem('id') || undefined,
+        meanStrategy: localStorage.getItem('meanStrategy') || 'average',
     },
     reducers: {
         setId(state, action) {
@@ -13,9 +14,13 @@ const settings = createSlice({
                 localStorage.setItem('id', state.id)
             }
         },
+        setMeanStrategy(state, action) {
+            state.meanStrategy = action.payload
+            localStorage.setItem('meanStrategy', state.meanStrategy)
+        }
     },
 })
 
-export const { setId } = settings.actions
+export const { setId, setMeanStrategy } = settings.actions
 
 export default settings.reducer

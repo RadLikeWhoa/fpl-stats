@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 type Props = {
     title: string
-    children: React.ReactNode
+    children?: React.ReactNode
     loading?: boolean
     cloaked?: boolean
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setId } from '../../reducers/settings'
 import { Button } from '../Button'
-import useClickOutside from '../../hooks/clickOutside';
+import { useClickOutside } from '../../hooks'
 import { validateTeamId } from '../../utilities'
 import { RootState } from '../../reducers'
 import './Modal.scss'

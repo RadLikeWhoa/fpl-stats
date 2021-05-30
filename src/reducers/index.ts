@@ -3,7 +3,7 @@ import bootstrap from './bootstrap'
 import stats from './stats'
 import settings from './settings'
 import { Bootstrap, Stats, History } from '../types'
-import history from './history';
+import history from './history'
 
 export type RootState = {
     bootstrap: {
@@ -19,6 +19,7 @@ export type RootState = {
     },
     settings: {
         id: number | undefined,
+        meanStrategy: 'average' | 'median',
     },
     history: {
         loading: boolean,
