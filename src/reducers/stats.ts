@@ -70,6 +70,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                         event,
                         multiplier: null,
                         points: null,
+                        rawPoints: null,
                         stats: null,
                     })),
                 }
@@ -83,6 +84,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                         event: bootstrap.events.find(event => event.id === gw.pick.entry_history.event)!,
                         multiplier: item.multiplier,
                         points: (gw.live.elements.find(el => el.id === item.element)?.stats.total_points || 0) * item.multiplier,
+                        rawPoints: (gw.live.elements.find(el => el.id === item.element)?.stats.total_points || 0),
                         stats: gw.live.elements.find(el => el.id === item.element)?.stats || null,
                     }
                 ]
@@ -101,6 +103,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                             event: bootstrap.events.find(event => event.id === gw.pick.entry_history.event)!,
                             multiplier: null,
                             points: null,
+                            rawPoints: null,
                             stats: null,
                         },
                     ],

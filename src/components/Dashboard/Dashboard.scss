@@ -130,11 +130,7 @@
         display: flex;
 
         .dashboard__stat {
-            width: 4rem;
-
-            &--wide {
-                width: 8rem;
-            }
+            width: 8rem;
         }
 
         &::after {
@@ -148,33 +144,39 @@
         }
 
         @include up-to("M") {
+            flex-flow: wrap;
             width: 100%;
             border-top: 1px solid rgb(239, 239, 239);
 
             .dashboard__stat {
                 flex-direction: row;
-                width: 33.333%;
+                flex: auto;
+                width: 50%;
                 height: 2rem;
                 font-size: 0.75rem;
 
-                &:nth-child(even) {
-                    display: none;
+                &::before {
+                    margin-right: 0.25rem;
                 }
 
-                &:nth-child(odd)::after {
-                    margin-left: 0.25rem;
+                &:nth-child(-n+2) {
+                    border-bottom: 1px solid rgb(239, 239, 239);
                 }
 
-                &:nth-child(1)::after {
-                    content: "Selected";
+                &:nth-child(1)::before {
+                    content: "Selected: ";
                 }
 
-                &:nth-child(3)::after {
-                    content: "Started";
+                &:nth-child(2)::before {
+                    content: "Started: ";
                 }
 
-                &:nth-child(5)::after {
-                    content: "Benched";
+                &:nth-child(3)::before {
+                    content: "Benched: ";
+                }
+
+                &:nth-child(4)::before {
+                    content: "Points: ";
                 }
             }
         }
@@ -404,17 +406,25 @@
             color: #fff;
             margin-right: 1rem;
         }
+
+        @include up-to("M") {
+            flex-flow: wrap;
+        }
     }
 
     &__legend {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        flex-shrink: 0;
         max-width: 100rem;
-        margin: 0 auto 1.5rem;
+        margin-left: 1.5rem;
         font-size: 0.75rem;
 
         @include up-to("M") {
+            width: 100%;
+            margin-top: 1.5rem;
+            margin-left: 0;
             justify-content: center;
         }
     }
@@ -458,22 +468,6 @@
         p {
             margin-top: 0;
             margin-bottom: 0;
-        }
-    }
-}
-
-.chart {
-    .recharts-yAxis .recharts-cartesian-axis-tick:first-child text {
-        font-size: 0;
-    }
-
-    &--reversed {
-        .recharts-yAxis .recharts-cartesian-axis-tick:first-child text {
-            font-size: inherit;
-        }
-
-        .recharts-yAxis .recharts-cartesian-axis-tick:last-child text {
-            font-size: 0;
         }
     }
 }

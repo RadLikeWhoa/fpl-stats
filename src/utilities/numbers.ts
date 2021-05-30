@@ -3,7 +3,7 @@ export const thousandsSeparator = (value: number): string => {
 }
 
 export const thousandsShorthand = (value: number): string => {
-    return value > 999999 ? `${(value / 1000000).toFixed(0)}M` : value > 999 ? `${(value / 1000).toFixed(0)}K` : `${value}`
+    return value > 999999 ? `${(value / 1000000).toFixed(1)}M` : value > 999 ? `${(value / 1000).toFixed(0)}K` : `${value}`
 }
 
 export const sumNumbers = (series: number[]): number => {

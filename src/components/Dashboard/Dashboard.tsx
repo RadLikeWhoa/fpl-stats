@@ -23,6 +23,7 @@ import { StatsWidget } from '../StatsWidget'
 import { FormationWidget } from '../FormationWidget'
 import { CaptainWidget } from '../CaptainWidget'
 import { GameweekWidget } from '../GameweekWidget'
+import { PositionsWidget } from '../PositionsWidget'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -148,29 +149,6 @@ const renderDifferenceWidget = (stats: Stats, top: boolean = false): JSX.Element
     )
 }
 
-const renderPositionWidget = (stats: Stats, bootstrap: Bootstrap): JSX.Element => {
-    const positions: Record<string, number> = Object.entries(stats)
-        .reduce((acc, [ elementType, elements ]) => ({
-            ...acc,
-            [elementType]: elements.length,
-        }), {})
-
-    return (
-        <ul className="widget__list">
-            <li className="widget__list__item">
-                <span>Total</span>
-                <span>{Object.values(positions).reduce((acc, curr) => acc + curr, 0)}</span>
-            </li>
-            {Object.entries(positions).map(([ elementType, elements ]) => (
-                <li className="widget__list__item">
-                    <span>{bootstrap.element_types.find(el => el.id === Number(elementType))?.plural_name}</span>
-                    <span>{Number(elements)}</span>
-                </li>
-            ))}
-        </ul>
-    )
-}
-
 const renderTeamsWidget = (stats: Stats, bootstrap: Bootstrap): JSX.Element => {
     const counts = Object.values(stats)
         .reduce((acc: number[], curr) => [ ...acc, ...curr.map(el => el.element.team) ], [])
@@ -191,7 +169,7 @@ const renderTeamsWidget = (stats: Stats, bootstrap: Bootstrap): JSX.Element => {
 }
 
 const renderOverallRankWidget = (history: History, bootstrap: Bootstrap): JSX.Element => {
-    const data = history.current.map(entry => {
+    let data = history.current.map(entry => {
         const event = bootstrap.events.find(event => event.id === entry.event)
 
         return {
@@ -200,15 +178,23 @@ const renderOverallRankWidget = (history: History, bootstrap: Bootstrap): JSX.El
         }
     })
 
+    const max = [...data].sort((a, b) => b.value - a.value)[0].value * 1.05
+
+    data = [...data].map(element => ({
+        ...element,
+        max,
+    }))
+
     return (
         <div className="chart chart--reversed">
             <ResponsiveContainer height={300} width="100%">
                 <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
-                    <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
-                    <YAxis reversed={true} tickFormatter={value => thousandsShorthand(value)} interval="preserveStart" />
-                    <XAxis dataKey="name" angle={-90} textAnchor="end" />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
-                    <Tooltip isAnimationActive={false} formatter={value => [ thousandsSeparator(Number(value)), '' ]} separator="" />
+                    <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="1" />
+                    <Area type="monotone" dataKey="value" stroke="#177B47" fill="#ffffff" fillOpacity="1" />
+                    <YAxis reversed={true} tickFormatter={value => thousandsShorthand(value)} domain={[1, max]} interval="preserveStartEnd" tickCount={10} />
+                    <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
+                    <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
+                    <Tooltip isAnimationActive={false} formatter={(value, name) => name === 'max' ? [undefined, undefined] : [ thousandsSeparator(Number(value)), 'Rank' ]} separator=": " />
                 </AreaChart>
             </ResponsiveContainer>
         </div>
@@ -230,11 +216,11 @@ const renderPointsWidget = (history: History, bootstrap: Bootstrap): JSX.Element
         <div className="chart">
             <ResponsiveContainer height={300} width="100%">
                 <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
-                    <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" />
-                    <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" />
-                    <YAxis />
-                    <XAxis dataKey="name" angle={-90} textAnchor="end" />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+                    <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" fillOpacity="1" />
+                    <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" fillOpacity="1" />
+                    <YAxis interval="preserveStartEnd" />
+                    <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
+                    <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
                     <Tooltip isAnimationActive={false} formatter={(value, name) => [ value, name.charAt(0).toUpperCase() + name.slice(1) ]} separator=": " />
                 </AreaChart>
             </ResponsiveContainer>
@@ -256,10 +242,10 @@ const renderValueWidget = (history: History, bootstrap: Bootstrap): JSX.Element 
         <div className="chart">
             <ResponsiveContainer height={300} width="100%">
                 <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
-                    <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" />
-                    <YAxis tickFormatter={value => `£${value / 10}`} domain={[ 'auto', 'auto' ]} />
-                    <XAxis dataKey="name" angle={-90} textAnchor="end" />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
+                    <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" fillOpacity="1" />
+                    <YAxis tickFormatter={value => `£${value / 10}`} domain={[ 'auto', 'auto' ]} interval="preserveStartEnd" />
+                    <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
+                    <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
                     <Tooltip isAnimationActive={false} formatter={(value, name) => [ `£${Number(value) / 10}`, name.charAt(0).toUpperCase() + name.slice(1) ]} separator=": " />
                 </AreaChart>
             </ResponsiveContainer>
@@ -327,24 +313,6 @@ const Dashboard: React.FC = () => {
                 <Spinner />
             </div>
             <div className="app__content">
-                <div className="app__legend">
-                    <div className="app__color">
-                        <div className="app__color__indicator app__color__indicator--started"></div>
-                        Started
-                    </div>
-                    <div className="app__color">
-                        <div className="app__color__indicator app__color__indicator--benched"></div>
-                        Benched
-                    </div>
-                    <div className="app__color">
-                        <div className="app__color__indicator app__color__indicator--triple"></div>
-                        TC
-                    </div>
-                    <div className="app__color">
-                        <div className="app__color__indicator"></div>
-                        Not Selected
-                    </div>
-                </div>
                 <div className="dashboard__widgets dashboard__widgets--split">
                     <TotsWidget />
                     <StatsWidget />
@@ -362,6 +330,24 @@ const Dashboard: React.FC = () => {
                             menu: (provided) => ({ ...provided, zIndex: 20 })
                         }}
                     />
+                    <div className="app__legend">
+                        <div className="app__color">
+                            <div className="app__color__indicator app__color__indicator--started"></div>
+                            Started
+                        </div>
+                        <div className="app__color">
+                            <div className="app__color__indicator app__color__indicator--benched"></div>
+                            Benched
+                        </div>
+                        <div className="app__color">
+                            <div className="app__color__indicator app__color__indicator--triple"></div>
+                            TC
+                        </div>
+                        <div className="app__color">
+                            <div className="app__color__indicator"></div>
+                            Not Selected
+                        </div>
+                    </div>
                 </div>
                 <div className={classNames('dashboard', {
                     'dashboard--cloaked': !id,
@@ -428,28 +414,16 @@ const Dashboard: React.FC = () => {
                                                 </div>
                                                 <div className="dashboard__totals">
                                                     <span className="dashboard__stat">
-                                                        {getTotalSelections(element)}
+                                                        {getTotalSelections(element)} ({(getTotalSelections(element) / element.data.length * 100).toFixed(1)}%)
                                                     </span>
                                                     <span className="dashboard__stat">
-                                                        {(getTotalSelections(element) / element.data.length * 100).toFixed(1)}%
+                                                        {getTotalStarts(element)} ({(getTotalStarts(element) / element.data.length * 100).toFixed(1)}%)
                                                     </span>
                                                     <span className="dashboard__stat">
-                                                        {getTotalStarts(element)}
+                                                        {getTotalBenched(element)} ({(getTotalBenched(element) / element.data.length * 100).toFixed(1)}%)
                                                     </span>
                                                     <span className="dashboard__stat">
-                                                        {(getTotalStarts(element) / element.data.length * 100).toFixed(1)}%
-                                                    </span>
-                                                    <span className="dashboard__stat">
-                                                        {getTotalBenched(element)}
-                                                    </span>
-                                                    <span className="dashboard__stat">
-                                                        {(getTotalBenched(element) / element.data.length * 100).toFixed(1)}%
-                                                    </span>
-                                                    <span className="dashboard__stat">
-                                                        {getTotalPoints(element)}
-                                                    </span>
-                                                    <span className="dashboard__stat" title="Points per start">
-                                                        {getTotalStarts(element) > 0 ? (getTotalPoints(element) / getTotalStarts(element)).toFixed(1) : 0} p/g
+                                                        {getTotalPoints(element)} ({getTotalStarts(element) > 0 ? (getTotalPoints(element) / getTotalStarts(element)).toFixed(1) : 0} ppg)
                                                     </span>
                                                 </div>
                                             </li>
@@ -503,13 +477,7 @@ const Dashboard: React.FC = () => {
                     >
                         {stats && bootstrap && renderTeamsWidget(stats, bootstrap)}
                     </Widget>
-                    <Widget
-                        title="Breakdown by Position"
-                        loading={isLoadingStats}
-                        cloaked={!id}
-                    >
-                        {stats && bootstrap && renderPositionWidget(stats, bootstrap)}
-                    </Widget>
+                    <PositionsWidget />
                     <HistoryWidget />
                     <FormationWidget />
                     <CaptainWidget />

@@ -8,6 +8,7 @@ export type StatData = {
         event: Event
         multiplier: number | null
         points: number | null
+        rawPoints: number | null
         stats: ElementStats | null
     }[]
 }

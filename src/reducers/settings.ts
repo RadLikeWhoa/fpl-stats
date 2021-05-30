@@ -12,6 +12,8 @@ const settings = createSlice({
 
             if (state.id) {
                 localStorage.setItem('id', state.id)
+            } else {
+                localStorage.removeItem('id')
             }
         },
         setMeanStrategy(state, action) {
