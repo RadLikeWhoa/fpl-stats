@@ -27,8 +27,8 @@ export const median = (series: number[]): number => {
 
 export const sort = (series: number[], direction: 'asc' | 'desc' = 'desc'): number[] => {
     if (direction === 'asc') {
-        return series.sort((a, b) => a - b)
+        return [ ...series ].sort((a, b) => a - b)
     }
 
-    return series.sort((a, b) => b - a)
+    return [ ...series ].sort((a, b) => b - a)
 }

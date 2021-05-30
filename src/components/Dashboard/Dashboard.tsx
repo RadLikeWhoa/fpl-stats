@@ -178,9 +178,9 @@ const renderOverallRankWidget = (history: History, bootstrap: Bootstrap): JSX.El
         }
     })
 
-    const max = [...data].sort((a, b) => b.value - a.value)[0].value * 1.05
+    const max = [ ...data ].sort((a, b) => b.value - a.value)[0].value * 1.05
 
-    data = [...data].map(element => ({
+    data = [ ...data ].map(element => ({
         ...element,
         max,
     }))

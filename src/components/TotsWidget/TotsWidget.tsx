@@ -6,6 +6,18 @@ import { TotsPlayer } from '../TotsPlayer'
 import { Widget } from '../Widget'
 import './TotsWidget.scss'
 
+const MIN_GK = 1
+const MAX_GK = 2
+
+const MIN_DEF = 3
+const MAX_DEF = 5
+
+const MIN_MID = 2
+const MAX_MID = 5
+
+const MIN_FWD = 1
+const MAX_FWD = 5
+
 const TotsWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
 
@@ -22,16 +34,16 @@ const TotsWidget: React.FC = () => {
         )
     }
 
-    const gk = [...stats[1]].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, 2)
-    const def = [...stats[2]].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, 5)
-    const mid = [...stats[3]].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, 5)
-    const fwd = [...stats[4]].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, 3)
+    const gk = [ ...stats[1] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_GK)
+    const def = [ ...stats[2] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_DEF)
+    const mid = [ ...stats[3] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_MID)
+    const fwd = [ ...stats[4] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_FWD)
 
-    const top = [gk[0], ...def.slice(0, 3), ...mid.slice(0, 2), ...fwd.slice(0, 1)]
-    const rest = [...def.slice(3), ...mid.slice(2), ...fwd.slice(1)].sort((a, b) => getTotalPoints(b) - getTotalPoints(a))
+    const top = [ ...gk.slice(0, MIN_GK), ...def.slice(0, MIN_DEF), ...mid.slice(0, MIN_MID), ...fwd.slice(0, MIN_FWD) ]
+    const rest = [ ...def.slice(MIN_DEF), ...mid.slice(MIN_MID), ...fwd.slice(MIN_FWD) ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a))
 
-    const xi = [...top, ...rest.slice(0, 4)].sort((a, b) => a.element.element_type - b.element.element_type)
-    const bench = [gk[1], ...rest.slice(4)].sort((a, b) => a.element.element_type - b.element.element_type)
+    const xi = [ ...top, ...rest.slice(0, 4) ].sort((a, b) => a.element.element_type - b.element.element_type)
+    const bench = [ ...gk.slice(MIN_GK), ...rest.slice(4) ].sort((a, b) => a.element.element_type - b.element.element_type)
 
     return (
         <Widget
