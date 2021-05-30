@@ -76,6 +76,8 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                 }
             }
 
+            const points = gw.live.elements.find(el => el.id === item.element)?.stats.total_points || null
+
             stats[item.element] = {
                 ...stats[item.element],
                 data: [
@@ -83,8 +85,8 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                     {
                         event: bootstrap.events.find(event => event.id === gw.pick.entry_history.event)!,
                         multiplier: item.multiplier,
-                        points: (gw.live.elements.find(el => el.id === item.element)?.stats.total_points || 0) * item.multiplier,
-                        rawPoints: (gw.live.elements.find(el => el.id === item.element)?.stats.total_points || 0),
+                        points: points !== null ? points * item.multiplier : points,
+                        rawPoints: points,
                         stats: gw.live.elements.find(el => el.id === item.element)?.stats || null,
                     }
                 ]
