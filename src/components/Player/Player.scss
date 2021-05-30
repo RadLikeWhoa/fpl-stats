@@ -8,11 +8,13 @@
 
     &--condensed {
         flex-direction: row-reverse;
+        width: auto;
         padding: 0.5rem 0;
 
         .player__detail {
             display: flex;
             justify-content: flex-end;
+            width: auto;
             margin-right: 0.5em;
         }
 

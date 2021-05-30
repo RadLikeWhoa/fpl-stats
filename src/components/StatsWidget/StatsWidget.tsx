@@ -71,6 +71,12 @@ const StatsWidget: React.FC = () => {
         captaincies: player.data.filter(data => data.multiplier && data.multiplier > 1).length,
     })).sort((a, b) => b.captaincies - a.captaincies)[0]
 
+    const topReturner = allPlayers.map(player => ({
+        ...player,
+        data: [ ...player.data ].sort((a, b) => (b.points || 0) - (a.points || 0)),
+    }))
+    .sort((a, b) => (b.data[0].points || 0) - (a.data[0].points || 0))[0]
+
     return (
         <Widget
             title="Stats"
@@ -97,17 +103,42 @@ const StatsWidget: React.FC = () => {
                 <li className="widget__list__item">
                     <span>Best Gameweek</span>
                     <span>
-                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${bestGW.event}`} target="_blank" rel="noopener noreferrer">
+                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${bestGW.event}/`} target="_blank" rel="noopener noreferrer">
                             GW {bestGW.event}
-                        </a> ({bestGW.points} pts)
+                        </a>
+                        {' '}
+                        ({bestGW.points} pts)
                     </span>
                 </li>
                 <li className="widget__list__item">
                     <span>Worst Gameweek</span>
                     <span>
-                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${worstGW.event}`} target="_blank" rel="noopener noreferrer">
+                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${worstGW.event}/`} target="_blank" rel="noopener noreferrer">
                             GW {worstGW.event}
-                        </a> ({worstGW.points} pts)
+                        </a>
+                        {' '}
+                        ({worstGW.points} pts)
+                    </span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Top Returner</span>
+                    <span>
+                        <Player
+                            id={topReturner.element.id}
+                            suffix={() => (
+                                <>
+                                    {' '}
+                                    (
+                                        {topReturner.data[0].points} pts,
+                                        {' '}
+                                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${topReturner.data[0].event.id}/`} target="_blank" rel="noopener noreferrer">
+                                            GW {topReturner.data[0].event.id}
+                                        </a>
+                                    )
+                                </>
+                            )}
+                            condensed
+                        />
                     </span>
                 </li>
                 {reds.red_cards > 0 && (

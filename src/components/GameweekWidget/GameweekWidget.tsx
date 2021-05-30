@@ -56,17 +56,25 @@ const GameweekWidget: React.FC = () => {
                 <li className="widget__list__item">
                     <span>Best GW Rank</span>
                     <span>
-                        {thousandsSeparator(sortedRanks[0].rank)} (<a href={`https://fantasy.premierleague.com/entry/${id}/event/${sortedRanks[0].event}`} target="_blank" rel="noopener noreferrer">
-                            GW {sortedRanks[0].event}
-                        </a>)
+                        {thousandsSeparator(sortedRanks[0].rank)}
+                        {' '}
+                        (
+                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${sortedRanks[0].event}/`} target="_blank" rel="noopener noreferrer">
+                                GW {sortedRanks[0].event}
+                            </a>
+                        )
                     </span>
                 </li>
                 <li className="widget__list__item">
                     <span>Worst GW Rank</span>
                     <span>
-                        {thousandsSeparator(sortedRanks[sortedRanks.length - 1].rank)} (<a href={`https://fantasy.premierleague.com/entry/${id}/event/${sortedRanks[sortedRanks.length - 1].event}`} target="_blank" rel="noopener noreferrer">
-                            GW {sortedRanks[sortedRanks.length - 1].event}
-                        </a>)
+                        {thousandsSeparator(sortedRanks[sortedRanks.length - 1].rank)}
+                        {' '}
+                        (
+                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${sortedRanks[sortedRanks.length - 1].event}/`} target="_blank" rel="noopener noreferrer">
+                                GW {sortedRanks[sortedRanks.length - 1].event}
+                            </a>
+                        )
                     </span>
                 </li>
             </ul>
