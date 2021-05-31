@@ -54,6 +54,22 @@ const PlayerStatsWidget: React.FC = () => {
         }))
         .sort((a, b) => (b.data[0].points || 0) - (a.data[0].points || 0))[0]
 
+    const topBenchGWReturner = allPlayers
+        .map(player => ({
+            ...player,
+            data: [ ...player.data ].filter(data => data.multiplier === 0).sort((a, b) => (b.rawPoints || 0) - (a.rawPoints || 0)),
+        }))
+        .filter(player => player.data.length)
+        .sort((a, b) => (b.data[0].rawPoints || 0) - (a.data[0].rawPoints || 0))[0]
+
+    console.log(allPlayers
+        .map(player => ({
+            ...player,
+            data: [ ...player.data ].filter(data => data.multiplier === 0).sort((a, b) => (b.rawPoints || 0) - (a.rawPoints || 0)),
+        }))
+        .filter(player => player.data.length)
+        .sort((a, b) => (b.data[0].rawPoints || 0) - (a.data[0].rawPoints || 0)))
+
     const topSeasonReturner = allPlayers.sort((a, b) => getTotalPoints(b) - getTotalPoints(a))[0]
     const topBenchReturner = allPlayers.sort((a, b) => getTotalBenchPoints(b) - getTotalBenchPoints(a))[0]
 
@@ -106,6 +122,29 @@ const PlayerStatsWidget: React.FC = () => {
                         />
                     </span>
                 </li>
+                {topBenchGWReturner.data[0].multiplier === 0 && (
+                    <li className="widget__list__item">
+                        <span>Top GW Bench Returner</span>
+                        <span>
+                            <Player
+                                id={topBenchGWReturner.element.id}
+                                suffix={() => (
+                                    <>
+                                        {' '}
+                                        (
+                                            {topBenchGWReturner.data[0].rawPoints} pts,
+                                            {' '}
+                                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${topBenchGWReturner.data[0].event.id}/`} target="_blank" rel="noopener noreferrer">
+                                                GW {topBenchGWReturner.data[0].event.id}
+                                            </a>
+                                        )
+                                    </>
+                                )}
+                                condensed
+                            />
+                        </span>
+                    </li>
+                )}
                 <li className="widget__list__item">
                     <span>Most Points While Benched</span>
                     <Player
