@@ -5,6 +5,7 @@ import { Team } from '../Team'
 import { Widget } from '../Widget'
 import { getAllPlayers, getTotalPoints, round, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
+import './TeamsWidget.scss'
 
 const TeamsWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
@@ -40,17 +41,24 @@ const TeamsWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item" key={team.id}>
                             <Team team={team} />
-                            <span>
-                                {counts[team.id] || 0}
-                                {' '}
-                                (
-                                    {Object.values(positions).join('-')},
+                            <div>
+                                <div>
+                                    <b>{counts[team.id] || 0}</b>
                                     {' '}
-                                    {points} pts, {players.length ? round(points / players.length) : 0}
-                                    {' '}
-                                    <Metric metric="ppp" />
-                                )
-                            </span>
+                                    (
+                                        {points} pts, {players.length ? round(points / players.length) : 0}
+                                        {' '}
+                                        <Metric metric="ppp" />
+                                    )
+                                </div>
+                                <div>
+                                    {Object.entries(positions).map(([ type, count ]) => (
+                                        <span className="teams-widget__position" key={type}>
+                                            {count} {bootstrap.element_types.find(el => el.id === Number(type))?.plural_name_short}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
                         </li>
                     )
                 })}

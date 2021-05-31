@@ -1,0 +1,13 @@
+.teams-widget {
+    &__position {
+        position: relative;
+
+        &::after {
+            content: ", ";
+        }
+
+        &:last-child::after {
+            content: none;
+        }
+    }
+}
