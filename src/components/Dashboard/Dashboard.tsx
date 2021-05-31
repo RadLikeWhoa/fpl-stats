@@ -28,6 +28,10 @@ import { Metric } from '../Metric'
 import { SeasonWidget } from '../SeasonWidget';
 import { TeamsWidget } from '../TeamsWidget'
 import './Dashboard.scss'
+import { NonBlankStreakWidget } from '../NonBlankStreakWidget'
+import { SelectionStreakWidget } from '../SelectionStreakWidget'
+import { StartStreakWidget } from '../StartStreakWidget';
+import { BenchStreakWidget } from '../BenchStreakWidget';
 
 type OptionType = {
     value: string
@@ -484,6 +488,10 @@ const Dashboard: React.FC = () => {
                     <CaptainWidget />
                     <GameweekWidget />
                     <SeasonWidget />
+                    <NonBlankStreakWidget />
+                    <SelectionStreakWidget />
+                    <StartStreakWidget />
+                    <BenchStreakWidget />
                 </div>
                 <div className="dashboard__graphs">
                     <Widget

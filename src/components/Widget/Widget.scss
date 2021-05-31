@@ -1,3 +1,5 @@
+@import "../../styles/mixins";
+
 .widget {
     position: relative;
     margin-bottom: 2.125rem;
@@ -24,6 +26,12 @@
             justify-content: space-between;
             padding: 0.5rem;
             border-bottom: 1px solid rgb(239, 239, 239);
+
+            > :last-child:not(:only-child) {
+                @include at-least("M") {
+                    text-align: right;
+                }
+            }
 
             .player {
                 margin: -0.5rem 0 -0.5rem -0.5rem;

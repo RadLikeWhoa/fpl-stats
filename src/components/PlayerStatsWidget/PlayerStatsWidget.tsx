@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getSelectionStreak, getStartStreak, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator, getBenchStreak } from '../../utilities'
+import { getAllPlayers, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
@@ -56,10 +56,6 @@ const PlayerStatsWidget: React.FC = () => {
 
     const topSeasonReturner = allPlayers.sort((a, b) => getTotalPoints(b) - getTotalPoints(a))[0]
     const topBenchReturner = allPlayers.sort((a, b) => getTotalBenchPoints(b) - getTotalBenchPoints(a))[0]
-
-    const topSelectionStreak = allPlayers.sort((a, b) => getSelectionStreak(b) - getSelectionStreak(a))[0]
-    const topStartStreak = allPlayers.sort((a, b) => getStartStreak(b) - getStartStreak(a))[0]
-    const topBenchStreak = allPlayers.sort((a, b) => getBenchStreak(b) - getBenchStreak(a))[0]
 
     return (
         <Widget
@@ -219,18 +215,6 @@ const PlayerStatsWidget: React.FC = () => {
                         <Player id={mostCaptaincies.player.element.id} suffix={`${mostCaptaincies.captaincies}`} condensed />
                     </li>
                 )}
-                <li className="widget__list__item">
-                    <span>Highest Selection Streak</span>
-                    <Player id={topSelectionStreak.element.id} suffix={`${getSelectionStreak(topSelectionStreak)}`} condensed />
-                </li>
-                <li className="widget__list__item">
-                    <span>Highest Start Streak</span>
-                    <Player id={topStartStreak.element.id} suffix={`${getStartStreak(topStartStreak)}`} condensed />
-                </li>
-                <li className="widget__list__item">
-                    <span>Highest Bench Streak</span>
-                    <Player id={topBenchStreak.element.id} suffix={`${getBenchStreak(topBenchStreak)}`} condensed />
-                </li>
             </ul>
         </Widget>
     )

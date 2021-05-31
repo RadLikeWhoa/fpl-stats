@@ -1,15 +1,7 @@
 import { Element } from './element'
-import { ElementStats } from './element-stats'
-import { Event } from './event'
+import { StatDataGameweek } from './stat-data-gameweek'
 
 export type StatData = {
     element: Element
-    data: {
-        event: Event
-        multiplier: number | null
-        points: number | null
-        rawPoints: number | null
-        stats: ElementStats | null
-        position: number | null
-    }[]
+    data: StatDataGameweek[]
 }

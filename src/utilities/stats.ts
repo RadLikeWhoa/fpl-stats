@@ -1,4 +1,12 @@
-import { ElementStats, StatData, Stats } from '../types'
+import { ElementStats, Event, StatData, Stats, StatDataGameweek } from '../types'
+import { sumNumbers } from './numbers'
+
+type Streak = {
+    start: Event
+    end: Event
+    length: number
+    points?: number
+}
 
 export const getTotalSelections = (statData: StatData): number => {
     return statData.data.filter(pick => pick.multiplier !== null).length
@@ -41,26 +49,48 @@ export const aggregateStats = (players: StatData[], key: keyof ElementStats) => 
 
 export const getTopStatAggregate = (players: StatData[], key: keyof ElementStats) => aggregateStats(players, key)[0]
 
-export const getSelectionStreak = (statData: StatData): number => Math.max(...statData.data.reduce((acc, curr) => {
-    if (curr.multiplier != null) {
-        return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
+const getStreak = (statData: StatData, comparison: (gw: StatDataGameweek) => boolean, ignoreBlanks: boolean = false): Streak | null => {
+    const streaks = statData.data.reduce((acc, curr) => {
+        if (comparison(curr)) {
+            if (ignoreBlanks) {
+                return [ ...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1 ]
+            }
+
+            if (!acc.length || acc[acc.length - 1] === 0) {
+                return [ ...acc, 1 ]
+            }
+
+            return [ ...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1 ]
+        }
+
+        return [ ...acc, 0 ]
+    }, (ignoreBlanks ? [ 0 ] : []) as number[])
+
+    const max = Math.max(...streaks)
+
+    if (max === 0) {
+        return null
     }
 
-    return [...acc, 0]
-}, [0]))
+    const start = statData.data[sumNumbers(streaks.slice(0, streaks.indexOf(max)).map(streak => streak > 0 ? streak : 1))].event
+    const end = statData.data[start.id - 2 + max].event
 
-export const getStartStreak = (statData: StatData): number => Math.max(...statData.data.reduce((acc, curr) => {
-    if ((curr.multiplier || 0) > 0) {
-        return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
+    const points = sumNumbers(statData.data
+        .slice(start.id - 1, start.id - 1 + max)
+        .map(event => event.points || 0))
+
+    return {
+        start,
+        end,
+        length: max,
+        points,
     }
+}
 
-    return [...acc, 0]
-}, [0]))
+export const getSelectionStreak = (statData: StatData): Streak | null => getStreak(statData, (gw) => gw.multiplier !== null, true)
 
-export const getBenchStreak = (statData: StatData): number => Math.max(...statData.data.reduce((acc, curr) => {
-    if (curr.multiplier === 0) {
-        return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
-    }
+export const getStartStreak = (statData: StatData): Streak | null => getStreak(statData, (gw) => (gw.multiplier || 0) > 0, true)
 
-    return [...acc, 0]
-}, [0]))
+export const getBenchStreak = (statData: StatData): Streak | null => getStreak(statData, (gw) => gw.multiplier === 0, true)
+
+export const getNonBlankStreak = (statData: StatData): Streak | null => getStreak(statData, (gw) => (gw.rawPoints || 0) > 2)
