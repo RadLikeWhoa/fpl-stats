@@ -1,12 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { ElementStats } from '../../types'
-import { getAllPlayers, thousandsSeparator } from '../../utilities'
+import { getAllPlayers, getTopStatAggregate, getTotalPoints, getTotalStarts, thousandsSeparator } from '../../utilities'
+import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
-const StatsWidget: React.FC = () => {
+const PlayerStatsWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
     const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
@@ -18,7 +18,7 @@ const StatsWidget: React.FC = () => {
     if (!history || !stats) {
         return (
             <Widget
-                title="Stats"
+                title="Player Stats"
                 loading={isLoadingHistory || isLoadingStats}
                 cloaked={!id}
             />
@@ -27,76 +27,44 @@ const StatsWidget: React.FC = () => {
 
     const allPlayers = getAllPlayers(stats)
 
-    const aggregateStats = (key: keyof ElementStats) => allPlayers.map(player => ({
-        player,
-        [key]: player.data.reduce((acc, data) => {
-            if (typeof data.stats?.[key] === 'number') {
-                return ((data.stats?.[key] as number) || 0) + acc
-            }
-
-            if (typeof data.stats?.[key] === 'boolean') {
-                return (+(data.stats?.[key] as boolean) || 0) + acc
-            }
-
-            return acc
-        }, 0)
-    })).sort((a, b) => (b[key] as number) - (a[key] as number))[0]
-
-    const reds = aggregateStats('red_cards')
-    const yellows = aggregateStats('yellow_cards')
-    const goals = aggregateStats('goals_scored')
-    const assists = aggregateStats('assists')
-    const cleanSheets = aggregateStats('clean_sheets')
-    const goalsConceded = aggregateStats('goals_conceded')
-    const ownGoals = aggregateStats('own_goals')
-    const saves = aggregateStats('saves')
-    const minutes = aggregateStats('minutes')
-    const penaltiesMissed = aggregateStats('penalties_missed')
-    const penaltiesSaved = aggregateStats('penalties_saved')
-    const inDreamteam = aggregateStats('in_dreamteam')
-    const bps = aggregateStats('bps')
-    const bonus = aggregateStats('bonus')
-
-    const totalTransfers = history.current.reduce((acc,event) => acc + event.event_transfers, 0)
-    const totalHits = history.current.reduce((acc,event) => acc + event.event_transfers_cost / 4, 0)
-    const totalBenched = history.current.reduce((acc,event) => acc + event.points_on_bench, 0)
+    const reds = getTopStatAggregate(allPlayers, 'red_cards')
+    const yellows = getTopStatAggregate(allPlayers, 'yellow_cards')
+    const goals = getTopStatAggregate(allPlayers, 'goals_scored')
+    const assists = getTopStatAggregate(allPlayers, 'assists')
+    const cleanSheets = getTopStatAggregate(allPlayers, 'clean_sheets')
+    const goalsConceded = getTopStatAggregate(allPlayers, 'goals_conceded')
+    const ownGoals = getTopStatAggregate(allPlayers, 'own_goals')
+    const saves = getTopStatAggregate(allPlayers, 'saves')
+    const minutes = getTopStatAggregate(allPlayers, 'minutes')
+    const penaltiesMissed = getTopStatAggregate(allPlayers, 'penalties_missed')
+    const penaltiesSaved = getTopStatAggregate(allPlayers, 'penalties_saved')
+    const inDreamteam = getTopStatAggregate(allPlayers, 'in_dreamteam')
+    const bps = getTopStatAggregate(allPlayers, 'bps')
+    const bonus = getTopStatAggregate(allPlayers, 'bonus')
 
     const mostCaptaincies = allPlayers.map(player => ({
         player,
         captaincies: player.data.filter(data => data.multiplier && data.multiplier > 1).length,
     })).sort((a, b) => b.captaincies - a.captaincies)[0]
 
-    const topReturner = allPlayers.map(player => ({
-        ...player,
-        data: [ ...player.data ].sort((a, b) => (b.points || 0) - (a.points || 0)),
-    }))
-    .sort((a, b) => (b.data[0].points || 0) - (a.data[0].points || 0))[0]
+    const topReturner = allPlayers
+        .map(player => ({
+            ...player,
+            data: [ ...player.data ].sort((a, b) => (b.points || 0) - (a.points || 0)),
+        }))
+        .sort((a, b) => (b.data[0].points || 0) - (a.data[0].points || 0))[0]
+
+    const topSeasonReturner = allPlayers.sort((a, b) => getTotalPoints(b) - getTotalPoints(a))[0]
 
     return (
         <Widget
-            title="Stats"
+            title="Player Stats"
             loading={isLoadingHistory || isLoadingStats}
             cloaked={!id}
         >
             <ul className="widget__list">
                 <li className="widget__list__item">
-                    <span>Total Transfers Made</span>
-                    <span>
-                        <a href={`https://fantasy.premierleague.com/entry/${id}/transfers`} target="_blank" rel="noopener noreferrer">
-                            {totalTransfers}
-                        </a>
-                    </span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Hits Taken</span>
-                    <span>{totalHits} ({totalHits * -4} pts)</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Points on Bench</span>
-                    <span>{totalBenched} pts</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Top Returner</span>
+                    <span>Top GW Returner</span>
                     <span>
                         <Player
                             id={topReturner.element.id}
@@ -109,6 +77,27 @@ const StatsWidget: React.FC = () => {
                                         <a href={`https://fantasy.premierleague.com/entry/${id}/event/${topReturner.data[0].event.id}/`} target="_blank" rel="noopener noreferrer">
                                             GW {topReturner.data[0].event.id}
                                         </a>
+                                    )
+                                </>
+                            )}
+                            condensed
+                        />
+                    </span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Top Season Returner</span>
+                    <span>
+                        <Player
+                            id={topSeasonReturner.element.id}
+                            suffix={() => (
+                                <>
+                                    {' '}
+                                    (
+                                        {getTotalPoints(topSeasonReturner)} pts,
+                                        {' '}
+                                        {(getTotalPoints(topSeasonReturner) / getTotalStarts(topSeasonReturner)).toFixed(1)}
+                                        {' '}
+                                        <Metric metric="ppg" />
                                     )
                                 </>
                             )}
@@ -211,4 +200,4 @@ const StatsWidget: React.FC = () => {
     )
 }
 
-export default StatsWidget
+export default PlayerStatsWidget

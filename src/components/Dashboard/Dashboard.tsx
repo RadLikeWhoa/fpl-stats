@@ -5,7 +5,6 @@ import { fetchBootstrap } from '../../reducers/bootstrap'
 import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
-import { Team } from '../Team'
 import { Spinner } from '../Spinner'
 import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, thousandsShorthand, getTotalPoints } from '../../utilities'
 import { Modal } from '../Modal'
@@ -19,13 +18,15 @@ import Select, { ValueType } from 'react-select'
 import queryString from 'query-string'
 import { HistoryWidget } from '../HistoryWidget'
 import { TotsWidget } from '../TotsWidget'
-import { StatsWidget } from '../StatsWidget'
+import { PlayerStatsWidget } from '../PlayerStatsWidget'
 import { FormationWidget } from '../FormationWidget'
 import { CaptainWidget } from '../CaptainWidget'
 import { GameweekWidget } from '../GameweekWidget'
 import { PositionsWidget } from '../PositionsWidget'
 import { fetchEntry } from '../../reducers/entry'
 import { Metric } from '../Metric'
+import { SeasonWidget } from '../SeasonWidget';
+import { TeamsWidget } from '../TeamsWidget'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -145,25 +146,6 @@ const renderDifferenceWidget = (stats: Stats, top: boolean = false): JSX.Element
                 <li className="widget__list__item">
                     <Player id={element.element.id} />
                     <span>{element.benchedPercentage.toFixed(1)}% ({element.benched})</span>
-                </li>
-            ))}
-        </ul>
-    )
-}
-
-const renderTeamsWidget = (stats: Stats, bootstrap: Bootstrap): JSX.Element => {
-    const counts = Object.values(stats)
-        .reduce((acc: number[], curr) => [ ...acc, ...curr.map(el => el.element.team) ], [])
-        .reduce((acc: { [key: number]: number }, curr) => ({ ...acc, [curr]: (acc[Number(curr)] || 0) + 1 }), {})
-
-    const teams = [ ...bootstrap.teams ].sort((a, b) => (counts[b.id] || 0) - (counts[a.id] || 0))
-
-    return (
-        <ul className="widget__list">
-            {teams.map(team => (
-                <li className="widget__list__item">
-                    <Team team={team} />
-                    <span>{counts[team.id] || 0}</span>
                 </li>
             ))}
         </ul>
@@ -338,7 +320,7 @@ const Dashboard: React.FC = () => {
                 )}
                 <div className="dashboard__widgets dashboard__widgets--split">
                     <TotsWidget />
-                    <StatsWidget />
+                    <PlayerStatsWidget />
                 </div>
                 <div className="app__meta">
                     <label className="app__meta__label">
@@ -495,18 +477,13 @@ const Dashboard: React.FC = () => {
                     >
                         {stats && renderDifferenceWidget(stats)}
                     </Widget>
-                    <Widget
-                        title="Breakdown by Team"
-                        loading={isLoadingStats}
-                        cloaked={!id}
-                    >
-                        {stats && bootstrap && renderTeamsWidget(stats, bootstrap)}
-                    </Widget>
+                    <TeamsWidget />
                     <PositionsWidget />
                     <HistoryWidget />
                     <FormationWidget />
                     <CaptainWidget />
                     <GameweekWidget />
+                    <SeasonWidget />
                 </div>
                 <div className="dashboard__graphs">
                     <Widget
