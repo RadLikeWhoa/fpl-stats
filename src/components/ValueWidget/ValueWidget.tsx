@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getShortName } from '../../utilities'
+import { getShortName, initialCaps } from '../../utilities'
 
 const ValueWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
@@ -33,7 +33,7 @@ const ValueWidget: React.FC = () => {
                         <YAxis tickFormatter={value => `£${value / 10}`} domain={[ 'auto', 'auto' ]} interval="preserveStartEnd" />
                         <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
                         <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
-                        <Tooltip isAnimationActive={false} formatter={(value, name) => [ `£${Number(value) / 10}`, name.charAt(0).toUpperCase() + name.slice(1) ]} separator=": " />
+                        <Tooltip isAnimationActive={false} formatter={(value, name) => [ `£${Number(value) / 10}`, initialCaps(name) ]} separator=": " />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>

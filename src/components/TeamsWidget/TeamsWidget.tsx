@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Team } from '../Team'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalPoints, round, sumNumbers } from '../../utilities'
+import { getAllPlayers, getTotalPoints, initialCaps, round, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 import './TeamsWidget.scss'
 
@@ -52,9 +52,9 @@ const TeamsWidget: React.FC = () => {
                                     )
                                 </div>
                                 <div>
-                                    {Object.entries(positions).map(([ type, count ]) => (
+                                    {Object.entries(positions).filter(([ type, count ]) => count > 0).map(([ type, count ]) => (
                                         <span className="teams-widget__position" key={type}>
-                                            {count} {bootstrap.element_types.find(el => el.id === Number(type))?.plural_name_short}
+                                            {count} {initialCaps(bootstrap.element_types.find(el => el.id === Number(type))?.plural_name_short || '')}
                                         </span>
                                     ))}
                                 </div>
