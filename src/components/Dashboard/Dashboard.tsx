@@ -457,7 +457,7 @@ const Dashboard: React.FC = () => {
                         {stats && renderStartersWidget(stats)}
                     </Widget>
                     <Widget
-                        title="Top Benchwarmers"
+                        title="Top Bench Players"
                         loading={isLoadingStats}
                         cloaked={!id}
                     >
@@ -471,7 +471,7 @@ const Dashboard: React.FC = () => {
                         {stats && renderDifferenceWidget(stats, true)}
                     </Widget>
                     <Widget
-                        title="Most Consistent Benchwarmers"
+                        title="Most Consistent Bench Players"
                         loading={isLoadingStats}
                         cloaked={!id}
                     >
