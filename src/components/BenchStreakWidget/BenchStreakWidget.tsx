@@ -8,18 +8,13 @@ import { Widget } from '../Widget'
 const MAX_ITEMS = 10
 
 const BenchStreakWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
-
     const id = useSelector((state: RootState) => state.settings.id)
+
+    const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
         return (
-            <Widget
-                title="Highest Bench Appearance Streaks"
-                loading={isLoadingStats}
-                cloaked={!id}
-            />
+            <Widget title="Highest Bench Appearance Streaks" />
         )
     }
 
@@ -28,11 +23,7 @@ const BenchStreakWidget: React.FC = () => {
     const streakers = allPlayers.sort((a, b) => (getBenchStreak(b)?.length || 0) - (getBenchStreak(a)?.length || 0)).slice(0, MAX_ITEMS)
 
     return (
-        <Widget
-            title="Highest Bench Appearance Streaks"
-            loading={isLoadingStats}
-            cloaked={!id}
-        >
+        <Widget title="Highest Bench Appearance Streaks">
             <ul className="widget__list">
                 {streakers.map(streaker => {
                     const streak = getBenchStreak(streaker)

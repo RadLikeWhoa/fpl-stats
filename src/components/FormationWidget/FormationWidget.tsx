@@ -13,21 +13,13 @@ type FormationInformation = {
 const formatFormation = (formation: string) => sumNumbers(formation.split('-').map(position => Number(position))) > 10 ? 'Bench Boost' : formation
 
 const FormationWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
     if (!stats || !history) {
         return (
-            <Widget
-                title="Formations"
-                loading={isLoadingStats || isLoadingHistory}
-                cloaked={!id}
-            />
+            <Widget title="Formations" />
         )
     }
 
@@ -73,11 +65,7 @@ const FormationWidget: React.FC = () => {
         }, {} as Record<string, FormationInformation>)
 
     return (
-        <Widget
-            title="Formations"
-            loading={isLoadingStats || isLoadingHistory}
-            cloaked={!id}
-        >
+        <Widget title="Formations">
             <ul className="widget__list">
                 {Object.entries(data).sort((a, b) => b[1].count - a[1].count).map(([ formation, information ]) => {
                     return (

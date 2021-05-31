@@ -9,18 +9,13 @@ import { Widget } from '../Widget'
 const MAX_ITEMS = 10
 
 const NonBlankStreakWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
-
     const id = useSelector((state: RootState) => state.settings.id)
+
+    const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
         return (
-            <Widget
-                title="Highest Non-Blank Streaks"
-                loading={isLoadingStats}
-                cloaked={!id}
-            />
+            <Widget title="Highest Non-Blank Streaks" />
         )
     }
 
@@ -41,11 +36,7 @@ const NonBlankStreakWidget: React.FC = () => {
     }).slice(0, MAX_ITEMS)
 
     return (
-        <Widget
-            title="Highest Non-Blank Streaks"
-            loading={isLoadingStats}
-            cloaked={!id}
-        >
+        <Widget title="Highest Non-Blank Streaks">
             <ul className="widget__list">
                 {streakers.map(streaker => {
                     const streak = getNonBlankStreak(streaker)

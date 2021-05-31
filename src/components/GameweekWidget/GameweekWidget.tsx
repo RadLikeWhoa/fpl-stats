@@ -9,21 +9,14 @@ const GameweekWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
 
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
-
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
-    const isLoadingBootstrap = useSelector((state: RootState) => state.bootstrap.loading)
 
     const meanLabel = useMeanLabel()
     const meanValue = useMeanValue()
 
     if (!history || !bootstrap) {
         return (
-            <Widget
-                title="Gameweeks"
-                loading={isLoadingHistory || isLoadingBootstrap}
-                cloaked={!id}
-            />
+            <Widget title="Gameweeks" />
         )
     }
 
@@ -36,11 +29,7 @@ const GameweekWidget: React.FC = () => {
     const worstGW = gws[gws.length - 1]
 
     return (
-        <Widget
-            title="Gameweeks"
-            loading={isLoadingHistory || isLoadingBootstrap}
-            cloaked={!id}
-        >
+        <Widget title="Gameweeks">
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>{meanLabel('Difference to GW Average')}</span>

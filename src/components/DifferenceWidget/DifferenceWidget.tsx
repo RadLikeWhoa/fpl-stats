@@ -11,18 +11,11 @@ type Props = {
 }
 
 const DifferenceWidget: React.FC<Props> = (props: Props) => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     if (!stats) {
         return (
-            <Widget
-                title={props.title}
-                loading={isLoadingStats}
-                cloaked={!id}
-            />
+            <Widget title={props.title} />
         )
     }
 
@@ -52,11 +45,7 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
     })
 
     return (
-        <Widget
-            title={props.title}
-            loading={isLoadingStats}
-            cloaked={!id}
-        >
+        <Widget title={props.title}>
             <ul className="widget__list">
                 {props.top && topStarters.slice(0, 5).map(element => (
                     <li className="widget__list__item" key={element.element.id}>

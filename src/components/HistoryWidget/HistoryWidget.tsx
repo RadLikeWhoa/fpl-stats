@@ -6,21 +6,14 @@ import { Widget } from '../Widget'
 import { useMeanValue, useMeanLabel } from '../../hooks'
 
 const HistoryWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
     const meanLabel = useMeanLabel()
     const meanValue = useMeanValue()
 
     if (!history) {
         return (
-            <Widget
-                title="Historical Data"
-                loading={isLoadingHistory}
-                cloaked={!id}
-            ></Widget>
+            <Widget title="Historical Data" />
         )
     }
 
@@ -39,11 +32,7 @@ const HistoryWidget: React.FC = () => {
     const top1m = pastSeasonsByRank.filter(season => season.rank <= 1000000).length
 
     return (
-        <Widget
-            title="Historical Data"
-            loading={isLoadingHistory}
-            cloaked={!id}
-        >
+        <Widget title="Historical Data">
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>Best Season Rank</span>

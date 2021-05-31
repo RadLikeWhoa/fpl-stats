@@ -7,18 +7,11 @@ import { Widget } from '../Widget'
 import { Metric } from '../Metric';
 
 const CaptainWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     if (!stats) {
         return (
-            <Widget
-                title="Captains"
-                loading={isLoadingStats}
-                cloaked={!id}
-            />
+            <Widget title="Captains" />
         )
     }
 
@@ -36,11 +29,7 @@ const CaptainWidget: React.FC = () => {
         .sort((a, b) => b.data.length - a.data.length)
 
     return (
-        <Widget
-            title="Captains"
-            loading={isLoadingStats}
-            cloaked={!id}
-        >
+        <Widget title="Captains">
             <ul className="widget__list">
                 {captains.map(captain => {
                     const sum = sumNumbers(captain.data.map(data => data.points || 0))

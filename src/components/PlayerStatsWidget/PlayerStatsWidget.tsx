@@ -7,21 +7,14 @@ import { Player } from '../Player'
 import { Widget } from '../Widget'
 
 const PlayerStatsWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
-
     const id = useSelector((state: RootState) => state.settings.id)
 
+    const stats = useSelector((state: RootState) => state.stats.data)
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
     if (!history || !stats) {
         return (
-            <Widget
-                title="Player Stats"
-                loading={isLoadingHistory || isLoadingStats}
-                cloaked={!id}
-            />
+            <Widget title="Player Stats" />
         )
     }
 
@@ -66,11 +59,7 @@ const PlayerStatsWidget: React.FC = () => {
     const topBenchReturner = allPlayers.sort((a, b) => getTotalBenchPoints(b) - getTotalBenchPoints(a))[0]
 
     return (
-        <Widget
-            title="Player Stats"
-            loading={isLoadingHistory || isLoadingStats}
-            cloaked={!id}
-        >
+        <Widget title="Player Stats">
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>Top GW Returner</span>

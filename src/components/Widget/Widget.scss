@@ -60,22 +60,6 @@
         background: rgba(0, 0, 0, 0) linear-gradient(to right, rgb(235, 255, 0), rgb(0, 255, 135)) repeat scroll 0% 0%;
     }
 
-    &__loading {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .spinner__item {
-            background-color: #333;
-        }
-    }
-
     &__content {
         position: relative;
         min-height: 10rem;

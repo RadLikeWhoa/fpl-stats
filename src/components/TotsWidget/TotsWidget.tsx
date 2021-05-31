@@ -19,18 +19,11 @@ const MIN_FWD = 1
 const MAX_FWD = 3
 
 const TotsWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     if (!stats) {
         return (
-            <Widget
-                title="Team of the Season"
-                loading={isLoadingStats}
-                cloaked={!id}
-            ></Widget>
+            <Widget title="Team of the Season" />
         )
     }
 
@@ -46,11 +39,7 @@ const TotsWidget: React.FC = () => {
     const bench = [ ...gk.slice(MIN_GK), ...rest.slice(4) ].sort((a, b) => a.element.element_type - b.element.element_type)
 
     return (
-        <Widget
-            title="Team of the Season"
-            loading={isLoadingStats}
-            cloaked={!id}
-        >
+        <Widget title="Team of the Season">
             <div className="tots">
                 <div className="tots__row">
                     {xi.filter(el => el.element.element_type === 1).map(player => (

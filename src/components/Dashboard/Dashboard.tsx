@@ -119,12 +119,12 @@ const Dashboard: React.FC = () => {
     const [ isModalOpen, setIsModalOpen ] = useState(true)
     const [ sort, setSort ] = useState<ValueType<OptionType>>(sortOptions[0])
 
+    const isLoading = useSelector((state: RootState) => state.loading > 0)
+
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
-    const isLoadingBootstrap = useSelector((state: RootState) => state.bootstrap.loading)
 
     const stats = useSelector((state: RootState) => state.stats.data)
     const chips = useSelector((state: RootState) => state.stats.chips)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     const id = useSelector((state: RootState) => state.settings.id)
 
@@ -170,7 +170,7 @@ const Dashboard: React.FC = () => {
                 <Modal onClose={() => setIsModalOpen(false)} />
             )}
             <div className={classNames('app__loading', {
-                'app__loading--hidden': !isLoadingBootstrap,
+                'app__loading--hidden': !isLoading,
             })}>
                 <Spinner />
             </div>
@@ -232,11 +232,6 @@ const Dashboard: React.FC = () => {
                 <div className={classNames('dashboard', {
                     'dashboard--cloaked': !id,
                 })}>
-                    {isLoadingStats && (
-                        <div className="dashboard__loading">
-                            <Spinner />
-                        </div>
-                    )}
                     <div className="dashboard__container" ref={dashboardRef}>
                         <header className="dashboard__header">
                             <span className="dashboard__heading">

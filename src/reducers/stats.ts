@@ -1,24 +1,22 @@
 import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit'
 import { Bootstrap, Picks, Stats, StatData, LiveEvent } from '../types'
 import { getPastEvents } from '../utilities'
+import { finishLoading, startLoading } from './loading'
 
 const stats = createSlice({
     name: 'stats',
     initialState: {
-        loading: true,
         data: undefined,
         chips: undefined,
     },
     reducers: {
         buildDataStart(state) {
-            state.loading = true
             state.data = undefined
             state.chips = undefined
         },
         buildDataSuccess(state, action) {
             state.data = action.payload.data
             state.chips = action.payload.chips
-            state.loading = false
         },
     },
 })
@@ -49,6 +47,7 @@ const fetchGameweekInformation = async (event: number, entry: number): Promise<{
 
 export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void, Bootstrap, unknown, Action<string>> => async dispatch => {
     dispatch(buildDataStart())
+    dispatch(startLoading())
 
     const gameweeks = await Promise.all(
         getPastEvents(bootstrap.events).map(async event => await fetchGameweekInformation(event.id, entry))
@@ -127,6 +126,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
         }), {}),
         chips,
     }))
+    dispatch(finishLoading())
 }
 
 export default stats.reducer

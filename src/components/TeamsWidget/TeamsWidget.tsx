@@ -7,21 +7,12 @@ import { getAllPlayers, getTotalPoints, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 
 const TeamsWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
-
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
-    const isLoadingBootstrap = useSelector((state: RootState) => state.bootstrap.loading)
 
     if (!stats || !bootstrap) {
         return (
-            <Widget
-                title="Teams"
-                loading={isLoadingStats || isLoadingBootstrap}
-                cloaked={!id}
-            />
+            <Widget title="Teams" />
         )
     }
 
@@ -34,11 +25,7 @@ const TeamsWidget: React.FC = () => {
     const allPlayers = getAllPlayers(stats)
 
     return (
-        <Widget
-            title="Teams"
-            loading={isLoadingStats || isLoadingBootstrap}
-            cloaked={!id}
-        >
+        <Widget title="Teams">
             <ul className="widget__list">
                 {teams.map(team => {
                     const players = allPlayers.filter(player => player.element.team === team.id)

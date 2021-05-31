@@ -6,18 +6,11 @@ import { getAllPlayers, getTotalBenched } from '../../utilities'
 import { Player } from '../Player'
 
 const BenchWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     if (!stats) {
         return (
-            <Widget
-                title="Top Bench Players"
-                loading={isLoadingStats}
-                cloaked={!id}
-            />
+            <Widget title="Top Bench Players" />
         )
     }
 
@@ -25,11 +18,7 @@ const BenchWidget: React.FC = () => {
         .sort((a, b) => getTotalBenched(b) - getTotalBenched(a))
 
     return (
-        <Widget
-            title="Top Bench Players"
-            loading={isLoadingStats}
-            cloaked={!id}
-        >
+        <Widget title="Top Bench Players">
             <ul className="widget__list">
                 {elements.slice(0, 5).map(element => (
                     <li className="widget__list__item" key={element.element.id}>

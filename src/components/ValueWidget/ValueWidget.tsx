@@ -6,21 +6,12 @@ import { Widget } from '../Widget'
 import { getShortName } from '../../utilities'
 
 const ValueWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
-
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
-    const isLoadingBootstrap = useSelector((state: RootState) => state.bootstrap.loading)
 
     if (!history || !bootstrap) {
         return (
-            <Widget
-                title="Team Value Evolution"
-                loading={isLoadingHistory || isLoadingBootstrap}
-                cloaked={!id}
-            />
+            <Widget title="Team Value Evolution" />
         )
     }
 
@@ -34,11 +25,7 @@ const ValueWidget: React.FC = () => {
     })
 
     return (
-        <Widget
-            title="Team Value Evolution"
-            loading={isLoadingHistory || isLoadingBootstrap}
-            cloaked={!id}
-        >
+        <Widget title="Team Value Evolution">
             <div className="chart">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>

@@ -5,14 +5,14 @@ import settings from './settings'
 import entry from './entry'
 import { Bootstrap, Stats, History, Entry } from '../types'
 import history from './history'
+import loading from './loading'
 
 export type RootState = {
+    loading: number
     bootstrap: {
-        loading: boolean
         data: Bootstrap | undefined
     }
     stats: {
-        loading: boolean
         data: Stats | undefined
         chips: {
             [key: number]: string
@@ -23,16 +23,15 @@ export type RootState = {
         meanStrategy: 'average' | 'median'
     }
     history: {
-        loading: boolean
         data: History | undefined
     }
     entry: {
-        loading: boolean
         data: Entry | undefined
     }
 }
 
 export default combineReducers({
+    loading,
     bootstrap,
     stats,
     settings,

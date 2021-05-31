@@ -10,18 +10,12 @@ const SeasonWidget: React.FC = () => {
 
     const stats = useSelector((state: RootState) => state.stats.data)
     const chips = useSelector((state: RootState) => state.stats.chips)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
     if (!stats || !history || !chips) {
         return (
-            <Widget
-                title="Season"
-                loading={isLoadingStats || isLoadingHistory}
-                cloaked={!id}
-            />
+            <Widget title="Season" />
         )
     }
 
@@ -60,11 +54,7 @@ const SeasonWidget: React.FC = () => {
         : null
 
     return (
-        <Widget
-            title="Season"
-            loading={isLoadingStats || isLoadingHistory}
-            cloaked={!id}
-        >
+        <Widget title="Season">
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>Total Transfers Made</span>

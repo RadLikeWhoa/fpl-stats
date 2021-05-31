@@ -7,23 +7,14 @@ import { Widget } from '../Widget'
 import { Metric } from '../Metric';
 
 const PositionsWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
-
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
-    const isLoadingBootstrap = useSelector((state: RootState) => state.bootstrap.loading)
 
     const meanValue = useMeanValue()
 
     if (!stats || !bootstrap) {
         return (
-            <Widget
-                title="Positions"
-                loading={isLoadingStats || isLoadingBootstrap}
-                cloaked={!id}
-            />
+            <Widget title="Positions" />
         )
     }
 
@@ -34,11 +25,7 @@ const PositionsWidget: React.FC = () => {
         }), {})
 
     return (
-        <Widget
-            title="Positions"
-            loading={isLoadingStats || isLoadingBootstrap}
-            cloaked={!id}
-        >
+        <Widget title="Positions">
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>Total</span>

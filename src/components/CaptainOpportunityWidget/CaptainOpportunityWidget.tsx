@@ -11,18 +11,12 @@ const CaptainOpportunityWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
 
     const stats = useSelector((state: RootState) => state.stats.data)
-    const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
     if (!stats || !history) {
         return (
-            <Widget
-                title="Missed Captaincies"
-                loading={isLoadingStats || isLoadingHistory}
-                cloaked={!id}
-            />
+            <Widget title="Missed Captaincies" />
         )
     }
 
@@ -35,11 +29,7 @@ const CaptainOpportunityWidget: React.FC = () => {
     }))
 
     return (
-        <Widget
-            title="Missed Captaincies"
-            loading={isLoadingStats || isLoadingHistory}
-            cloaked={!id}
-        >
+        <Widget title="Missed Captaincies">
             <ul className="widget__list">
                 {improvements.map((improvement, index) => {
                     if (!improvement.captain || !improvement.top) {

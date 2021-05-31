@@ -6,21 +6,12 @@ import { Widget } from '../Widget'
 import { getShortName, thousandsSeparator, thousandsShorthand } from '../../utilities'
 
 const OverallRankWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const history = useSelector((state: RootState) => state.history.data)
-    const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
-
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
-    const isLoadingBootstrap = useSelector((state: RootState) => state.bootstrap.loading)
 
     if (!history || !bootstrap) {
         return (
-            <Widget
-                title="Overall Rank Evolution"
-                loading={isLoadingHistory || isLoadingBootstrap}
-                cloaked={!id}
-            />
+            <Widget title="Overall Rank Evolution" />
         )
     }
 
@@ -41,11 +32,7 @@ const OverallRankWidget: React.FC = () => {
     }))
 
     return (
-        <Widget
-            title="Overall Rank Evolution"
-            loading={isLoadingHistory || isLoadingBootstrap}
-            cloaked={!id}
-        >
+        <Widget title="Overall Rank Evolution">
             <div className="chart chart--reversed">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
