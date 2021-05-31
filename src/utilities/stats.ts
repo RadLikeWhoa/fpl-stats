@@ -40,3 +40,27 @@ export const aggregateStats = (players: StatData[], key: keyof ElementStats) => 
 })).sort((a, b) => (b[key] as number) - (a[key] as number))
 
 export const getTopStatAggregate = (players: StatData[], key: keyof ElementStats) => aggregateStats(players, key)[0]
+
+export const getSelectionStreak = (statData: StatData): number => Math.max(...statData.data.reduce((acc, curr) => {
+    if (curr.multiplier != null) {
+        return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
+    }
+
+    return [...acc, 0]
+}, [0]))
+
+export const getStartStreak = (statData: StatData): number => Math.max(...statData.data.reduce((acc, curr) => {
+    if ((curr.multiplier || 0) > 0) {
+        return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
+    }
+
+    return [...acc, 0]
+}, [0]))
+
+export const getBenchStreak = (statData: StatData): number => Math.max(...statData.data.reduce((acc, curr) => {
+    if (curr.multiplier === 0) {
+        return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
+    }
+
+    return [...acc, 0]
+}, [0]))
