@@ -16,6 +16,10 @@ export const getTotalPoints = (statData: StatData): number => {
     return statData.data.reduce((acc, pick) => acc + (pick.points || 0), 0)
 }
 
+export const getTotalBenchPoints = (statData: StatData): number => {
+    return statData.data.reduce((acc, pick) => acc + (pick.multiplier === 0 ? (pick.rawPoints || 0) : 0), 0)
+}
+
 export const getAllPlayers = (stats: Stats): StatData[] => {
     return Object.values(stats).reduce((acc, curr) => acc.concat(curr), [])
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getTopStatAggregate, getTotalPoints, getTotalStarts, thousandsSeparator } from '../../utilities'
+import { getAllPlayers, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
@@ -55,6 +55,7 @@ const PlayerStatsWidget: React.FC = () => {
         .sort((a, b) => (b.data[0].points || 0) - (a.data[0].points || 0))[0]
 
     const topSeasonReturner = allPlayers.sort((a, b) => getTotalPoints(b) - getTotalPoints(a))[0]
+    const topBenchReturner = allPlayers.sort((a, b) => getTotalBenchPoints(b) - getTotalBenchPoints(a))[0]
 
     return (
         <Widget
@@ -104,6 +105,25 @@ const PlayerStatsWidget: React.FC = () => {
                             condensed
                         />
                     </span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Most Points While Benched</span>
+                    <Player
+                        id={topBenchReturner.element.id}
+                        suffix={() => (
+                            <>
+                                {' '}
+                                (
+                                    {getTotalBenchPoints(topBenchReturner)} pts,
+                                    {' '}
+                                    {(getTotalBenchPoints(topBenchReturner) / topBenchReturner.data.filter(data => data.multiplier === 0).length).toFixed(1)}
+                                    {' '}
+                                    <Metric metric="ppg" />
+                                )
+                            </>
+                        )}
+                        condensed
+                    />
                 </li>
                 {reds.red_cards > 0 && (
                     <li className="widget__list__item">
