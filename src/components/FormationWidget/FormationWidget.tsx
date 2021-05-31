@@ -81,7 +81,7 @@ const FormationWidget: React.FC = () => {
             <ul className="widget__list">
                 {Object.entries(data).sort((a, b) => b[1].count - a[1].count).map(([ formation, information ]) => {
                     return (
-                        <li className="widget__list__item">
+                        <li className="widget__list__item" key={formation}>
                             <span>{formatFormation(formation)}</span>
                             <span>{information.count} ({thousandsSeparator(information.points)} pts, {(information.points / information.count).toFixed(1)} <Metric metric="ppg" />)</span>
                         </li>

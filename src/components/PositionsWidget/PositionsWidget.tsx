@@ -48,7 +48,7 @@ const PositionsWidget: React.FC = () => {
                     const totalPoints = stats[Number(elementType)].map(player => getTotalPoints(player))
 
                     return (
-                        <li className="widget__list__item">
+                        <li className="widget__list__item" key={elementType}>
                             <span>{bootstrap.element_types.find(el => el.id === Number(elementType))?.plural_name}</span>
                             <span>
                                 {elements}

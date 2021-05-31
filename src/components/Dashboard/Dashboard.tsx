@@ -27,11 +27,12 @@ import { fetchEntry } from '../../reducers/entry'
 import { Metric } from '../Metric'
 import { SeasonWidget } from '../SeasonWidget';
 import { TeamsWidget } from '../TeamsWidget'
-import './Dashboard.scss'
 import { NonBlankStreakWidget } from '../NonBlankStreakWidget'
 import { SelectionStreakWidget } from '../SelectionStreakWidget'
 import { StartStreakWidget } from '../StartStreakWidget';
 import { BenchStreakWidget } from '../BenchStreakWidget';
+import { CaptainOpportunityWidget } from '../CaptainOpportunityWidget'
+import './Dashboard.scss'
 
 type OptionType = {
     value: string
@@ -68,7 +69,7 @@ const renderSelectionWidget = (stats: Stats): JSX.Element => {
     return (
         <ul className="widget__list">
             {elements.slice(0, 5).map(element => (
-                <li className="widget__list__item">
+                <li className="widget__list__item" key={element.element.id}>
                     <Player id={element.element.id} />
                     {getTotalSelections(element)}
                 </li>
@@ -85,7 +86,7 @@ const renderStartersWidget = (stats: Stats): JSX.Element => {
     return (
         <ul className="widget__list">
             {elements.slice(0, 5).map(element => (
-                <li className="widget__list__item">
+                <li className="widget__list__item" key={element.element.id}>
                     <Player id={element.element.id} />
                     {getTotalStarts(element)}
                 </li>
@@ -102,7 +103,7 @@ const renderBenchWidget = (stats: Stats): JSX.Element => {
     return (
         <ul className="widget__list">
             {elements.slice(0, 5).map(element => (
-                <li className="widget__list__item">
+                <li className="widget__list__item" key={element.element.id}>
                     <Player id={element.element.id} />
                     {getTotalBenched(element)}
                 </li>
@@ -141,13 +142,13 @@ const renderDifferenceWidget = (stats: Stats, top: boolean = false): JSX.Element
     return (
         <ul className="widget__list">
             {top && topStarters.slice(0, 5).map(element => (
-                <li className="widget__list__item">
+                <li className="widget__list__item" key={element.element.id}>
                     <Player id={element.element.id} />
                     <span>{element.startsPercentage.toFixed(1)}% ({element.starts})</span>
                 </li>
             ))}
             {!top && topBenchwarmers.slice(0, 5).map(element => (
-                <li className="widget__list__item">
+                <li className="widget__list__item" key={element.element.id}>
                     <Player id={element.element.id} />
                     <span>{element.benchedPercentage.toFixed(1)}% ({element.benched})</span>
                 </li>
@@ -492,6 +493,7 @@ const Dashboard: React.FC = () => {
                     <SelectionStreakWidget />
                     <StartStreakWidget />
                     <BenchStreakWidget />
+                    <CaptainOpportunityWidget />
                 </div>
                 <div className="dashboard__graphs">
                     <Widget

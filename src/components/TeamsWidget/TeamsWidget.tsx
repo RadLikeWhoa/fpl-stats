@@ -6,7 +6,7 @@ import { Widget } from '../Widget'
 import { getAllPlayers, getTotalPoints, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 
-const SeasonWidget: React.FC = () => {
+const TeamsWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
 
     const stats = useSelector((state: RootState) => state.stats.data)
@@ -51,7 +51,7 @@ const SeasonWidget: React.FC = () => {
                         }), {})
 
                     return (
-                        <li className="widget__list__item">
+                        <li className="widget__list__item" key={team.id}>
                             <Team team={team} />
                             <span>
                                 {counts[team.id] || 0}
@@ -72,4 +72,4 @@ const SeasonWidget: React.FC = () => {
     )
 }
 
-export default SeasonWidget
+export default TeamsWidget

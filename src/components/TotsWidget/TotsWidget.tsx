@@ -55,6 +55,7 @@ const TotsWidget: React.FC = () => {
                 <div className="tots__row">
                     {xi.filter(el => el.element.element_type === 1).map(player => (
                         <TotsPlayer
+                            key={player.element.id}
                             id={player.element.id}
                             points={getTotalPoints(player)}
                         />
@@ -63,6 +64,7 @@ const TotsWidget: React.FC = () => {
                 <div className="tots__row">
                     {xi.filter(el => el.element.element_type === 2).map(player => (
                         <TotsPlayer
+                            key={player.element.id}
                             id={player.element.id}
                             points={getTotalPoints(player)}
                         />
@@ -71,6 +73,7 @@ const TotsWidget: React.FC = () => {
                 <div className="tots__row">
                     {xi.filter(el => el.element.element_type === 3).map(player => (
                         <TotsPlayer
+                            key={player.element.id}
                             id={player.element.id}
                             points={getTotalPoints(player)}
                         />
@@ -79,6 +82,7 @@ const TotsWidget: React.FC = () => {
                 <div className="tots__row">
                     {xi.filter(el => el.element.element_type === 4).map(player => (
                         <TotsPlayer
+                            key={player.element.id}
                             id={player.element.id}
                             points={getTotalPoints(player)}
                         />
@@ -87,6 +91,7 @@ const TotsWidget: React.FC = () => {
                 <div className="tots__row tots__row--bench">
                     {bench.map(player => (
                         <TotsPlayer
+                            key={player.element.id}
                             id={player.element.id}
                             points={getTotalPoints(player)}
                         />

@@ -46,7 +46,7 @@ const CaptainWidget: React.FC = () => {
                     const sum = sumNumbers(captain.data.map(data => data.points || 0))
 
                     return (
-                        <li className="widget__list__item">
+                        <li className="widget__list__item" key={captain.player.element.id}>
                             <Player id={captain.player.element.id} />
                             <span>{captain.data.length} ({thousandsSeparator(sum)} pts, {(sum / captain.data.length).toFixed(1)} <Metric metric="ppg" />)</span>
                         </li>

@@ -55,7 +55,7 @@ const StartStreakWidget: React.FC = () => {
                     }
 
                     return (
-                        <li className="widget__list__item">
+                        <li className="widget__list__item" key={streaker.element.id}>
                             <Player id={streaker.element.id} />
                             <div>
                                 <div>
