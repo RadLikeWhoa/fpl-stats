@@ -9,7 +9,7 @@ import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, getTotalPoints } from '../../utilities'
+import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, getTotalPoints, round } from '../../utilities'
 import { Modal } from '../Modal'
 import { setId } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
@@ -95,17 +95,17 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sort: OptionType):
                     </div>
                     <div className="dashboard__totals">
                         <span className="dashboard__stat">
-                            {getTotalSelections(element)} ({(getTotalSelections(element) / element.data.length * 100).toFixed(1)}%)
+                            {getTotalSelections(element)} ({round(getTotalSelections(element) / element.data.length * 100)}%)
                         </span>
                         <span className="dashboard__stat">
-                            {getTotalStarts(element)} ({(getTotalStarts(element) / element.data.length * 100).toFixed(1)}%)
+                            {getTotalStarts(element)} ({round(getTotalStarts(element) / element.data.length * 100)}%)
                         </span>
                         <span className="dashboard__stat">
-                            {getTotalBenched(element)} ({(getTotalBenched(element) / element.data.length * 100).toFixed(1)}%)
+                            {getTotalBenched(element)} ({round(getTotalBenched(element) / element.data.length * 100)}%)
                         </span>
                         <span className="dashboard__stat">
                             <span>
-                                {getTotalPoints(element)} ({getTotalStarts(element) > 0 ? (getTotalPoints(element) / getTotalStarts(element)).toFixed(1) : 0} <Metric metric="ppg" />)
+                                {getTotalPoints(element)} ({getTotalStarts(element) > 0 ? round(getTotalPoints(element) / getTotalStarts(element)) : 0} <Metric metric="ppg" />)
                             </span>
                         </span>
                     </div>

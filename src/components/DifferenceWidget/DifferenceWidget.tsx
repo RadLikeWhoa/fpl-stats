@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalBenched, getTotalSelections, getTotalStarts } from '../../utilities'
+import { getAllPlayers, getTotalBenched, getTotalSelections, getTotalStarts, round } from '../../utilities'
 import { Player } from '../Player'
 
 type Props = {
@@ -50,13 +50,13 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
                 {props.top && topStarters.slice(0, 5).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        <span>{element.startsPercentage.toFixed(1)}% ({element.starts})</span>
+                        <span>{round(element.startsPercentage)}% ({element.starts})</span>
                     </li>
                 ))}
                 {!props.top && topBenchwarmers.slice(0, 5).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        <span>{element.benchedPercentage.toFixed(1)}% ({element.benched})</span>
+                        <span>{round(element.benchedPercentage)}% ({element.benched})</span>
                     </li>
                 ))}
             </ul>

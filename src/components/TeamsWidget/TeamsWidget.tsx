@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Team } from '../Team'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalPoints, sumNumbers } from '../../utilities'
+import { getAllPlayers, getTotalPoints, round, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 
 const TeamsWidget: React.FC = () => {
@@ -46,7 +46,7 @@ const TeamsWidget: React.FC = () => {
                                 (
                                     {Object.values(positions).join('-')},
                                     {' '}
-                                    {points} pts, {players.length ? (points / players.length).toFixed(1) : 0}
+                                    {points} pts, {players.length ? round(points / players.length) : 0}
                                     {' '}
                                     <Metric metric="ppp" />
                                 )

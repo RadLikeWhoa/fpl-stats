@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator } from '../../utilities'
+import { getAllPlayers, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator, round } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
@@ -93,7 +93,7 @@ const PlayerStatsWidget: React.FC = () => {
                                     (
                                         {getTotalPoints(topSeasonReturner)} pts,
                                         {' '}
-                                        {(getTotalPoints(topSeasonReturner) / getTotalStarts(topSeasonReturner)).toFixed(1)}
+                                        {round(getTotalPoints(topSeasonReturner) / getTotalStarts(topSeasonReturner))}
                                         {' '}
                                         <Metric metric="ppg" />
                                     )
@@ -136,7 +136,7 @@ const PlayerStatsWidget: React.FC = () => {
                                 (
                                     {getTotalBenchPoints(topBenchReturner)} pts,
                                     {' '}
-                                    {(getTotalBenchPoints(topBenchReturner) / topBenchReturner.data.filter(data => data.multiplier === 0).length).toFixed(1)}
+                                    {round(getTotalBenchPoints(topBenchReturner) / topBenchReturner.data.filter(data => data.multiplier === 0).length)}
                                     {' '}
                                     <Metric metric="ppg" />
                                 )

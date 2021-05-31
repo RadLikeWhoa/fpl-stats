@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getNonBlankStreak } from '../../utilities'
+import { getAllPlayers, getNonBlankStreak, round } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
@@ -59,7 +59,7 @@ const NonBlankStreakWidget: React.FC = () => {
                                     </a>
                                 </div>
                                 <div>
-                                    ({streak.length} GWs, {streak.points} pts, {((streak.points || 0) / streak.length).toFixed(1)} <Metric metric="ppg" />)
+                                    ({streak.length} GWs, {streak.points} pts, {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />)
                                 </div>
                             </div>
                         </li>

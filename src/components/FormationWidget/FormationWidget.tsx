@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { thousandsSeparator, sumNumbers } from '../../utilities'
+import { thousandsSeparator, sumNumbers, round } from '../../utilities'
 import { Metric } from '../Metric'
 
 type FormationInformation = {
@@ -71,7 +71,7 @@ const FormationWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item" key={formation}>
                             <span>{formatFormation(formation)}</span>
-                            <span>{information.count} ({thousandsSeparator(information.points)} pts, {(information.points / information.count).toFixed(1)} <Metric metric="ppg" />)</span>
+                            <span>{information.count} ({thousandsSeparator(information.points)} pts, {round(information.points / information.count)} <Metric metric="ppg" />)</span>
                         </li>
                     )
                 })}

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useMeanLabel, useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { thousandsSeparator } from '../../utilities'
+import { round, thousandsSeparator } from '../../utilities'
 
 const GameweekWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
@@ -33,7 +33,7 @@ const GameweekWidget: React.FC = () => {
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>{meanLabel('Difference to GW Average')}</span>
-                    <span>{meanValue(differences).toFixed(1)} pts</span>
+                    <span>{round(meanValue(differences))} pts</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Times Above GW Average</span>
@@ -45,7 +45,7 @@ const GameweekWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>{meanLabel('GW Rank')}</span>
-                    <span>{thousandsSeparator(Math.round(meanValue(history.current.map(week => week.rank))))}</span>
+                    <span>{thousandsSeparator(Number(round(meanValue(history.current.map(week => week.rank)))))}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Best Gameweek</span>

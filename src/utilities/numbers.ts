@@ -3,7 +3,7 @@ export const thousandsSeparator = (value: number): string => {
 }
 
 export const thousandsShorthand = (value: number): string => {
-    return value > 999999 ? `${(value / 1000000).toFixed(1)}M` : value > 999 ? `${(value / 1000).toFixed(0)}K` : `${value}`
+    return value > 999999 ? `${round(value / 1000000)}M` : value > 999 ? `${round(value / 1000, 0)}K` : `${value}`
 }
 
 export const sumNumbers = (series: number[]): number => {
@@ -31,4 +31,14 @@ export const sort = (series: number[], direction: 'asc' | 'desc' = 'desc'): numb
     }
 
     return [ ...series ].sort((a, b) => b - a)
+}
+
+export const round = (value: number, precision: number = 1): string => {
+    const formatted = value.toFixed(precision)
+
+    if (/\.0+$/.test(formatted)) {
+        return formatted.split('.')[0]
+    }
+
+    return formatted
 }
