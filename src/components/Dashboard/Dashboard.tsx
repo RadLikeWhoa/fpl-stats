@@ -321,8 +321,10 @@ const Dashboard: React.FC = () => {
                     <header className="dashboard__entry">
                         <Widget>
                             <h1 className="dashboard__title">
-                                {entry.name}
-                                <div className="small">{entry.id}</div>
+                                <a href={`https://fantasy.premierleague.com/entry/${id}/`} target="_blank" rel="noopener noreferrer">
+                                    {entry.name}
+                                </a>
+                                <div className="small">{entry.summary_overall_points} pts — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
                             </h1>
                             {id !== undefined && (
                                 <Button
