@@ -4,11 +4,10 @@ import { RootState } from '../../reducers'
 import { getAllPlayers, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator, round } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
+import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 
 const PlayerStatsWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
     const history = useSelector((state: RootState) => state.history.data)
 
@@ -72,9 +71,7 @@ const PlayerStatsWidget: React.FC = () => {
                                     (
                                         {topReturner.data[0].points} pts,
                                         {' '}
-                                        <a href={`https://fantasy.premierleague.com/entry/${id}/event/${topReturner.data[0].event.id}/`} target="_blank" rel="noopener noreferrer">
-                                            GW {topReturner.data[0].event.id}
-                                        </a>
+                                        <SiteLink event={topReturner.data[0].event.id} />
                                     )
                                 </>
                             )}
@@ -115,9 +112,7 @@ const PlayerStatsWidget: React.FC = () => {
                                         (
                                             {topBenchGWReturner.data[0].rawPoints} pts,
                                             {' '}
-                                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${topBenchGWReturner.data[0].event.id}/`} target="_blank" rel="noopener noreferrer">
-                                                GW {topBenchGWReturner.data[0].event.id}
-                                            </a>
+                                            <SiteLink event={topBenchGWReturner.data[0].event.id} />
                                         )
                                     </>
                                 )}

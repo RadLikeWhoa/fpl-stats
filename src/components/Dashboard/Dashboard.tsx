@@ -39,6 +39,7 @@ import { OverallRankWidget } from '../OverallRankWidget'
 import { PointsWidget } from '../PointsWidget'
 import { ValueWidget } from '../ValueWidget'
 import './Dashboard.scss'
+import { SiteLink } from '../SiteLink'
 
 type OptionType = {
     value: string
@@ -179,9 +180,7 @@ const Dashboard: React.FC = () => {
                     <header className="dashboard__entry">
                         <Widget>
                             <h1 className="dashboard__title">
-                                <a href={`https://fantasy.premierleague.com/entry/${id}/`} target="_blank" rel="noopener noreferrer">
-                                    {entry.name}
-                                </a>
+                                <SiteLink label={entry.name} />
                                 <div className="small">{entry.summary_overall_points} pts — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
                             </h1>
                             {id !== undefined && (

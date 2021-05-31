@@ -5,11 +5,10 @@ import { getAllPlayers } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { SwapIcon } from '../SwapIcon'
+import { SiteLink } from '../SiteLink'
 import './CaptainOpportunityWidget.scss'
 
 const CaptainOpportunityWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
 
     const history = useSelector((state: RootState) => state.history.data)
@@ -53,9 +52,7 @@ const CaptainOpportunityWidget: React.FC = () => {
                                 {(captainData.rawPoints || 0) * 2} <SwapIcon /> {(topData.rawPoints || 0) * 2}
                                 {' '}
                                 (
-                                    <a href={`https://fantasy.premierleague.com/entry/${id}/event/${captainData.event.id}/`} target="_blank" rel="noopener noreferrer">
-                                        GW {captainData.event.id}
-                                    </a>
+                                    <SiteLink event={captainData.event.id} />
                                 )
                             </div>
                         </li>

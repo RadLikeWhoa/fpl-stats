@@ -4,13 +4,12 @@ import { RootState } from '../../reducers'
 import { getAllPlayers, getStartStreak, round } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
+import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 
 const MAX_ITEMS = 10
 
 const StartStreakWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
@@ -50,13 +49,9 @@ const StartStreakWidget: React.FC = () => {
                             <Player id={streaker.element.id} />
                             <div>
                                 <div>
-                                    <a href={`https://fantasy.premierleague.com/entry/${id}/event/${streak.start.id}/`} target="_blank" rel="noopener noreferrer">
-                                        GW {streak.start.id}
-                                    </a>
+                                    <SiteLink event={streak.start.id} />
                                     {' – '}
-                                    <a href={`https://fantasy.premierleague.com/entry/${id}/event/${streak.end.id}/`} target="_blank" rel="noopener noreferrer">
-                                        GW {streak.end.id}
-                                    </a>
+                                    <SiteLink event={streak.end.id} />
                                 </div>
                                 <div>
                                     (

@@ -4,10 +4,9 @@ import { useMeanLabel, useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { round, thousandsSeparator } from '../../utilities'
+import { SiteLink } from '../SiteLink'
 
 const GameweekWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const history = useSelector((state: RootState) => state.history.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
@@ -53,9 +52,7 @@ const GameweekWidget: React.FC = () => {
                         {bestGW.points} pts
                         {' '}
                         (
-                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${bestGW.event}/`} target="_blank" rel="noopener noreferrer">
-                                GW {bestGW.event}
-                            </a>
+                            <SiteLink event={bestGW.event} />
                         )
                     </span>
                 </li>
@@ -65,9 +62,7 @@ const GameweekWidget: React.FC = () => {
                         {worstGW.points} pts
                         {' '}
                         (
-                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${worstGW.event}/`} target="_blank" rel="noopener noreferrer">
-                                GW {worstGW.event}
-                            </a>
+                            <SiteLink event={worstGW.event} />
                         )
                     </span>
                 </li>
@@ -77,9 +72,7 @@ const GameweekWidget: React.FC = () => {
                         {thousandsSeparator(sortedRanks[0].rank)}
                         {' '}
                         (
-                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${sortedRanks[0].event}/`} target="_blank" rel="noopener noreferrer">
-                                GW {sortedRanks[0].event}
-                            </a>
+                            <SiteLink event={sortedRanks[0].event} />
                         )
                     </span>
                 </li>
@@ -89,9 +82,7 @@ const GameweekWidget: React.FC = () => {
                         {thousandsSeparator(sortedRanks[sortedRanks.length - 1].rank)}
                         {' '}
                         (
-                            <a href={`https://fantasy.premierleague.com/entry/${id}/event/${sortedRanks[sortedRanks.length - 1].event}/`} target="_blank" rel="noopener noreferrer">
-                                GW {sortedRanks[sortedRanks.length - 1].event}
-                            </a>
+                            <SiteLink event={sortedRanks[sortedRanks.length - 1].event} />
                         )
                     </span>
                 </li>

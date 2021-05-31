@@ -4,10 +4,9 @@ import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { aggregateStats, getAllPlayers, thousandsSeparator } from '../../utilities'
 import { sumNumbers } from '../../utilities/numbers';
+import { SiteLink } from '../SiteLink'
 
 const SeasonWidget: React.FC = () => {
-    const id = useSelector((state: RootState) => state.settings.id)
-
     const stats = useSelector((state: RootState) => state.stats.data)
     const chips = useSelector((state: RootState) => state.stats.chips)
 
@@ -59,9 +58,7 @@ const SeasonWidget: React.FC = () => {
                 <li className="widget__list__item">
                     <span>Total Transfers Made</span>
                     <span>
-                        <a href={`https://fantasy.premierleague.com/entry/${id}/transfers`} target="_blank" rel="noopener noreferrer">
-                            {totalTransfers}
-                        </a>
+                        <SiteLink target="transfers" label={`${totalTransfers}`} />
                     </span>
                 </li>
                 <li className="widget__list__item">
@@ -134,9 +131,7 @@ const SeasonWidget: React.FC = () => {
                         <span>
                             {(tc.points || 0) / 3} pts
                             (
-                                <a href={`https://fantasy.premierleague.com/entry/${id}/event/${tc.event.id}/`} target="_blank" rel="noopener noreferrer">
-                                    GW {tc.event.id}
-                                </a>
+                                <SiteLink event={tc.event.id} />
                             )
                         </span>
                     </li>
@@ -147,9 +142,7 @@ const SeasonWidget: React.FC = () => {
                         <span>
                             {bbPoints} pts
                             (
-                                <a href={`https://fantasy.premierleague.com/entry/${id}/event/${bbWeek}/`} target="_blank" rel="noopener noreferrer">
-                                    GW {bbWeek}
-                                </a>
+                                <SiteLink event={Number(bbWeek)} />
                             )
                         </span>
                     </li>

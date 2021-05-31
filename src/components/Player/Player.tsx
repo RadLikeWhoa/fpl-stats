@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import classNames from 'classnames'
 import { RootState } from '../../reducers'
 import './Player.scss'
 
@@ -17,7 +18,7 @@ const Player: React.FC<Props> = (props: Props) => {
     const position = bootstrap?.element_types.find(el => el.id === player?.element_type)
 
     return (
-        <div className={`player ${props.condensed ? 'player--condensed' : ''}`}>
+        <div className={classNames('player', { 'player--condensed': props.condensed })}>
             <img
                 src={`https://fantasy.premierleague.com/dist/img/shirts/special/shirt_${team?.code}${position?.singular_name_short === 'GKP' ? '_1' : ''}-66.png`}
                 alt={player?.web_name}
