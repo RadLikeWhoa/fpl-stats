@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/fpl-stats/static/css/main.191908f5.chunk.css",
-    "main.js": "/fpl-stats/static/js/main.be1fa9d7.chunk.js",
-    "main.js.map": "/fpl-stats/static/js/main.be1fa9d7.chunk.js.map",
+    "main.js": "/fpl-stats/static/js/main.95cb14e9.chunk.js",
+    "main.js.map": "/fpl-stats/static/js/main.95cb14e9.chunk.js.map",
     "runtime-main.js": "/fpl-stats/static/js/runtime-main.a8f838e4.js",
     "runtime-main.js.map": "/fpl-stats/static/js/runtime-main.a8f838e4.js.map",
     "static/js/2.e2ac9d00.chunk.js": "/fpl-stats/static/js/2.e2ac9d00.chunk.js",
     "static/js/2.e2ac9d00.chunk.js.map": "/fpl-stats/static/js/2.e2ac9d00.chunk.js.map",
     "index.html": "/fpl-stats/index.html",
-    "precache-manifest.721e74eb8cad137e887d68c0c54f23d2.js": "/fpl-stats/precache-manifest.721e74eb8cad137e887d68c0c54f23d2.js",
+    "precache-manifest.8be1580475bd1277828278af26838ada.js": "/fpl-stats/precache-manifest.8be1580475bd1277828278af26838ada.js",
     "service-worker.js": "/fpl-stats/service-worker.js",
     "static/css/main.191908f5.chunk.css.map": "/fpl-stats/static/css/main.191908f5.chunk.css.map",
     "static/js/2.e2ac9d00.chunk.js.LICENSE.txt": "/fpl-stats/static/js/2.e2ac9d00.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.a8f838e4.js",
     "static/js/2.e2ac9d00.chunk.js",
     "static/css/main.191908f5.chunk.css",
-    "static/js/main.be1fa9d7.chunk.js"
+    "static/js/main.95cb14e9.chunk.js"
   ]
 }
