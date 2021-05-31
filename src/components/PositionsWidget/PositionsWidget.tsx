@@ -4,6 +4,7 @@ import { useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
 import { getTotalPoints, thousandsSeparator, sumNumbers } from '../../utilities'
 import { Widget } from '../Widget'
+import { Metric } from '../Metric';
 
 const PositionsWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
@@ -52,7 +53,7 @@ const PositionsWidget: React.FC = () => {
                             <span>
                                 {elements}
                                 {' '}
-                                ({thousandsSeparator(sumNumbers(totalPoints))} pts, {meanValue(totalPoints).toFixed(1)} ppp)
+                                ({thousandsSeparator(sumNumbers(totalPoints))} pts, {meanValue(totalPoints).toFixed(1)} <Metric metric="ppp" />)
                             </span>
                         </li>
                     )

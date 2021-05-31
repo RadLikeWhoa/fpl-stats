@@ -25,6 +25,7 @@ import { CaptainWidget } from '../CaptainWidget'
 import { GameweekWidget } from '../GameweekWidget'
 import { PositionsWidget } from '../PositionsWidget'
 import { fetchEntry } from '../../reducers/entry'
+import { Metric } from '../Metric'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -445,7 +446,9 @@ const Dashboard: React.FC = () => {
                                                         {getTotalBenched(element)} ({(getTotalBenched(element) / element.data.length * 100).toFixed(1)}%)
                                                     </span>
                                                     <span className="dashboard__stat">
-                                                        {getTotalPoints(element)} ({getTotalStarts(element) > 0 ? (getTotalPoints(element) / getTotalStarts(element)).toFixed(1) : 0} ppg)
+                                                        <span>
+                                                            {getTotalPoints(element)} ({getTotalStarts(element) > 0 ? (getTotalPoints(element) / getTotalStarts(element)).toFixed(1) : 0} <Metric metric="ppg" />)
+                                                        </span>
                                                     </span>
                                                 </div>
                                             </li>

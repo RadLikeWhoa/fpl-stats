@@ -4,6 +4,7 @@ import { RootState } from '../../reducers'
 import { thousandsSeparator, sumNumbers } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
+import { Metric } from '../Metric';
 
 const CaptainWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
@@ -47,7 +48,7 @@ const CaptainWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item">
                             <Player id={captain.player.element.id} />
-                            <span>{captain.data.length} ({thousandsSeparator(sum)} pts, {(sum / captain.data.length).toFixed(1)} ppg)</span>
+                            <span>{captain.data.length} ({thousandsSeparator(sum)} pts, {(sum / captain.data.length).toFixed(1)} <Metric metric="ppg" />)</span>
                         </li>
                     )
                 })}
