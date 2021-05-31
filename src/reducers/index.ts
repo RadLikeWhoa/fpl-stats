@@ -2,29 +2,34 @@ import { combineReducers } from 'redux'
 import bootstrap from './bootstrap'
 import stats from './stats'
 import settings from './settings'
-import { Bootstrap, Stats, History } from '../types'
+import entry from './entry'
+import { Bootstrap, Stats, History, Entry } from '../types'
 import history from './history'
 
 export type RootState = {
     bootstrap: {
-        loading: boolean,
-        data: Bootstrap | undefined,
-    },
+        loading: boolean
+        data: Bootstrap | undefined
+    }
     stats: {
-        loading: boolean,
-        data: Stats | undefined,
+        loading: boolean
+        data: Stats | undefined
         chips: {
-            [key: number]: string,
-        } | undefined,
-    },
+            [key: number]: string
+        } | undefined
+    }
     settings: {
-        id: number | undefined,
-        meanStrategy: 'average' | 'median',
-    },
+        id: number | undefined
+        meanStrategy: 'average' | 'median'
+    }
     history: {
-        loading: boolean,
-        data: History | undefined,
-    },
+        loading: boolean
+        data: History | undefined
+    }
+    entry: {
+        loading: boolean
+        data: Entry | undefined
+    }
 }
 
 export default combineReducers({
@@ -32,4 +37,5 @@ export default combineReducers({
     stats,
     settings,
     history,
+    entry,
 })

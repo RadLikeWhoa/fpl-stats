@@ -24,6 +24,7 @@ import { FormationWidget } from '../FormationWidget'
 import { CaptainWidget } from '../CaptainWidget'
 import { GameweekWidget } from '../GameweekWidget'
 import { PositionsWidget } from '../PositionsWidget'
+import { fetchEntry } from '../../reducers/entry'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -269,6 +270,8 @@ const Dashboard: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
     const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
+    const entry = useSelector((state: RootState) => state.entry.data)
+
     const dashboardRef = useRef<HTMLDivElement>(null)
 
     const dispatch = useDispatch()
@@ -297,6 +300,7 @@ const Dashboard: React.FC = () => {
         if (bootstrap && id) {
             dispatch(buildData(bootstrap, id))
             dispatch(fetchHistory(id))
+            dispatch(fetchEntry(id))
 
             window.location.hash = queryString.stringify({ team: id })
         }
@@ -313,6 +317,22 @@ const Dashboard: React.FC = () => {
                 <Spinner />
             </div>
             <div className="app__content">
+                {entry && (
+                    <header className="dashboard__entry">
+                        <Widget>
+                            <h1 className="dashboard__title">
+                                {entry.name}
+                                <div className="small">{entry.id}</div>
+                            </h1>
+                            {id !== undefined && (
+                                <Button
+                                    onClick={() => setIsModalOpen(true)}
+                                    label="Change Team"
+                                />
+                            )}
+                        </Widget>
+                    </header>
+                )}
                 <div className="dashboard__widgets dashboard__widgets--split">
                     <TotsWidget />
                     <StatsWidget />
@@ -510,16 +530,6 @@ const Dashboard: React.FC = () => {
                     <p>FPL Stats uses data from the official Premier League Fantasy API. This site is not affiliated with the Premier League.</p>
                 </div>
             </div>
-            {id !== undefined && (
-                <div className="app__footer">
-                    <div className="app__footer__content">
-                        <Button
-                            onClick={() => setIsModalOpen(true)}
-                            label="Change Team"
-                        />
-                    </div>
-                </div>
-            )}
         </div>
     )
 }
