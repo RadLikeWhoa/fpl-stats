@@ -62,14 +62,6 @@ const PlayerStatsWidget: React.FC = () => {
         .filter(player => player.data.length)
         .sort((a, b) => (b.data[0].rawPoints || 0) - (a.data[0].rawPoints || 0))[0]
 
-    console.log(allPlayers
-        .map(player => ({
-            ...player,
-            data: [ ...player.data ].filter(data => data.multiplier === 0).sort((a, b) => (b.rawPoints || 0) - (a.rawPoints || 0)),
-        }))
-        .filter(player => player.data.length)
-        .sort((a, b) => (b.data[0].rawPoints || 0) - (a.data[0].rawPoints || 0)))
-
     const topSeasonReturner = allPlayers.sort((a, b) => getTotalPoints(b) - getTotalPoints(a))[0]
     const topBenchReturner = allPlayers.sort((a, b) => getTotalBenchPoints(b) - getTotalBenchPoints(a))[0]
 
