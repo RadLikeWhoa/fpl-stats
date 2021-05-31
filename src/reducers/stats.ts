@@ -72,6 +72,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                         points: null,
                         rawPoints: null,
                         stats: null,
+                        position: null,
                     })),
                 }
             }
@@ -88,6 +89,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                         points: points !== null ? points * item.multiplier : points,
                         rawPoints: points,
                         stats: gw.live.elements.find(el => el.id === item.element)?.stats || null,
+                        position: item.position,
                     }
                 ]
             }
@@ -107,6 +109,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                             points: null,
                             rawPoints: null,
                             stats: null,
+                            position: null,
                         },
                     ],
                 }

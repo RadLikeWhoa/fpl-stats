@@ -10,5 +10,6 @@ export type StatData = {
         points: number | null
         rawPoints: number | null
         stats: ElementStats | null
+        position: number | null
     }[]
 }

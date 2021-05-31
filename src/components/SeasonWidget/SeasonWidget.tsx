@@ -9,12 +9,13 @@ const SeasonWidget: React.FC = () => {
     const id = useSelector((state: RootState) => state.settings.id)
 
     const stats = useSelector((state: RootState) => state.stats.data)
+    const chips = useSelector((state: RootState) => state.stats.chips)
     const isLoadingStats = useSelector((state: RootState) => state.stats.loading)
 
     const history = useSelector((state: RootState) => state.history.data)
     const isLoadingHistory = useSelector((state: RootState) => state.history.loading)
 
-    if (!stats || !history) {
+    if (!stats || !history || !chips) {
         return (
             <Widget
                 title="Season"
@@ -44,6 +45,19 @@ const SeasonWidget: React.FC = () => {
     const totalTransfers = history.current.reduce((acc,event) => acc + event.event_transfers, 0)
     const totalHits = history.current.reduce((acc,event) => acc + event.event_transfers_cost / 4, 0)
     const totalBenched = history.current.reduce((acc,event) => acc + event.points_on_bench, 0)
+
+    const tc = allPlayers
+        .find(player => player.data.findIndex(data => data.multiplier === 3) !== -1)
+        ?.data
+        .find(data => data.multiplier === 3)
+
+    const bbWeek = Object.entries(chips).find(([ gw, chip ]) => chip === 'bboost')?.[0]
+
+    const bbPoints = bbWeek
+        ? sumNumbers(allPlayers
+            .filter(player => (player.data[Number(bbWeek) - 1].position || 0) > 11)
+            .map(player => player.data[Number(bbWeek) - 1].points || 0))
+        : null
 
     return (
         <Widget
@@ -124,6 +138,32 @@ const SeasonWidget: React.FC = () => {
                     <span>Total Bonus Points</span>
                     <span>{thousandsSeparator(sumNumbers(bonus))}</span>
                 </li>
+                {tc !== undefined && (
+                    <li className="widget__list__item">
+                        <span>Triple Captain Points Gained</span>
+                        <span>
+                            {(tc.points || 0) / 3} pts
+                            (
+                                <a href={`https://fantasy.premierleague.com/entry/${id}/event/${tc.event.id}/`} target="_blank" rel="noopener noreferrer">
+                                    GW {tc.event.id}
+                                </a>
+                            )
+                        </span>
+                    </li>
+                )}
+                {bbPoints !== null && (
+                    <li className="widget__list__item">
+                        <span>Bench Boost Points Gained</span>
+                        <span>
+                            {bbPoints} pts
+                            (
+                                <a href={`https://fantasy.premierleague.com/entry/${id}/event/${bbWeek}/`} target="_blank" rel="noopener noreferrer">
+                                    GW {bbWeek}
+                                </a>
+                            )
+                        </span>
+                    </li>
+                )}
             </ul>
         </Widget>
     )
