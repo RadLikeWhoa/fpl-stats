@@ -180,18 +180,6 @@ const PlayerStatsWidget: React.FC = () => {
                         )}
                     </li>
                 )}
-                {reds && reds.aggregates.totals.redCards > 0 && (
-                    <li className="widget__list__item">
-                        <span>Most Red Cards</span>
-                        <Player id={reds.element.id} suffix={`${reds.aggregates.totals.redCards}`} condensed />
-                    </li>
-                )}
-                {yellows && yellows.aggregates.totals.yellowCards > 0 && (
-                    <li className="widget__list__item">
-                        <span>Most Yellow Cards</span>
-                        <Player id={yellows.element.id} suffix={`${yellows.aggregates.totals.yellowCards}`} condensed />
-                    </li>
-                )}
                 {goals && goals.aggregates.totals.goals > 0 && (
                     <li className="widget__list__item">
                         <span>Top Scorer</span>
@@ -204,22 +192,10 @@ const PlayerStatsWidget: React.FC = () => {
                         <Player id={assists.element.id} suffix={`${assists.aggregates.totals.assists}`} condensed />
                     </li>
                 )}
-                {bonus && bonus.aggregates.totals.bonus > 0 && (
+                {ownGoals && ownGoals.aggregates.totals.ownGoals > 0 && (
                     <li className="widget__list__item">
-                        <span>Most Bonus Points</span>
-                        <Player id={bonus.element.id} suffix={`${bonus.aggregates.totals.bonus}`} condensed />
-                    </li>
-                )}
-                {bps && bps.aggregates.totals.bps > 0 && (
-                    <li className="widget__list__item">
-                        <span>Highest Total BPS</span>
-                        <Player id={bps.element.id} suffix={`${thousandsSeparator(bps.aggregates.totals.bps)}`} condensed />
-                    </li>
-                )}
-                {cleanSheets && cleanSheets.aggregates.totals.cleanSheets > 0 && (
-                    <li className="widget__list__item">
-                        <span>Most Clean Sheets</span>
-                        <Player id={cleanSheets.element.id} suffix={`${cleanSheets.aggregates.totals.cleanSheets}`} condensed />
+                        <span>Most Own Goals</span>
+                        <Player id={ownGoals.element.id} suffix={`${ownGoals.aggregates.totals.ownGoals}`} condensed />
                     </li>
                 )}
                 {goalsConceded && goalsConceded.aggregates.totals.goalsConceded > 0 && (
@@ -228,16 +204,16 @@ const PlayerStatsWidget: React.FC = () => {
                         <Player id={goalsConceded.element.id} suffix={`${goalsConceded.aggregates.totals.goalsConceded}`} condensed />
                     </li>
                 )}
+                {cleanSheets && cleanSheets.aggregates.totals.cleanSheets > 0 && (
+                    <li className="widget__list__item">
+                        <span>Most Clean Sheets</span>
+                        <Player id={cleanSheets.element.id} suffix={`${cleanSheets.aggregates.totals.cleanSheets}`} condensed />
+                    </li>
+                )}
                 {saves && saves.aggregates.totals.saves > 0 && (
                     <li className="widget__list__item">
                         <span>Most Saves</span>
                         <Player id={saves.element.id} suffix={`${saves.aggregates.totals.saves}`} condensed />
-                    </li>
-                )}
-                {ownGoals && ownGoals.aggregates.totals.ownGoals > 0 && (
-                    <li className="widget__list__item">
-                        <span>Most Own Goals</span>
-                        <Player id={ownGoals.element.id} suffix={`${ownGoals.aggregates.totals.ownGoals}`} condensed />
                     </li>
                 )}
                 {penaltiesMissed && penaltiesMissed.aggregates.totals.penaltiesMissed > 0 && (
@@ -256,6 +232,30 @@ const PlayerStatsWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Most Minutes</span>
                         <Player id={minutes.element.id} suffix={`${thousandsSeparator(minutes.aggregates.totals.minutes as number)}`} condensed />
+                    </li>
+                )}
+                {reds && reds.aggregates.totals.redCards > 0 && (
+                    <li className="widget__list__item">
+                        <span>Most Red Cards</span>
+                        <Player id={reds.element.id} suffix={`${reds.aggregates.totals.redCards}`} condensed />
+                    </li>
+                )}
+                {yellows && yellows.aggregates.totals.yellowCards > 0 && (
+                    <li className="widget__list__item">
+                        <span>Most Yellow Cards</span>
+                        <Player id={yellows.element.id} suffix={`${yellows.aggregates.totals.yellowCards}`} condensed />
+                    </li>
+                )}
+                {bonus && bonus.aggregates.totals.bonus > 0 && (
+                    <li className="widget__list__item">
+                        <span>Most Bonus Points</span>
+                        <Player id={bonus.element.id} suffix={`${bonus.aggregates.totals.bonus}`} condensed />
+                    </li>
+                )}
+                {bps && bps.aggregates.totals.bps > 0 && (
+                    <li className="widget__list__item">
+                        <span>Highest Total BPS</span>
+                        <Player id={bps.element.id} suffix={`${thousandsSeparator(bps.aggregates.totals.bps)}`} condensed />
                     </li>
                 )}
                 {inDreamteam && inDreamteam.aggregates.totals.timesInDreamteam > 0 && (

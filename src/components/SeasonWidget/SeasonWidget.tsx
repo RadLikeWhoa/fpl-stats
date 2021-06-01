@@ -74,68 +74,16 @@ const SeasonWidget: React.FC = () => {
                     <span>{totalHits} ({getPointsLabel(totalHits * -4)}, {entry.summary_overall_points > 0 ? round(totalHits * 4 / entry.summary_overall_points * 100) : 0}%)</span>
                 </li>
                 <li className="widget__list__item">
+                    <span>Total Points</span>
+                    <span>{getPointsLabel(thousandsSeparator(entry.summary_overall_points))}</span>
+                </li>
+                <li className="widget__list__item">
                     <span>Total Points on Bench</span>
-                    <span>{getPointsLabel(totalBenched)}</span>
+                    <span>{getPointsLabel(thousandsSeparator(totalBenched))}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Double Digit Hauls</span>
                     <span>{doubleDigitHauls}{totalPlays > 0 && ` (${round(doubleDigitHauls / totalPlays)}%)`}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Red Cards</span>
-                    <span>{reds}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Yellow Cards</span>
-                    <span>{yellows}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Goals Scored</span>
-                    <span>{goals}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Goals Conceded</span>
-                    <span>{goalsConceded}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Assists</span>
-                    <span>{assists}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Clean Sheets</span>
-                    <span>{cleanSheets}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Own Goals</span>
-                    <span>{ownGoals}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Saves</span>
-                    <span>{saves}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Minutes Played</span>
-                    <span>{thousandsSeparator(minutes)}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Penalties Missed</span>
-                    <span>{penaltiesMissed}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Penalties Saved</span>
-                    <span>{penaltiesSaved}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Times in Dreamteam</span>
-                    <span>{inDreamteam}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total BPS</span>
-                    <span>{thousandsSeparator(bps)}</span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Total Bonus Points</span>
-                    <span>{thousandsSeparator(bonus)}</span>
                 </li>
                 {tc !== undefined && (
                     <li className="widget__list__item">
@@ -161,6 +109,62 @@ const SeasonWidget: React.FC = () => {
                         </span>
                     </li>
                 )}
+                <li className="widget__list__item">
+                    <span>Total Goals Scored</span>
+                    <span>{goals}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Assists</span>
+                    <span>{assists}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Own Goals</span>
+                    <span>{ownGoals}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Goals Conceded</span>
+                    <span>{goalsConceded}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Clean Sheets</span>
+                    <span>{cleanSheets}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Saves</span>
+                    <span>{saves}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Penalties Missed</span>
+                    <span>{penaltiesMissed}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Penalties Saved</span>
+                    <span>{penaltiesSaved}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Minutes Played</span>
+                    <span>{thousandsSeparator(minutes)}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Red Cards</span>
+                    <span>{reds}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Yellow Cards</span>
+                    <span>{yellows}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Bonus Points</span>
+                    <span>{thousandsSeparator(bonus)}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total BPS</span>
+                    <span>{thousandsSeparator(bps)}</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Total Times in Dreamteam</span>
+                    <span>{inDreamteam}</span>
+                </li>
             </ul>
         </Widget>
     )

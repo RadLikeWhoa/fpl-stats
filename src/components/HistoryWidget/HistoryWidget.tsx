@@ -40,16 +40,16 @@ const HistoryWidget: React.FC = () => {
                         <span>{thousandsSeparator(bestRankedSeason.rank)} ({bestRankedSeason.season_name})</span>
                     </li>
                 )}
-                {bestPointSeason && (
-                    <li className="widget__list__item">
-                        <span>Best Points Finish</span>
-                        <span>{thousandsSeparator(bestPointSeason.total_points)} ({bestPointSeason.season_name})</span>
-                    </li>
-                )}
                 {worstRankedSeason && (
                     <li className="widget__list__item">
                         <span>Worst Season Rank</span>
                         <span>{thousandsSeparator(worstRankedSeason.rank)} ({worstRankedSeason.season_name})</span>
+                    </li>
+                )}
+                {bestPointSeason && (
+                    <li className="widget__list__item">
+                        <span>Best Points Finish</span>
+                        <span>{thousandsSeparator(bestPointSeason.total_points)} ({bestPointSeason.season_name})</span>
                     </li>
                 )}
                 {worstPointSeason && (

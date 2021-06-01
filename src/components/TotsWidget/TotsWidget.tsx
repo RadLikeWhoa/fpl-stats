@@ -39,7 +39,7 @@ const TotsWidget: React.FC = () => {
     const bench = sort(gk.slice(MIN_GK).concat(rest.slice(4)), el => el.element.element_type, 'asc')
 
     return (
-        <Widget title="Team of the Season">
+        <Widget title="Team of the Season" cssClasses="tots-widget">
             <div className="tots">
                 <div className="tots__row">
                     {xi.filter(el => el.element.element_type === 1).map(player => (

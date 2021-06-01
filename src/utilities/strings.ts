@@ -3,7 +3,7 @@ export const initialCaps = (value: string): string => `${value.charAt(0).toUpper
 export const pluralise = (value: number | string, singular: string, plural: string) => {
     const parsedValue = typeof value === 'number' ? value : Number(value.replace(/,/g, ''))
 
-    return `${parsedValue} ${parsedValue === 1 ? singular : plural}`
+    return `${value} ${parsedValue === 1 ? singular : plural}`
 }
 
 export const getGWCountLabel = (value: number | string): string => pluralise(value, 'GW', 'GWs')

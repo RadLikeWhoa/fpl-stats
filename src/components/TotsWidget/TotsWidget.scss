@@ -1,5 +1,9 @@
+.tots-widget {
+    background-color: #e5e5e5;
+}
+
 .tots {
-    padding-top: 1.5rem;
+    padding-top: 3rem;
     background-image: repeating-radial-gradient(circle at 50% 100%, #00AE55, #00AE55 10%, #01ba5c 10%, #01ba5c 20%);
 
     &__row {
@@ -8,9 +12,10 @@
         margin-bottom: 1.5rem;
 
         &--bench {
-            padding: 0.75rem 0;
+            padding: 1.5rem 0;
+            margin-top: 3rem;
             margin-bottom: 0;
-            background-image: linear-gradient(rgb(229, 229, 229) 0%, rgb(255, 255, 255) 40%, rgb(235, 235, 230) 40%, rgb(229, 229, 229) 100%)
+            background-image: linear-gradient(#e5e5e5 0%, #fff 40%, #ebebe6 40%, #e5e5e5 100%)
         }
 
         .tots-player {

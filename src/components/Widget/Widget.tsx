@@ -7,13 +7,14 @@ import './Widget.scss'
 type Props = {
     title?: string
     children?: React.ReactNode
+    cssClasses?: string
 }
 
 const Widget: React.FC<Props> = (props: Props) => {
     const id = useSelector((state: RootState) => state.settings.id)
 
     return (
-        <div className={classNames('widget', {
+        <div className={classNames('widget', props.cssClasses, {
             'widget--cloaked': !id,
         })}>
             {props.title && (
