@@ -1,4 +1,14 @@
+@import "../../styles/mixins";
+
 .captain-opportunity-widget {
+    .widget__list__item {
+        @include up-to("M") {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+    }
+
     &__swap-info {
         display: flex;
         align-items: center;
@@ -7,6 +17,27 @@
         .swap-icon {
             height: 0.75rem;
             margin: 0 0.25rem;
+        }
+    }
+
+    &__player {
+        display: flex;
+        align-items: center;
+        height: 2.5rem;
+
+        b {
+            width: 3rem;
+        }
+
+        .player {
+            flex-direction: row;
+            margin: 0;
+            padding: 0;
+        }
+
+        .player__detail {
+            margin-right: 0;
+            margin-left: 0.5rem;
         }
     }
 }

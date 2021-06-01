@@ -82,7 +82,7 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
             .map(element => (
                 <li key={element.element.id} className="dashboard__item">
                     <div className="dashboard__player">
-                        <Player id={element.element.id} />
+                        <Player id={element.element.id} extended />
                     </div>
                     <div className="dashboard__stats">
                         {element.data.map(item => (

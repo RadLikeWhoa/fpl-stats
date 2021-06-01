@@ -1,13 +1,72 @@
-.teams-widget {
-    &__position {
-        position: relative;
+@import "../../styles/mixins";
 
-        &::after {
-            content: ", ";
+.teams-widget {
+    .widget__list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        width: 25%;
+        padding: 0.5rem;
+        border-right: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
+
+        .player {
+            margin: -0.5rem 0 -0.5rem -0.5rem;
         }
 
-        &:last-child::after {
-            content: none;
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        @include up-to("L") {
+            width: 50%;
+        }
+
+        @include up-to("M") {
+            width: 100%;
+        }
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        > :last-child:not(:only-child) {
+            text-align: right;
+        }
+    }
+
+    &__position {
+        position: relative;
+        margin-top: 1.25rem;
+        text-align: center;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #efefef;
+        }
+
+        &::after {
+            content: attr(data-position);
+            position: absolute;
+            top: -0.5rem;
+            left: 50%;
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #61605c;
+            background-color: #fff;
+            transform: translate(-50%, -50%);
         }
     }
 }

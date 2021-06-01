@@ -6,7 +6,8 @@ import './Player.scss'
 
 type Props = {
     id: number
-    condensed?: boolean
+    extended?: boolean
+    reversed?: boolean
     suffix?: string | (() => JSX.Element | null)
 }
 
@@ -18,7 +19,7 @@ const Player: React.FC<Props> = (props: Props) => {
     const position = bootstrap?.element_types.find(el => el.id === player?.element_type)
 
     return (
-        <div className={classNames('player', { 'player--condensed': props.condensed })}>
+        <div className={classNames('player', { 'player--condensed': !props.extended, 'player--reversed': props.reversed })}>
             <img
                 src={`https://fantasy.premierleague.com/dist/img/shirts/special/shirt_${team?.code}${position?.singular_name_short === 'GKP' ? '_1' : ''}-66.png`}
                 alt={player?.web_name}
@@ -27,7 +28,7 @@ const Player: React.FC<Props> = (props: Props) => {
             <div className="player__detail">
                 <div className="player__name">
                     <span>
-                        {props.suffix && props.condensed ? (
+                        {props.suffix && !props.extended ? (
                             <b>{player?.web_name}</b>
                         ) : (
                             player?.web_name

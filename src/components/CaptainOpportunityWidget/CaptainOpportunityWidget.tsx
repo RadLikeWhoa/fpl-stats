@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, head, sort } from '../../utilities'
+import { getAllPlayers, getPointsLabel, head, sort } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { SwapIcon } from '../SwapIcon'
@@ -28,7 +28,7 @@ const CaptainOpportunityWidget: React.FC = () => {
     }))
 
     return (
-        <Widget title="Missed Captaincies">
+        <Widget title="Missed Captaincies" cssClasses="captain-opportunity-widget">
             <ul className="widget__list">
                 {improvements.map((improvement, index) => {
                     if (!improvement.captain || !improvement.top) {
@@ -45,11 +45,15 @@ const CaptainOpportunityWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item" key={captainData.event.id}>
                             <div>
-                                <Player id={improvement.captain.element.id} suffix="C" />
-                                <Player id={improvement.top.element.id} />
+                                <div className="captain-opportunity-widget__player">
+                                    <b>OUT:</b> <Player id={improvement.captain.element.id} />
+                                </div>
+                                <div className="captain-opportunity-widget__player">
+                                    <b>IN:</b> <Player id={improvement.top.element.id} />
+                                </div>
                             </div>
                             <div className="captain-opportunity-widget__swap-info">
-                                <b>{(captainData.rawPoints || 0) * 2}</b> <SwapIcon /> <b>{(topData.rawPoints || 0) * 2} </b>
+                                <b>{getPointsLabel((captainData.rawPoints || 0) * 2)}</b> <SwapIcon /> <b>{getPointsLabel((topData.rawPoints || 0) * 2)} </b>
                                 {' '}
                                 (
                                     <SiteLink event={captainData.event.id} />

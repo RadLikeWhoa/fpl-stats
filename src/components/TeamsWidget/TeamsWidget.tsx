@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Team } from '../Team'
 import { Widget } from '../Widget'
-import { getAllPlayers, getPointsLabel, initialCaps, round, sort, sumNumbers } from '../../utilities'
+import { getAllPlayers, getPointsLabel, round, sort, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 import './TeamsWidget.scss'
 
@@ -26,35 +26,43 @@ const TeamsWidget: React.FC = () => {
     const allPlayers = getAllPlayers(stats)
 
     return (
-        <Widget title="Teams">
+        <Widget title="Teams" cssClasses="teams-widget">
             <ul className="widget__list">
                 {teams.map(team => {
                     const players = allPlayers.filter(player => player.element.team === team.id)
                     const points = sumNumbers(players.map(player => player.aggregates.totals.points))
 
-                    const positions: Record<string, number> = bootstrap.element_types
-                        .reduce((acc, curr) => ({
-                            ...acc,
-                            [curr.id]: players.filter(player => player.element.element_type === curr.id).length,
-                        }), {})
-
                     return (
-                        <li className="widget__list__item" key={team.id}>
-                            <Team team={team} />
-                            <div>
+                        <li className="teams-widget__item" key={team.id}>
+                            <div className="teams-widget__header">
+                                <Team team={team} />
                                 <div>
-                                    <b>{counts[team.id] || 0}</b>
+                                    <div>
+                                        <b>{counts[team.id] || 0}</b>
+                                    </div>
+                                    <div className="muted">
+                                        {getPointsLabel(points)}, {players.length > 0 ? round(points / players.length) : 0} <Metric metric="ppp" />
+                                    </div>
                                 </div>
-                                <div className="muted">
-                                    {getPointsLabel(points)}, {players.length > 0 ? round(points / players.length) : 0} <Metric metric="ppp" />
-                                </div>
-                                <div className="muted">
-                                    {Object.entries(positions).filter(([ type, count ]) => count > 0).map(([ type, count ]) => (
-                                        <span className="teams-widget__position" key={type}>
-                                            {count} {initialCaps(bootstrap.element_types.find(el => el.id === Number(type))?.plural_name_short || '')}
-                                        </span>
-                                    ))}
-                                </div>
+                            </div>
+                            <div>
+                                {Object.entries(stats).map(([ position, players ]) => {
+                                    const positionPlayers = players.filter(player => player.element.team === team.id)
+
+                                    if (!positionPlayers.length) {
+                                        return null
+                                    }
+
+                                    return (
+                                        <div className="teams-widget__position" data-position={bootstrap.element_types.find(el => el.id === Number(position))?.plural_name_short}>
+                                            {sort(positionPlayers.filter(player => player.element.team === team.id), el => el.aggregates.totals.points)
+                                                .map(player => (
+                                                    <div>{player.element.web_name} ({getPointsLabel(player.aggregates.totals.points)})</div>
+                                                ))
+                                            }
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </li>
                     )

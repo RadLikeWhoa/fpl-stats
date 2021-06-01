@@ -26,7 +26,12 @@ const ContributionWidget: React.FC = () => {
                     <li className="widget__list__item" key={player.element.id}>
                         <Player id={player.element.id} />
                         <div>
-                            <b>{round(player.aggregates.totals.points / entry.summary_overall_points * 100)}%</b> ({getPointsLabel(player.aggregates.totals.points)})
+                            <div>
+                                <b>{round(player.aggregates.totals.points / entry.summary_overall_points * 100)}%</b>
+                            </div>
+                            <div className="muted">
+                                {getPointsLabel(player.aggregates.totals.points)}
+                            </div>
                         </div>
                     </li>
                 ))}

@@ -1,3 +1,5 @@
+@import "../../styles/mixins";
+
 .tots-widget {
     background-color: #e5e5e5;
 }
@@ -5,6 +7,7 @@
 .tots {
     padding-top: 3rem;
     background-image: repeating-radial-gradient(circle at 50% 100%, #00AE55, #00AE55 10%, #01ba5c 10%, #01ba5c 20%);
+    overflow: hidden;
 
     &__row {
         display: flex;
@@ -15,11 +18,51 @@
             padding: 1.5rem 0;
             margin-top: 3rem;
             margin-bottom: 0;
-            background-image: linear-gradient(#e5e5e5 0%, #fff 40%, #ebebe6 40%, #e5e5e5 100%)
+            background-image: linear-gradient(#e5e5e5 0%, #fff 40%, #ebebe6 40%, #e5e5e5 100%);
+
+            @include up-to("M") {
+                margin-top: 1.5rem;
+            }
         }
 
         .tots-player {
             margin: 0 1rem;
+
+            @include up-to("M") {
+                width: 2.75rem;
+                margin: 0 0.25rem;
+            }
+
+            &__shirt {
+                @include up-to("M") {
+                    height: 2.5rem;
+                }
+            }
+
+            &__name {
+                @include up-to("M") {
+                    font-size: 0.5rem;
+                }
+            }
+
+            &__points {
+                @include up-to("M") {
+                    font-size: 0.5rem;
+                }
+            }
         }
+
+        @include up-to("M") {
+            margin-bottom: 0.75rem;
+
+            &--bench {
+                margin-bottom: 0;
+                padding: 0.75rem;
+            }
+        }
+    }
+
+    @include up-to("M") {
+        padding-top: 1.5rem;
     }
 }
