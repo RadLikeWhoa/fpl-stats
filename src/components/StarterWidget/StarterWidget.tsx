@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalStarts } from '../../utilities'
+import { getAllPlayers, getTotalStarts, sort } from '../../utilities'
 import { Player } from '../Player'
 
 const StarterWidget: React.FC = () => {
@@ -14,8 +14,7 @@ const StarterWidget: React.FC = () => {
         )
     }
 
-    const elements = getAllPlayers(stats)
-        .sort((a, b) => getTotalStarts(b) - getTotalStarts(a))
+    const elements = sort(getAllPlayers(stats), el => getTotalStarts(el))
 
     return (
         <Widget title="Top Starters">

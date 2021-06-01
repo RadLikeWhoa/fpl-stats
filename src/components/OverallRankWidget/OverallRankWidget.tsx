@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getShortName, thousandsSeparator, thousandsShorthand } from '../../utilities'
+import { getShortName, head, sort, thousandsSeparator, thousandsShorthand } from '../../utilities'
 
 const OverallRankWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
@@ -24,7 +24,7 @@ const OverallRankWidget: React.FC = () => {
         }
     })
 
-    const max = [ ...data ].sort((a, b) => b.value - a.value)[0].value * 1.05
+    const max = (head(sort([ ...data ], el => el.value))?.value || 0) * 1.05
 
     data = [ ...data ].map(element => ({
         ...element,

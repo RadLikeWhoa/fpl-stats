@@ -7,7 +7,7 @@ import './Player.scss'
 type Props = {
     id: number
     condensed?: boolean
-    suffix?: string | (() => JSX.Element)
+    suffix?: string | (() => JSX.Element | null)
 }
 
 const Player: React.FC<Props> = (props: Props) => {

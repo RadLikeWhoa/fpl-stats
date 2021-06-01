@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers } from '../../utilities'
+import { getAllPlayers, head, sort } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { SwapIcon } from '../SwapIcon'
@@ -23,8 +23,8 @@ const CaptainOpportunityWidget: React.FC = () => {
     const weeks = history.current.length
 
     const improvements = Array.from(Array(weeks).keys()).map((el, index) => ({
-        top: allPlayers.sort((a, b) => (b.data[index].rawPoints || 0) - (a.data[index].rawPoints || 0))[0],
-        captain: allPlayers.find(player => (player.data[index].multiplier || 0) > 0),
+        top: head(sort(allPlayers, el => el.data[index].rawPoints || 0)),
+        captain: allPlayers.find(player => (player.data[index].multiplier || 0) > 1),
     }))
 
     return (

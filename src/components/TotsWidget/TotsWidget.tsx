@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getTotalPoints } from '../../utilities'
+import { getTotalPoints, sort } from '../../utilities'
 import { TotsPlayer } from '../TotsPlayer'
 import { Widget } from '../Widget'
 import './TotsWidget.scss'
@@ -27,16 +27,16 @@ const TotsWidget: React.FC = () => {
         )
     }
 
-    const gk = [ ...stats[1] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_GK)
-    const def = [ ...stats[2] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_DEF)
-    const mid = [ ...stats[3] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_MID)
-    const fwd = [ ...stats[4] ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a)).slice(0, MAX_FWD)
+    const gk = sort(stats[1], el => getTotalPoints(el)).slice(0, MAX_GK)
+    const def = sort(stats[2], el => getTotalPoints(el)).slice(0, MAX_DEF)
+    const mid = sort(stats[3], el => getTotalPoints(el)).slice(0, MAX_MID)
+    const fwd = sort(stats[4], el => getTotalPoints(el)).slice(0, MAX_FWD)
 
-    const top = [ ...gk.slice(0, MIN_GK), ...def.slice(0, MIN_DEF), ...mid.slice(0, MIN_MID), ...fwd.slice(0, MIN_FWD) ]
-    const rest = [ ...def.slice(MIN_DEF), ...mid.slice(MIN_MID), ...fwd.slice(MIN_FWD) ].sort((a, b) => getTotalPoints(b) - getTotalPoints(a))
+    const top = gk.slice(0, MIN_GK).concat(def.slice(0, MIN_DEF)).concat(mid.slice(0, MIN_MID)).concat(fwd.slice(0, MIN_FWD))
+    const rest = sort(def.slice(MIN_DEF).concat(mid.slice(MIN_MID)).concat(fwd.slice(MIN_FWD)), el => getTotalPoints(el))
 
-    const xi = [ ...top, ...rest.slice(0, 4) ].sort((a, b) => a.element.element_type - b.element.element_type)
-    const bench = [ ...gk.slice(MIN_GK), ...rest.slice(4) ].sort((a, b) => a.element.element_type - b.element.element_type)
+    const xi = sort(top.concat(rest.slice(0, 4)), el => el.element.element_type, 'asc')
+    const bench = sort(gk.slice(MIN_GK).concat(rest.slice(4)), el => el.element.element_type, 'asc')
 
     return (
         <Widget title="Team of the Season">

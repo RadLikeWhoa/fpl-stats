@@ -2,9 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { aggregateStats, getAllPlayers, thousandsSeparator } from '../../utilities'
-import { sumNumbers } from '../../utilities/numbers';
+import { aggregateStats, getAllPlayers, head, thousandsSeparator, sumNumbers, reduce } from '../../utilities'
 import { SiteLink } from '../SiteLink'
+import { ElementStats, StatData } from '../../types'
+
+const getAggregateValues = (players: StatData[], key: keyof ElementStats): number[] => aggregateStats(players, key).map(stat => stat.value)
 
 const SeasonWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
@@ -20,31 +22,31 @@ const SeasonWidget: React.FC = () => {
 
     const allPlayers = getAllPlayers(stats)
 
-    const reds = aggregateStats(allPlayers, 'red_cards').map(stat => stat['red_cards'] as number)
-    const yellows = aggregateStats(allPlayers, 'yellow_cards').map(stat => stat['yellow_cards'] as number)
-    const goals = aggregateStats(allPlayers, 'goals_scored').map(stat => stat['goals_scored'] as number)
-    const assists = aggregateStats(allPlayers, 'assists').map(stat => stat['assists'] as number)
-    const cleanSheets = aggregateStats(allPlayers, 'clean_sheets').map(stat => stat['clean_sheets'] as number)
-    const goalsConceded = aggregateStats(allPlayers, 'goals_conceded').map(stat => stat['goals_conceded'] as number)
-    const ownGoals = aggregateStats(allPlayers, 'own_goals').map(stat => stat['own_goals'] as number)
-    const saves = aggregateStats(allPlayers, 'saves').map(stat => stat['saves'] as number)
-    const minutes = aggregateStats(allPlayers, 'minutes').map(stat => stat['minutes'] as number)
-    const penaltiesMissed = aggregateStats(allPlayers, 'penalties_missed').map(stat => stat['penalties_missed'] as number)
-    const penaltiesSaved = aggregateStats(allPlayers, 'penalties_saved').map(stat => stat['penalties_saved'] as number)
-    const inDreamteam = aggregateStats(allPlayers, 'in_dreamteam').map(stat => stat['in_dreamteam'] as number)
-    const bps = aggregateStats(allPlayers, 'bps').map(stat => stat['bps'] as number)
-    const bonus = aggregateStats(allPlayers, 'bonus').map(stat => stat['bonus'] as number)
+    const reds = getAggregateValues(allPlayers, 'red_cards')
+    const yellows = getAggregateValues(allPlayers, 'yellow_cards')
+    const goals = getAggregateValues(allPlayers, 'goals_scored')
+    const assists = getAggregateValues(allPlayers, 'assists')
+    const cleanSheets = getAggregateValues(allPlayers, 'clean_sheets')
+    const goalsConceded = getAggregateValues(allPlayers, 'goals_conceded')
+    const ownGoals = getAggregateValues(allPlayers, 'own_goals')
+    const saves = getAggregateValues(allPlayers, 'saves')
+    const minutes = getAggregateValues(allPlayers, 'minutes')
+    const penaltiesMissed = getAggregateValues(allPlayers, 'penalties_missed')
+    const penaltiesSaved = getAggregateValues(allPlayers, 'penalties_saved')
+    const inDreamteam = getAggregateValues(allPlayers, 'in_dreamteam')
+    const bps = getAggregateValues(allPlayers, 'bps')
+    const bonus = getAggregateValues(allPlayers, 'bonus')
 
-    const totalTransfers = history.current.reduce((acc,event) => acc + event.event_transfers, 0)
-    const totalHits = history.current.reduce((acc,event) => acc + event.event_transfers_cost / 4, 0)
-    const totalBenched = history.current.reduce((acc,event) => acc + event.points_on_bench, 0)
+    const totalTransfers = reduce(history.current, el => el.event_transfers)
+    const totalHits = reduce(history.current, el => el.event_transfers_cost / 4)
+    const totalBenched = reduce(history.current, el => el.points_on_bench)
 
     const tc = allPlayers
         .find(player => player.data.findIndex(data => data.multiplier === 3) !== -1)
         ?.data
         .find(data => data.multiplier === 3)
 
-    const bbWeek = Object.entries(chips).find(([ gw, chip ]) => chip === 'bboost')?.[0]
+    const bbWeek = head(Object.entries(chips).find(([ gw, chip ]) => chip === 'bboost') || [])
 
     const bbPoints = bbWeek
         ? sumNumbers(allPlayers

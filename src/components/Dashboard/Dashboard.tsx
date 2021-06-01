@@ -9,7 +9,7 @@ import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, getTotalPoints, round } from '../../utilities'
+import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, getTotalPoints, round, sort } from '../../utilities'
 import { Modal } from '../Modal'
 import { setId } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
@@ -38,8 +38,8 @@ import { DifferenceWidget } from '../DifferenceWidget'
 import { OverallRankWidget } from '../OverallRankWidget'
 import { PointsWidget } from '../PointsWidget'
 import { ValueWidget } from '../ValueWidget'
-import './Dashboard.scss'
 import { SiteLink } from '../SiteLink'
+import './Dashboard.scss'
 
 type OptionType = {
     value: string
@@ -68,15 +68,13 @@ const sortOptions = [
     { value: 'alphabet', label: 'Alphabetically' },
 ]
 
-const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sort: OptionType): JSX.Element[] => Object.entries(stats).map(([ elementType, statData ]) => (
+const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionType): JSX.Element[] => Object.entries(stats).map(([ elementType, statData ]) => (
     <div key={elementType}>
         <li className="dashboard__category">
             <span>{bootstrap?.element_types.find(el => el.id === Number(elementType))?.plural_name_short}</span>
             <span>{statData.length}</span>
         </li>
-        {statData
-            .filter(element => element.data.filter(pick => pick.multiplier !== null).length)
-            .sort((a, b) => sortings[sort.value](b) - sortings[sort.value](a))
+        {sort(statData.filter(element => element.data.filter(pick => pick.multiplier !== null).length), el => sortings[sorting.value](el))
             .map(element => (
                 <li key={element.element.id} className="dashboard__item">
                     <div className="dashboard__player">

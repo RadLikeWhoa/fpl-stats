@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Team } from '../Team'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalPoints, initialCaps, round, sumNumbers } from '../../utilities'
+import { getAllPlayers, getTotalPoints, initialCaps, round, sort, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 import './TeamsWidget.scss'
 
@@ -21,7 +21,7 @@ const TeamsWidget: React.FC = () => {
         .reduce((acc: number[], curr) => [ ...acc, ...curr.map(el => el.element.team) ], [])
         .reduce((acc: { [key: number]: number }, curr) => ({ ...acc, [curr]: (acc[Number(curr)] || 0) + 1 }), {})
 
-    const teams = [ ...bootstrap.teams ].sort((a, b) => (counts[b.id] || 0) - (counts[a.id] || 0))
+    const teams = sort(bootstrap.teams, el => counts[el.id] || 0)
 
     const allPlayers = getAllPlayers(stats)
 

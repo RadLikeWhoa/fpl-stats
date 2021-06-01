@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useMeanLabel, useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { round, thousandsSeparator } from '../../utilities'
+import { head, last, round, sort, thousandsSeparator } from '../../utilities'
 import { SiteLink } from '../SiteLink'
 
 const GameweekWidget: React.FC = () => {
@@ -20,12 +20,15 @@ const GameweekWidget: React.FC = () => {
     }
 
     const differences = history.current.map((week, index) => week.points - bootstrap.events[index].average_entry_score)
-    const sortedRanks = [ ...history.current ].sort((a, b) => a.rank - b.rank)
+    const sortedRanks = sort(history.current, el => el.rank, 'asc')
 
-    const gws = [ ...history.current ].sort((a, b) => b.points - a.points)
+    const gws = sort(history.current, el => el.points)
 
-    const bestGW = gws[0]
-    const worstGW = gws[gws.length - 1]
+    const bestGW = head(gws)
+    const worstGW = last(gws)
+
+    const bestGWRank = head(sortedRanks)
+    const worstGWRank = last(sortedRanks)
 
     return (
         <Widget title="Gameweeks">
@@ -46,46 +49,54 @@ const GameweekWidget: React.FC = () => {
                     <span>{meanLabel('GW Rank')}</span>
                     <span>{thousandsSeparator(Number(round(meanValue(history.current.map(week => week.rank)))))}</span>
                 </li>
-                <li className="widget__list__item">
-                    <span>Best Gameweek</span>
-                    <span>
-                        {bestGW.points} pts
-                        {' '}
-                        (
-                            <SiteLink event={bestGW.event} />
-                        )
-                    </span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Worst Gameweek</span>
-                    <span>
-                        {worstGW.points} pts
-                        {' '}
-                        (
-                            <SiteLink event={worstGW.event} />
-                        )
-                    </span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Best GW Rank</span>
-                    <span>
-                        {thousandsSeparator(sortedRanks[0].rank)}
-                        {' '}
-                        (
-                            <SiteLink event={sortedRanks[0].event} />
-                        )
-                    </span>
-                </li>
-                <li className="widget__list__item">
-                    <span>Worst GW Rank</span>
-                    <span>
-                        {thousandsSeparator(sortedRanks[sortedRanks.length - 1].rank)}
-                        {' '}
-                        (
-                            <SiteLink event={sortedRanks[sortedRanks.length - 1].event} />
-                        )
-                    </span>
-                </li>
+                {bestGW && (
+                    <li className="widget__list__item">
+                        <span>Best Gameweek</span>
+                        <span>
+                            {bestGW.points} pts
+                            {' '}
+                            (
+                                <SiteLink event={bestGW.event} />
+                            )
+                        </span>
+                    </li>
+                )}
+                {worstGW && (
+                    <li className="widget__list__item">
+                        <span>Worst Gameweek</span>
+                        <span>
+                            {worstGW.points} pts
+                            {' '}
+                            (
+                                <SiteLink event={worstGW.event} />
+                            )
+                        </span>
+                    </li>
+                )}
+                {bestGWRank && (
+                    <li className="widget__list__item">
+                        <span>Best GW Rank</span>
+                        <span>
+                            {thousandsSeparator(bestGWRank.rank)}
+                            {' '}
+                            (
+                                <SiteLink event={bestGWRank.event} />
+                            )
+                        </span>
+                    </li>
+                )}
+                {worstGWRank && (
+                    <li className="widget__list__item">
+                        <span>Worst GW Rank</span>
+                        <span>
+                            {thousandsSeparator(worstGWRank.rank)}
+                            {' '}
+                            (
+                                <SiteLink event={worstGWRank.event} />
+                            )
+                        </span>
+                    </li>
+                )}
             </ul>
         </Widget>
     )

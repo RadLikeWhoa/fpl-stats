@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { thousandsSeparator, sumNumbers, round } from '../../utilities'
+import { thousandsSeparator, sumNumbers, round, sort } from '../../utilities'
 import { Metric } from '../Metric'
 
 type FormationInformation = {
@@ -67,7 +67,7 @@ const FormationWidget: React.FC = () => {
     return (
         <Widget title="Formations">
             <ul className="widget__list">
-                {Object.entries(data).sort((a, b) => b[1].count - a[1].count).map(([ formation, information ]) => {
+                {sort(Object.entries(data), el => el[1].count).map(([ formation, information ]) => {
                     return (
                         <li className="widget__list__item" key={formation}>
                             <span>{formatFormation(formation)}</span>

@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalSelections } from '../../utilities'
+import { getAllPlayers, getTotalSelections, sort } from '../../utilities'
 import { Player } from '../Player'
 
 const TeamsWidget: React.FC = () => {
@@ -14,8 +14,7 @@ const TeamsWidget: React.FC = () => {
         )
     }
 
-    const elements = getAllPlayers(stats)
-        .sort((a, b) => getTotalSelections(b) - getTotalSelections(a))
+    const elements = sort(getAllPlayers(stats), el => getTotalSelections(el))
 
     return (
         <Widget title="Top Selections">

@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalBenched } from '../../utilities'
+import { getAllPlayers, getTotalBenched, sort } from '../../utilities'
 import { Player } from '../Player'
 
 const BenchWidget: React.FC = () => {
@@ -14,8 +14,7 @@ const BenchWidget: React.FC = () => {
         )
     }
 
-    const elements = getAllPlayers(stats)
-        .sort((a, b) => getTotalBenched(b) - getTotalBenched(a))
+    const elements = sort(getAllPlayers(stats), el => getTotalBenched(el))
 
     return (
         <Widget title="Top Bench Players">

@@ -1,3 +1,5 @@
+import { head, reduce, sort } from './arrays'
+
 export const thousandsSeparator = (value: number): string => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
@@ -7,7 +9,7 @@ export const thousandsShorthand = (value: number): string => {
 }
 
 export const sumNumbers = (series: number[]): number => {
-    return series.reduce((acc, curr) => acc + curr, 0)
+    return reduce(series, el => el)
 }
 
 export const average = (series: number[]): number => {
@@ -15,7 +17,7 @@ export const average = (series: number[]): number => {
 }
 
 export const median = (series: number[]): number => {
-    const sorted = sort(series)
+    const sorted = sort(series, el => el)
     const mid = Math.ceil(series.length / 2)
 
     if (sorted.length % 2 === 0) {
@@ -25,19 +27,11 @@ export const median = (series: number[]): number => {
     return sorted[mid - 1]
 }
 
-export const sort = (series: number[], direction: 'asc' | 'desc' = 'desc'): number[] => {
-    if (direction === 'asc') {
-        return [ ...series ].sort((a, b) => a - b)
-    }
-
-    return [ ...series ].sort((a, b) => b - a)
-}
-
 export const round = (value: number, precision: number = 1): string => {
     const formatted = value.toFixed(precision)
 
     if (/\.0+$/.test(formatted)) {
-        return formatted.split('.')[0]
+        return head(formatted.split('.')) || ''
     }
 
     return formatted

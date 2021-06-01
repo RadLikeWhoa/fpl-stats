@@ -1,11 +1,17 @@
 import { ElementStats, Event, StatData, Stats, StatDataGameweek } from '../types'
+import { head, reduce, sort } from './arrays'
 import { sumNumbers } from './numbers'
 
-type Streak = {
+export type Streak = {
     start: Event
     end: Event
     length: number
     points?: number
+}
+
+export type AggregateStat = {
+    player: StatData
+    value: number
 }
 
 export const getTotalSelections = (statData: StatData): number => {
@@ -21,20 +27,20 @@ export const getTotalBenched = (statData: StatData): number => {
 }
 
 export const getTotalPoints = (statData: StatData): number => {
-    return statData.data.reduce((acc, pick) => acc + (pick.points || 0), 0)
+    return reduce(statData.data, el => el.points || 0)
 }
 
 export const getTotalBenchPoints = (statData: StatData): number => {
-    return statData.data.reduce((acc, pick) => acc + (pick.multiplier === 0 ? (pick.rawPoints || 0) : 0), 0)
+    return reduce(statData.data, el => el.multiplier === 0 ? (el.rawPoints || 0) : 0)
 }
 
 export const getAllPlayers = (stats: Stats): StatData[] => {
     return Object.values(stats).reduce((acc, curr) => acc.concat(curr), [])
 }
 
-export const aggregateStats = (players: StatData[], key: keyof ElementStats) => players.map(player => ({
+export const aggregateStats = (players: StatData[], key: keyof ElementStats): AggregateStat[] => sort(players.map(player => ({
     player,
-    [key]: player.data.reduce((acc, data) => {
+    value: player.data.reduce((acc, data) => {
         if (typeof data.stats?.[key] === 'number') {
             return ((data.stats?.[key] as number) || 0) + acc
         }
@@ -45,9 +51,9 @@ export const aggregateStats = (players: StatData[], key: keyof ElementStats) => 
 
         return acc
     }, 0)
-})).sort((a, b) => (b[key] as number) - (a[key] as number))
+})), el => el.value)
 
-export const getTopStatAggregate = (players: StatData[], key: keyof ElementStats) => aggregateStats(players, key)[0]
+export const getTopStatAggregate = (players: StatData[], key: keyof ElementStats): AggregateStat | null => head(aggregateStats(players, key))
 
 const getStreak = (statData: StatData, comparison: (gw: StatDataGameweek) => boolean, ignoreBlanks: boolean = false): Streak | null => {
     const streaks = statData.data.reduce((acc, curr) => {
