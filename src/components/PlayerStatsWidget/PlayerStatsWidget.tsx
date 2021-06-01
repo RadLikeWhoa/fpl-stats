@@ -102,7 +102,7 @@ const PlayerStatsWidget: React.FC = () => {
             .map((el, index) => head(sort(allPlayers, el => el.data[index].rawPoints || 0)))
             .reduce((acc, curr) => curr ? ({
                 ...acc,
-                [curr.element.id]: acc[curr.element.id] ? acc[curr.element.id] + 1 : 1,
+                [curr.element.id]: (acc[curr.element.id] ? acc[curr.element.id] : 0) + 1,
             }) : acc, {} as Record<number, number>)),
         el => el[1]
     ))
@@ -142,7 +142,7 @@ const PlayerStatsWidget: React.FC = () => {
                 {topSeasonReturner && (
                     <li className="widget__list__item">
                         <span>Top Season Returner</span>
-                        <span>
+                        {getTotalStarts(topSeasonReturner) > 0 && (
                             <Player
                                 id={topSeasonReturner.element.id}
                                 suffix={() => (
@@ -159,29 +159,31 @@ const PlayerStatsWidget: React.FC = () => {
                                 )}
                                 condensed
                             />
-                        </span>
+                        )}
                     </li>
                 )}
                 {topBenchGWReturner && renderTopBenchGWReturner(topBenchGWReturner)}
                 {topBenchReturner && (
                     <li className="widget__list__item">
                         <span>Most Points While Benched</span>
-                        <Player
-                            id={topBenchReturner.element.id}
-                            suffix={() => (
-                                <>
-                                    {' '}
-                                    (
-                                        {getPointsLabel(getTotalBenchPoints(topBenchReturner))},
+                        {topBenchReturner.data.filter(data => data.multiplier === 0).length > 0 && (
+                            <Player
+                                id={topBenchReturner.element.id}
+                                suffix={() => (
+                                    <>
                                         {' '}
-                                        {round(getTotalBenchPoints(topBenchReturner) / topBenchReturner.data.filter(data => data.multiplier === 0).length)}
-                                        {' '}
-                                        <Metric metric="ppg" />
-                                    )
-                                </>
-                            )}
-                            condensed
-                        />
+                                        (
+                                            {getPointsLabel(getTotalBenchPoints(topBenchReturner))},
+                                            {' '}
+                                            {round(getTotalBenchPoints(topBenchReturner) / topBenchReturner.data.filter(data => data.multiplier === 0).length)}
+                                            {' '}
+                                            <Metric metric="ppg" />
+                                        )
+                                    </>
+                                )}
+                                condensed
+                            />
+                        )}
                     </li>
                 )}
                 {reds && reds.value > 0 && (

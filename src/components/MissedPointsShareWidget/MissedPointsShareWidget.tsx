@@ -5,6 +5,7 @@ import { Widget } from '../Widget'
 import { getAllPlayers, getPointsLabel, getTotalRawPoints, getTotalSelections, round, sort } from '../../utilities'
 import { Player } from '../Player'
 import { getGWCountLabel } from '../../utilities/strings';
+import { StatData } from '../../types'
 
 type Props = {
     title: string
@@ -12,6 +13,8 @@ type Props = {
 }
 
 const MAX_ITEMS = 10
+
+const getPointsShare = (player: StatData): number => player.element.total_points > 0 ? 100 - getTotalRawPoints(player) / player.element.total_points * 100 : 0
 
 const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
     const stats = useSelector((state: RootState) => state.stats.data)
@@ -25,7 +28,7 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
 
     const elements = sort(
         getAllPlayers(stats),
-        el => 100 - getTotalRawPoints(el) / el.element.total_points,
+        el => getPointsShare(el),
         props.top ? 'desc': 'asc'
     ).slice(0, MAX_ITEMS)
 
@@ -37,7 +40,7 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
                         <Player id={element.element.id} />
                         <div>
                             <div>
-                                {element.element.total_points > 0 && `${round(100 - getTotalRawPoints(element) / element.element.total_points * 100)}%`}
+                                {element.element.total_points > 0 && `${round(getPointsShare(element))}%`}
                             </div>
                             <div>
                                 ({getPointsLabel(element.element.total_points - getTotalRawPoints(element))} in {getGWCountLabel(history.current.length - getTotalSelections(element))})

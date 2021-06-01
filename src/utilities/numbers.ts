@@ -13,7 +13,7 @@ export const sumNumbers = (series: number[]): number => {
 }
 
 export const average = (series: number[]): number => {
-    return sumNumbers(series) / series.length
+    return series.length ? sumNumbers(series) / series.length : 0
 }
 
 export const median = (series: number[]): number => {

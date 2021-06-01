@@ -18,21 +18,22 @@ const SelectionStreakWidget: React.FC = () => {
         )
     }
 
-    const allPlayers = getAllPlayers(stats)
+    const streakers = getAllPlayers(stats)
+        .sort((a, b) => {
+            const aStreak = getSelectionStreak(a)
+            const bStreak = getSelectionStreak(b)
 
-    const streakers = allPlayers.sort((a, b) => {
-        const aStreak = getSelectionStreak(a)
-        const bStreak = getSelectionStreak(b)
+            const aStreakLength = getSelectionStreak(a)?.length || 0
+            const bStreakLength = getSelectionStreak(b)?.length || 0
 
-        const aStreakLength = getSelectionStreak(a)?.length || 0
-        const bStreakLength = getSelectionStreak(b)?.length || 0
+            if (bStreakLength - aStreakLength === 0) {
+                return (bStreak?.points || 0) - (aStreak?.points || 0)
+            }
 
-        if (bStreakLength - aStreakLength === 0) {
-            return (bStreak?.points || 0) - (aStreak?.points || 0)
-        }
-
-        return bStreakLength - aStreakLength
-    }).slice(0, MAX_ITEMS)
+            return bStreakLength - aStreakLength
+        })
+        .filter(streaker => getSelectionStreak(streaker) !== null)
+        .slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Highest Selection Streaks">

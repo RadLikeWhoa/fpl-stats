@@ -44,25 +44,13 @@ const FormationWidget: React.FC = () => {
             .map(entries => entries[index])
             .join('-')
         )
-        .reduce((acc, formation, index) => {
-            if (acc[formation]) {
-                return {
-                    ...acc,
-                    [formation]: {
-                        count: acc[formation].count + 1,
-                        points: acc[formation].points + history.current[index].points,
-                    }
-                }
+        .reduce((acc, formation, index) => ({
+            ...acc,
+            [formation]: {
+                count: (acc[formation] ? acc[formation].count : 0) + 1,
+                points: (acc[formation] ? acc[formation].points : 0) + history.current[index].points,
             }
-
-            return {
-                ...acc,
-                [formation]: {
-                    count: 1,
-                    points: history.current[index].points,
-                }
-            }
-        }, {} as Record<string, FormationInformation>)
+        }), {} as Record<string, FormationInformation>)
 
     return (
         <Widget title="Formations">

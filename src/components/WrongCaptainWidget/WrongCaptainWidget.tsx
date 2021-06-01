@@ -27,7 +27,7 @@ const WrongCaptainWidget: React.FC = () => {
         .filter((element, index) => (element.top?.data[index].rawPoints || 0) > (element.captain?.data[index].rawPoints || 0))
         .reduce((acc, curr) => curr.captain ? ({
             ...acc,
-            [curr.captain.element.id]: acc[curr.captain.element.id] ? acc[curr.captain.element.id] + 1 : 1,
+            [curr.captain.element.id]: (acc[curr.captain.element.id] ? acc[curr.captain.element.id] : 0) + 1,
         }) : acc, {} as Record<number, number>)
 
     const timesUsed = allPlayers.reduce((acc, curr) => {

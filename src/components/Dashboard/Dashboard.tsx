@@ -97,17 +97,26 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
                     </div>
                     <div className="dashboard__totals">
                         <span className="dashboard__stat">
-                            {getTotalSelections(element)} ({round(getTotalSelections(element) / element.data.length * 100)}%)
+                            {getTotalSelections(element)}{element.data.length > 0 && ` (${round(getTotalSelections(element) / element.data.length * 100)}%)`}
                         </span>
                         <span className="dashboard__stat">
-                            {getTotalStarts(element)} ({round(getTotalStarts(element) / element.data.length * 100)}%)
+                            {getTotalStarts(element)}{element.data.length > 0 && ` (${round(getTotalStarts(element) / element.data.length * 100)}%)`}
                         </span>
                         <span className="dashboard__stat">
-                            {getTotalBenched(element)} ({round(getTotalBenched(element) / element.data.length * 100)}%)
+                            {getTotalBenched(element)}{element.data.length > 0 && ` (${round(getTotalBenched(element) / element.data.length * 100)}%)`}
                         </span>
                         <span className="dashboard__stat">
                             <span>
-                                {getTotalPoints(element)} ({getTotalStarts(element) > 0 ? round(getTotalPoints(element) / getTotalStarts(element)) : 0} <Metric metric="ppg" />)
+                                {getTotalPoints(element)}
+                                {getTotalStarts(element) > 0 && (
+                                    <>
+                                        (
+                                            {round(getTotalPoints(element) / getTotalStarts(element))}
+                                            {' '}
+                                            <Metric metric="ppg" />
+                                        )
+                                    </>
+                                )}
                             </span>
                         </span>
                     </div>

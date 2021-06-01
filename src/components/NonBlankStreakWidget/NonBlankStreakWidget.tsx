@@ -18,21 +18,22 @@ const NonBlankStreakWidget: React.FC = () => {
         )
     }
 
-    const allPlayers = getAllPlayers(stats)
+    const streakers = getAllPlayers(stats)
+        .sort((a, b) => {
+            const aStreak = getNonBlankStreak(a)
+            const bStreak = getNonBlankStreak(b)
 
-    const streakers = allPlayers.sort((a, b) => {
-        const aStreak = getNonBlankStreak(a)
-        const bStreak = getNonBlankStreak(b)
+            const aStreakLength = getNonBlankStreak(a)?.length || 0
+            const bStreakLength = getNonBlankStreak(b)?.length || 0
 
-        const aStreakLength = getNonBlankStreak(a)?.length || 0
-        const bStreakLength = getNonBlankStreak(b)?.length || 0
+            if (bStreakLength - aStreakLength === 0) {
+                return (bStreak?.points || 0) - (aStreak?.points || 0)
+            }
 
-        if (bStreakLength - aStreakLength === 0) {
-            return (bStreak?.points || 0) - (aStreak?.points || 0)
-        }
-
-        return bStreakLength - aStreakLength
-    }).slice(0, MAX_ITEMS)
+            return bStreakLength - aStreakLength
+        })
+        .filter(streaker => getNonBlankStreak(streaker) !== null)
+        .slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Highest Non-Blank Streaks">
