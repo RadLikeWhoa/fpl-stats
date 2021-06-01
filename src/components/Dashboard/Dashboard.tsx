@@ -9,7 +9,7 @@ import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, getTotalPoints, round, sort } from '../../utilities'
+import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, getTotalPoints, round, sort, getPointsLabel } from '../../utilities'
 import { Modal } from '../Modal'
 import { setId } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
@@ -41,6 +41,7 @@ import { ValueWidget } from '../ValueWidget'
 import { SiteLink } from '../SiteLink'
 import { WrongCaptainWidget } from '../WrongCaptainWidget'
 import { ContributionWidget } from '../ContributionWidget'
+import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -181,7 +182,7 @@ const Dashboard: React.FC = () => {
                         <Widget>
                             <h1 className="dashboard__title">
                                 <SiteLink label={entry.name} />
-                                <div className="small">{entry.summary_overall_points} pts — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
+                                <div className="small">{getPointsLabel(entry.summary_overall_points)} — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
                             </h1>
                             {id !== undefined && (
                                 <Button
@@ -284,6 +285,8 @@ const Dashboard: React.FC = () => {
                     <CaptainOpportunityWidget />
                     <WrongCaptainWidget />
                     <ContributionWidget />
+                    <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
+                    <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />
                 </div>
                 <div className="dashboard__graphs">
                     <OverallRankWidget />

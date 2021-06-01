@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { thousandsSeparator, sumNumbers, round, sort } from '../../utilities'
+import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric';
@@ -39,7 +39,7 @@ const CaptainWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item" key={captain.player.element.id}>
                             <Player id={captain.player.element.id} />
-                            <span>{captain.data.length} ({thousandsSeparator(sum)} pts, {round(sum / captain.data.length)} <Metric metric="ppg" />)</span>
+                            <span>{captain.data.length} ({getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)} <Metric metric="ppg" />)</span>
                         </li>
                     )
                 })}

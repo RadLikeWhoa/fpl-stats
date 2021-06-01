@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getBenchStreak, sort } from '../../utilities'
+import { getAllPlayers, getBenchStreak, getGWCountLabel, sort } from '../../utilities'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
@@ -41,7 +41,7 @@ const BenchStreakWidget: React.FC = () => {
                                     <SiteLink event={streak.end.id} />
                                 </div>
                                 <div>
-                                    ({streak.length} GWs)
+                                    ({getGWCountLabel(streak.length)})
                                 </div>
                             </div>
                         </li>

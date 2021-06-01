@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { aggregateStats, getAllPlayers, head, thousandsSeparator, sumNumbers, reduce, round } from '../../utilities'
+import { aggregateStats, getAllPlayers, head, thousandsSeparator, sumNumbers, reduce, round, getPointsLabel } from '../../utilities'
 import { SiteLink } from '../SiteLink'
 import { ElementStats, StatData } from '../../types'
 
@@ -70,11 +70,11 @@ const SeasonWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>Total Hits Taken</span>
-                    <span>{totalHits} ({totalHits * -4} pts{entry.summary_overall_points > 0 ? `, ${round(totalHits * 4 / entry.summary_overall_points * 100)}%)` : ')'}</span>
+                    <span>{totalHits} ({getPointsLabel(totalHits * -4)}{entry.summary_overall_points > 0 ? `, ${round(totalHits * 4 / entry.summary_overall_points * 100)}%)` : ')'}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points on Bench</span>
-                    <span>{totalBenched} pts</span>
+                    <span>{getPointsLabel(totalBenched)}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Double Digit Hauls</span>
@@ -140,7 +140,8 @@ const SeasonWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Triple Captain Points Gained</span>
                         <span>
-                            {(tc.points || 0) / 3} pts
+                            {getPointsLabel((tc.points || 0) / 3)}
+                            {' '}
                             (
                                 <SiteLink event={tc.event.id} />
                             )
@@ -151,7 +152,8 @@ const SeasonWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Bench Boost Points Gained</span>
                         <span>
-                            {bbPoints} pts
+                            {getPointsLabel(bbPoints)}
+                            {' '}
                             (
                                 <SiteLink event={Number(bbWeek)} />
                             )

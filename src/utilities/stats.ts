@@ -30,6 +30,10 @@ export const getTotalPoints = (statData: StatData): number => {
     return reduce(statData.data, el => el.points || 0)
 }
 
+export const getTotalRawPoints = (statData: StatData): number => {
+    return reduce(statData.data, el => el.rawPoints || 0)
+}
+
 export const getTotalBenchPoints = (statData: StatData): number => {
     return reduce(statData.data, el => el.multiplier === 0 ? (el.rawPoints || 0) : 0)
 }

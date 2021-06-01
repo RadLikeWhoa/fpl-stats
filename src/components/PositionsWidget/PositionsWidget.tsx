@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
-import { getTotalPoints, thousandsSeparator, sumNumbers, round, reduce } from '../../utilities'
+import { getTotalPoints, thousandsSeparator, sumNumbers, round, reduce, getPointsLabel } from '../../utilities'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric';
 
@@ -40,7 +40,7 @@ const PositionsWidget: React.FC = () => {
                             <span>
                                 {elements}
                                 {' '}
-                                ({thousandsSeparator(sumNumbers(totalPoints))} pts, {round(meanValue(totalPoints))} <Metric metric="ppp" />)
+                                ({getPointsLabel(thousandsSeparator(sumNumbers(totalPoints)))}, {round(meanValue(totalPoints))} <Metric metric="ppp" />)
                             </span>
                         </li>
                     )

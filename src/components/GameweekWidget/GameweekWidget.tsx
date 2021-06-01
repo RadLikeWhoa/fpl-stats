@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useMeanLabel, useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { head, last, round, sort, thousandsSeparator } from '../../utilities'
+import { head, last, round, sort, thousandsSeparator, getPointsLabel } from '../../utilities'
 import { SiteLink } from '../SiteLink'
 
 const GameweekWidget: React.FC = () => {
@@ -35,7 +35,7 @@ const GameweekWidget: React.FC = () => {
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>{meanLabel('Difference to GW Average')}</span>
-                    <span>{round(meanValue(differences))} pts</span>
+                    <span>{getPointsLabel(round(meanValue(differences)))}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Times Above GW Average</span>
@@ -53,7 +53,7 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Best Gameweek</span>
                         <span>
-                            {bestGW.points} pts
+                            {getPointsLabel(bestGW.points)}
                             {' '}
                             (
                                 <SiteLink event={bestGW.event} />
@@ -65,7 +65,7 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Worst Gameweek</span>
                         <span>
-                            {worstGW.points} pts
+                            {getPointsLabel(worstGW.points)}
                             {' '}
                             (
                                 <SiteLink event={worstGW.event} />

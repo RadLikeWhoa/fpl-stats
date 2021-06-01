@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { StatData } from '../../types'
-import { getAllPlayers, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator, round, sort, head } from '../../utilities'
+import { getAllPlayers, getTopStatAggregate, getTotalBenchPoints, getTotalPoints, getTotalStarts, thousandsSeparator, round, sort, head, getPointsLabel } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
@@ -25,7 +25,7 @@ const renderTopBenchGWReturner = (returner: StatData): JSX.Element | null => {
                         <>
                             {' '}
                             (
-                                {week.rawPoints} pts,
+                                {getPointsLabel(week.rawPoints || 0)},
                                 {' '}
                                 <SiteLink event={week.event.id} />
                             )
@@ -127,7 +127,7 @@ const PlayerStatsWidget: React.FC = () => {
                                         <>
                                             {' '}
                                             (
-                                                {week.points} pts,
+                                                {getPointsLabel(week.points || 0)},
                                                 {' '}
                                                 <SiteLink event={week.event.id} />
                                             )
@@ -149,7 +149,7 @@ const PlayerStatsWidget: React.FC = () => {
                                     <>
                                         {' '}
                                         (
-                                            {getTotalPoints(topSeasonReturner)} pts,
+                                            {getPointsLabel(getTotalPoints(topSeasonReturner))},
                                             {' '}
                                             {round(getTotalPoints(topSeasonReturner) / getTotalStarts(topSeasonReturner))}
                                             {' '}
@@ -172,7 +172,7 @@ const PlayerStatsWidget: React.FC = () => {
                                 <>
                                     {' '}
                                     (
-                                        {getTotalBenchPoints(topBenchReturner)} pts,
+                                        {getPointsLabel(getTotalBenchPoints(topBenchReturner))},
                                         {' '}
                                         {round(getTotalBenchPoints(topBenchReturner) / topBenchReturner.data.filter(data => data.multiplier === 0).length)}
                                         {' '}
