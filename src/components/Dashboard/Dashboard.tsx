@@ -9,7 +9,7 @@ import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getTotalSelections, getTotalStarts, getTotalBenched, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, getTotalPoints, round, sort, getPointsLabel } from '../../utilities'
+import { getPastEvents, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, round, sort, getPointsLabel } from '../../utilities'
 import { Modal } from '../Modal'
 import { setId } from '../../reducers/settings'
 import { buildData } from '../../reducers/stats'
@@ -54,10 +54,10 @@ type QueryString = {
 }
 
 const sortings: { [ key: string ]: (statData: StatData) => number } = {
-    points: getTotalPoints,
-    selection: getTotalSelections,
-    start: getTotalStarts,
-    bench: getTotalBenched,
+    points: el => el.aggregates.totals.points,
+    selection: el => el.aggregates.totals.selections,
+    start: el => el.aggregates.totals.starts,
+    bench: el => el.aggregates.totals.benched,
     alphabet: (statData: StatData): number => {
         return statData.element.web_name.toLowerCase().charCodeAt(0) * -1
     }
@@ -97,26 +97,23 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
                     </div>
                     <div className="dashboard__totals">
                         <span className="dashboard__stat">
-                            {getTotalSelections(element)}{element.data.length > 0 && ` (${round(getTotalSelections(element) / element.data.length * 100)}%)`}
+                            {element.aggregates.totals.selections} ({element.data.length ? round(element.aggregates.totals.selections / element.data.length * 100) : 0}%)
                         </span>
                         <span className="dashboard__stat">
-                            {getTotalStarts(element)}{element.data.length > 0 && ` (${round(getTotalStarts(element) / element.data.length * 100)}%)`}
+                            {element.aggregates.totals.starts} ({element.data.length ? round(element.aggregates.totals.starts / element.data.length * 100) : 0}%)
                         </span>
                         <span className="dashboard__stat">
-                            {getTotalBenched(element)}{element.data.length > 0 && ` (${round(getTotalBenched(element) / element.data.length * 100)}%)`}
+                            {element.aggregates.totals.benched} ({element.data.length ? round(element.aggregates.totals.benched / element.data.length * 100) : 0}%)
                         </span>
                         <span className="dashboard__stat">
                             <span>
-                                {getTotalPoints(element)}
-                                {getTotalStarts(element) > 0 && (
-                                    <>
-                                        (
-                                            {round(getTotalPoints(element) / getTotalStarts(element))}
-                                            {' '}
-                                            <Metric metric="ppg" />
-                                        )
-                                    </>
-                                )}
+                                {element.aggregates.totals.points}
+                                {' '}
+                                (
+                                    {element.aggregates.totals.starts > 0 ? round(element.aggregates.totals.points / element.aggregates.totals.starts) : 0}
+                                    {' '}
+                                    <Metric metric="ppg" />
+                                )
                             </span>
                         </span>
                     </div>

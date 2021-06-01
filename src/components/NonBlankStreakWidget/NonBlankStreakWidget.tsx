@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getNonBlankStreak, getGWCountLabel, round, getPointsLabel } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, round, getPointsLabel } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
@@ -20,11 +20,11 @@ const NonBlankStreakWidget: React.FC = () => {
 
     const streakers = getAllPlayers(stats)
         .sort((a, b) => {
-            const aStreak = getNonBlankStreak(a)
-            const bStreak = getNonBlankStreak(b)
+            const aStreak = a.aggregates.streaks.nonBlank
+            const bStreak = b.aggregates.streaks.nonBlank
 
-            const aStreakLength = getNonBlankStreak(a)?.length || 0
-            const bStreakLength = getNonBlankStreak(b)?.length || 0
+            const aStreakLength = a.aggregates.streaks.nonBlank?.length || 0
+            const bStreakLength = b.aggregates.streaks.nonBlank?.length || 0
 
             if (bStreakLength - aStreakLength === 0) {
                 return (bStreak?.points || 0) - (aStreak?.points || 0)
@@ -32,14 +32,14 @@ const NonBlankStreakWidget: React.FC = () => {
 
             return bStreakLength - aStreakLength
         })
-        .filter(streaker => getNonBlankStreak(streaker) !== null)
+        .filter(streaker => streaker.aggregates.streaks.nonBlank !== null)
         .slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Highest Non-Blank Streaks">
             <ul className="widget__list">
                 {streakers.map(streaker => {
-                    const streak = getNonBlankStreak(streaker)
+                    const streak = streaker.aggregates.streaks.nonBlank
 
                     if (!streak) {
                         return null

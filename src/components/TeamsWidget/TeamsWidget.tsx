@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Team } from '../Team'
 import { Widget } from '../Widget'
-import { getAllPlayers, getPointsLabel, getTotalPoints, initialCaps, round, sort, sumNumbers } from '../../utilities'
+import { getAllPlayers, getPointsLabel, initialCaps, round, sort, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 import './TeamsWidget.scss'
 
@@ -30,7 +30,7 @@ const TeamsWidget: React.FC = () => {
             <ul className="widget__list">
                 {teams.map(team => {
                     const players = allPlayers.filter(player => player.element.team === team.id)
-                    const points = sumNumbers(players.map(player => getTotalPoints(player)))
+                    const points = sumNumbers(players.map(player => player.aggregates.totals.points))
 
                     const positions: Record<string, number> = bootstrap.element_types
                         .reduce((acc, curr) => ({
@@ -44,16 +44,12 @@ const TeamsWidget: React.FC = () => {
                             <div>
                                 <div>
                                     <b>{counts[team.id] || 0}</b>
-                                    {players.length > 0 && (
-                                        <>
-                                            {' '}
-                                            (
-                                                {getPointsLabel(points)}, {round(points / players.length)}
-                                                {' '}
-                                                <Metric metric="ppp" />
-                                            )
-                                        </>
-                                    )}
+                                    {' '}
+                                    (
+                                        {getPointsLabel(points)}, {players.length > 0 ? round(points / players.length) : 0}
+                                        {' '}
+                                        <Metric metric="ppp" />
+                                    )
                                 </div>
                                 <div>
                                     {Object.entries(positions).filter(([ type, count ]) => count > 0).map(([ type, count ]) => (

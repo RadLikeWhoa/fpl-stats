@@ -2,11 +2,12 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { aggregateStats, getAllPlayers, head, thousandsSeparator, sumNumbers, reduce, round, getPointsLabel } from '../../utilities'
+import { getAllPlayers, head, thousandsSeparator, sumNumbers, reduce, round, getPointsLabel } from '../../utilities'
 import { SiteLink } from '../SiteLink'
-import { ElementStats, StatData } from '../../types'
+import { StatData } from '../../types'
+import { StatAggregateTotals } from '../../types'
 
-const getAggregateValues = (players: StatData[], key: keyof ElementStats): number[] => aggregateStats(players, key).map(stat => stat.value)
+const getAggregateValues = (players: StatData[], key: keyof StatAggregateTotals): number => sumNumbers(players.map(player => player.aggregates.totals[key]))
 
 const SeasonWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
@@ -24,18 +25,18 @@ const SeasonWidget: React.FC = () => {
 
     const allPlayers = getAllPlayers(stats)
 
-    const reds = getAggregateValues(allPlayers, 'red_cards')
-    const yellows = getAggregateValues(allPlayers, 'yellow_cards')
-    const goals = getAggregateValues(allPlayers, 'goals_scored')
+    const reds = getAggregateValues(allPlayers, 'redCards')
+    const yellows = getAggregateValues(allPlayers, 'yellowCards')
+    const goals = getAggregateValues(allPlayers, 'goals')
     const assists = getAggregateValues(allPlayers, 'assists')
-    const cleanSheets = getAggregateValues(allPlayers, 'clean_sheets')
-    const goalsConceded = getAggregateValues(allPlayers, 'goals_conceded')
-    const ownGoals = getAggregateValues(allPlayers, 'own_goals')
+    const cleanSheets = getAggregateValues(allPlayers, 'cleanSheets')
+    const goalsConceded = getAggregateValues(allPlayers, 'goalsConceded')
+    const ownGoals = getAggregateValues(allPlayers, 'ownGoals')
     const saves = getAggregateValues(allPlayers, 'saves')
     const minutes = getAggregateValues(allPlayers, 'minutes')
-    const penaltiesMissed = getAggregateValues(allPlayers, 'penalties_missed')
-    const penaltiesSaved = getAggregateValues(allPlayers, 'penalties_saved')
-    const inDreamteam = getAggregateValues(allPlayers, 'in_dreamteam')
+    const penaltiesMissed = getAggregateValues(allPlayers, 'penaltiesMissed')
+    const penaltiesSaved = getAggregateValues(allPlayers, 'penaltiesSaved')
+    const inDreamteam = getAggregateValues(allPlayers, 'timesInDreamteam')
     const bps = getAggregateValues(allPlayers, 'bps')
     const bonus = getAggregateValues(allPlayers, 'bonus')
 
@@ -70,7 +71,7 @@ const SeasonWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>Total Hits Taken</span>
-                    <span>{totalHits} ({getPointsLabel(totalHits * -4)}{entry.summary_overall_points > 0 && `, ${round(totalHits * 4 / entry.summary_overall_points * 100)}%`})</span>
+                    <span>{totalHits} ({getPointsLabel(totalHits * -4)}, {entry.summary_overall_points > 0 ? round(totalHits * 4 / entry.summary_overall_points * 100) : 0}%)</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points on Bench</span>
@@ -82,59 +83,59 @@ const SeasonWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>Total Red Cards</span>
-                    <span>{sumNumbers(reds)}</span>
+                    <span>{reds}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Yellow Cards</span>
-                    <span>{sumNumbers(yellows)}</span>
+                    <span>{yellows}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Goals Scored</span>
-                    <span>{sumNumbers(goals)}</span>
+                    <span>{goals}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Goals Conceded</span>
-                    <span>{sumNumbers(goalsConceded)}</span>
+                    <span>{goalsConceded}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Assists</span>
-                    <span>{sumNumbers(assists)}</span>
+                    <span>{assists}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Clean Sheets</span>
-                    <span>{sumNumbers(cleanSheets)}</span>
+                    <span>{cleanSheets}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Own Goals</span>
-                    <span>{sumNumbers(ownGoals)}</span>
+                    <span>{ownGoals}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Saves</span>
-                    <span>{sumNumbers(saves)}</span>
+                    <span>{saves}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Minutes Played</span>
-                    <span>{thousandsSeparator(sumNumbers(minutes))}</span>
+                    <span>{thousandsSeparator(minutes)}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Penalties Missed</span>
-                    <span>{sumNumbers(penaltiesMissed)}</span>
+                    <span>{penaltiesMissed}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Penalties Saved</span>
-                    <span>{sumNumbers(penaltiesSaved)}</span>
+                    <span>{penaltiesSaved}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Times in Dreamteam</span>
-                    <span>{sumNumbers(inDreamteam)}</span>
+                    <span>{inDreamteam}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total BPS</span>
-                    <span>{thousandsSeparator(sumNumbers(bps))}</span>
+                    <span>{thousandsSeparator(bps)}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Bonus Points</span>
-                    <span>{thousandsSeparator(sumNumbers(bonus))}</span>
+                    <span>{thousandsSeparator(bonus)}</span>
                 </li>
                 {tc !== undefined && (
                     <li className="widget__list__item">

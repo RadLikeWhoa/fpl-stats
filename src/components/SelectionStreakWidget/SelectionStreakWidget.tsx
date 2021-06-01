@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getGWCountLabel, getPointsLabel, getSelectionStreak, round } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, getPointsLabel, round } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
@@ -20,11 +20,11 @@ const SelectionStreakWidget: React.FC = () => {
 
     const streakers = getAllPlayers(stats)
         .sort((a, b) => {
-            const aStreak = getSelectionStreak(a)
-            const bStreak = getSelectionStreak(b)
+            const aStreak = a.aggregates.streaks.selection
+            const bStreak = b.aggregates.streaks.selection
 
-            const aStreakLength = getSelectionStreak(a)?.length || 0
-            const bStreakLength = getSelectionStreak(b)?.length || 0
+            const aStreakLength = a.aggregates.streaks.selection?.length || 0
+            const bStreakLength = b.aggregates.streaks.selection?.length || 0
 
             if (bStreakLength - aStreakLength === 0) {
                 return (bStreak?.points || 0) - (aStreak?.points || 0)
@@ -32,14 +32,14 @@ const SelectionStreakWidget: React.FC = () => {
 
             return bStreakLength - aStreakLength
         })
-        .filter(streaker => getSelectionStreak(streaker) !== null)
+        .filter(streaker => streaker.aggregates.streaks.selection !== null)
         .slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Highest Selection Streaks">
             <ul className="widget__list">
                 {streakers.map(streaker => {
-                    const streak = getSelectionStreak(streaker)
+                    const streak = streaker.aggregates.streaks.selection
 
                     if (!streak) {
                         return null

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getBenchStreak, getGWCountLabel, sort } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, sort } from '../../utilities'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
@@ -19,13 +19,13 @@ const BenchStreakWidget: React.FC = () => {
 
     const allPlayers = getAllPlayers(stats)
 
-    const streakers = sort(allPlayers, el => getBenchStreak(el)?.length || 0).slice(0, MAX_ITEMS)
+    const streakers = sort(allPlayers, el => el.aggregates.streaks.bench?.length || 0).slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Highest Bench Appearance Streaks">
             <ul className="widget__list">
                 {streakers.map(streaker => {
-                    const streak = getBenchStreak(streaker)
+                    const streak = streaker.aggregates.streaks.bench
 
                     if (!streak) {
                         return null

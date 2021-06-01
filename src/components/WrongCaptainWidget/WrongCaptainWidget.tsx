@@ -33,7 +33,7 @@ const WrongCaptainWidget: React.FC = () => {
     const timesUsed = allPlayers.reduce((acc, curr) => {
         return {
             ...acc,
-            [curr.element.id]: curr.data.filter(data => (data.multiplier || 0) > 1).length,
+            [curr.element.id]: curr.aggregates.totals.captaincies,
         }
     }, {} as Record<number, number>)
 
@@ -43,7 +43,7 @@ const WrongCaptainWidget: React.FC = () => {
                 {sort(Object.entries(improvements), el => el[1]).map(([ player, count ]) => (
                     <li className="widget__list__item" key={player}>
                         <Player id={Number(player)} />
-                        <span>{count} out of {timesUsed[Number(player)]}{timesUsed[Number(player)] > 0 && ` (${round(count / timesUsed[Number(player)] * 100, 1)}%)`}</span>
+                        <span>{count} out of {timesUsed[Number(player)]} ({round(count / timesUsed[Number(player)] * 100, 1)}%)</span>
                     </li>
                 ))}
             </ul>

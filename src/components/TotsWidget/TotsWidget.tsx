@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getTotalPoints, sort } from '../../utilities'
+import { sort } from '../../utilities'
 import { TotsPlayer } from '../TotsPlayer'
 import { Widget } from '../Widget'
 import './TotsWidget.scss'
@@ -27,13 +27,13 @@ const TotsWidget: React.FC = () => {
         )
     }
 
-    const gk = sort(stats[1], el => getTotalPoints(el)).slice(0, MAX_GK)
-    const def = sort(stats[2], el => getTotalPoints(el)).slice(0, MAX_DEF)
-    const mid = sort(stats[3], el => getTotalPoints(el)).slice(0, MAX_MID)
-    const fwd = sort(stats[4], el => getTotalPoints(el)).slice(0, MAX_FWD)
+    const gk = sort(stats[1], el => el.aggregates.totals.points).slice(0, MAX_GK)
+    const def = sort(stats[2], el => el.aggregates.totals.points).slice(0, MAX_DEF)
+    const mid = sort(stats[3], el => el.aggregates.totals.points).slice(0, MAX_MID)
+    const fwd = sort(stats[4], el => el.aggregates.totals.points).slice(0, MAX_FWD)
 
     const top = gk.slice(0, MIN_GK).concat(def.slice(0, MIN_DEF)).concat(mid.slice(0, MIN_MID)).concat(fwd.slice(0, MIN_FWD))
-    const rest = sort(def.slice(MIN_DEF).concat(mid.slice(MIN_MID)).concat(fwd.slice(MIN_FWD)), el => getTotalPoints(el))
+    const rest = sort(def.slice(MIN_DEF).concat(mid.slice(MIN_MID)).concat(fwd.slice(MIN_FWD)), el => el.aggregates.totals.points)
 
     const xi = sort(top.concat(rest.slice(0, 4)), el => el.element.element_type, 'asc')
     const bench = sort(gk.slice(MIN_GK).concat(rest.slice(4)), el => el.element.element_type, 'asc')
@@ -46,7 +46,7 @@ const TotsWidget: React.FC = () => {
                         <TotsPlayer
                             key={player.element.id}
                             id={player.element.id}
-                            points={getTotalPoints(player)}
+                            points={player.aggregates.totals.points}
                         />
                     ))}
                 </div>
@@ -55,7 +55,7 @@ const TotsWidget: React.FC = () => {
                         <TotsPlayer
                             key={player.element.id}
                             id={player.element.id}
-                            points={getTotalPoints(player)}
+                            points={player.aggregates.totals.points}
                         />
                     ))}
                 </div>
@@ -64,7 +64,7 @@ const TotsWidget: React.FC = () => {
                         <TotsPlayer
                             key={player.element.id}
                             id={player.element.id}
-                            points={getTotalPoints(player)}
+                            points={player.aggregates.totals.points}
                         />
                     ))}
                 </div>
@@ -73,7 +73,7 @@ const TotsWidget: React.FC = () => {
                         <TotsPlayer
                             key={player.element.id}
                             id={player.element.id}
-                            points={getTotalPoints(player)}
+                            points={player.aggregates.totals.points}
                         />
                     ))}
                 </div>
@@ -82,7 +82,7 @@ const TotsWidget: React.FC = () => {
                         <TotsPlayer
                             key={player.element.id}
                             id={player.element.id}
-                            points={getTotalPoints(player)}
+                            points={player.aggregates.totals.points}
                         />
                     ))}
                 </div>

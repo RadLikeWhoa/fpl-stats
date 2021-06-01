@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, getTotalBenched, getTotalSelections, getTotalStarts, round } from '../../utilities'
+import { getAllPlayers, round } from '../../utilities'
 import { Player } from '../Player'
 
 type Props = {
@@ -23,9 +23,9 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
 
     const elements = getAllPlayers(stats)
         .map(element => {
-            const selections = getTotalSelections(element)
-            const benched = getTotalBenched(element)
-            const starts = getTotalStarts(element)
+            const selections = element.aggregates.totals.selections
+            const starts = element.aggregates.totals.starts
+            const benched = element.aggregates.totals.benched
 
             return {
                 ...element,

@@ -1,7 +1,39 @@
 import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit'
 import { Bootstrap, Picks, Stats, StatData, LiveEvent } from '../types'
-import { getPastEvents } from '../utilities'
+import { getPastEvents, getPlayerAggregate, getTotalPoints, getTotalBenchPoints, getTotalRawPoints, getTotalSelections, getTotalStarts, getTotalBenched, getTotalCaptaincies, getSelectionStreak, getStartStreak, getBenchStreak, getNonBlankStreak } from '../utilities'
 import { finishLoading, startLoading } from './loading'
+
+const emptyAggregates = {
+    totals: {
+        redCards: 0,
+        yellowCards: 0,
+        goals: 0,
+        assists: 0,
+        cleanSheets: 0,
+        goalsConceded: 0,
+        ownGoals: 0,
+        saves: 0,
+        minutes: 0,
+        penaltiesMissed: 0,
+        penaltiesSaved: 0,
+        timesInDreamteam: 0,
+        bps: 0,
+        bonus: 0,
+        captaincies: 0,
+        points: 0,
+        rawPoints: 0,
+        benchPoints: 0,
+        selections: 0,
+        starts: 0,
+        benched: 0,
+    },
+    streaks: {
+        selection: null,
+        start: null,
+        bench: null,
+        nonBlank: null,
+    },
+}
 
 const stats = createSlice({
     name: 'stats',
@@ -73,6 +105,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                         stats: null,
                         position: null,
                     })),
+                    aggregates: emptyAggregates,
                 }
             }
 
@@ -90,7 +123,7 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                         stats: gw.live.elements.find(el => el.id === item.element)?.stats || null,
                         position: item.position,
                     }
-                ]
+                ],
             }
         })
 
@@ -114,6 +147,42 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
                 }
             }
         })
+    })
+
+    Object.keys(stats).forEach(id => {
+        const player = stats[Number(id)]
+
+        stats[Number(id)].aggregates = {
+            totals: {
+                redCards: getPlayerAggregate(player, 'red_cards'),
+                yellowCards: getPlayerAggregate(player, 'yellow_cards'),
+                goals: getPlayerAggregate(player, 'goals_scored'),
+                assists: getPlayerAggregate(player, 'assists'),
+                cleanSheets: getPlayerAggregate(player, 'clean_sheets'),
+                goalsConceded: getPlayerAggregate(player, 'goals_conceded'),
+                ownGoals: getPlayerAggregate(player, 'own_goals'),
+                saves: getPlayerAggregate(player, 'saves'),
+                minutes: getPlayerAggregate(player, 'minutes'),
+                penaltiesMissed: getPlayerAggregate(player, 'penalties_missed'),
+                penaltiesSaved: getPlayerAggregate(player, 'penalties_saved'),
+                timesInDreamteam: getPlayerAggregate(player, 'in_dreamteam'),
+                bps: getPlayerAggregate(player, 'bps'),
+                bonus: getPlayerAggregate(player, 'bonus'),
+                captaincies: getTotalCaptaincies(player),
+                points: getTotalPoints(player),
+                rawPoints: getTotalRawPoints(player),
+                benchPoints: getTotalBenchPoints(player),
+                selections: getTotalSelections(player),
+                starts: getTotalStarts(player),
+                benched: getTotalBenched(player),
+            },
+            streaks: {
+                selection: getSelectionStreak(player),
+                start: getStartStreak(player),
+                bench: getBenchStreak(player),
+                nonBlank: getNonBlankStreak(player),
+            },
+        }
     })
 
     dispatch(buildDataSuccess({

@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
-import { getTotalPoints, thousandsSeparator, sumNumbers, round, reduce, getPointsLabel } from '../../utilities'
+import { thousandsSeparator, sumNumbers, round, reduce, getPointsLabel } from '../../utilities'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric';
 
@@ -32,7 +32,7 @@ const PositionsWidget: React.FC = () => {
                     <span>{reduce(Object.values(positions), el => el)}</span>
                 </li>
                 {Object.entries(positions).map(([ elementType, elements ]) => {
-                    const totalPoints = stats[Number(elementType)].map(player => getTotalPoints(player))
+                    const totalPoints = stats[Number(elementType)].map(player => player.aggregates.totals.points)
 
                     return (
                         <li className="widget__list__item" key={elementType}>

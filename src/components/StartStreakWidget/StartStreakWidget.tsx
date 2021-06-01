@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getGWCountLabel, getPointsLabel, getStartStreak, round } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, getPointsLabel, round } from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
@@ -20,11 +20,11 @@ const StartStreakWidget: React.FC = () => {
 
     const streakers = getAllPlayers(stats)
         .sort((a, b) => {
-            const aStreak = getStartStreak(a)
-            const bStreak = getStartStreak(b)
+            const aStreak = a.aggregates.streaks.start
+            const bStreak = b.aggregates.streaks.start
 
-            const aStreakLength = getStartStreak(a)?.length || 0
-            const bStreakLength = getStartStreak(b)?.length || 0
+            const aStreakLength = a.aggregates.streaks.start?.length || 0
+            const bStreakLength = b.aggregates.streaks.start?.length || 0
 
             if (bStreakLength - aStreakLength === 0) {
                 return (bStreak?.points || 0) - (aStreak?.points || 0)
@@ -32,14 +32,14 @@ const StartStreakWidget: React.FC = () => {
 
             return bStreakLength - aStreakLength
         })
-        .filter(streaker => getStartStreak(streaker) !== null)
+        .filter(streaker => streaker.aggregates.streaks.start !== null)
         .slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Highest Start Streaks">
             <ul className="widget__list">
                 {streakers.map(streaker => {
-                    const streak = getStartStreak(streaker)
+                    const streak = streaker.aggregates.streaks.start
 
                     if (!streak) {
                         return null
