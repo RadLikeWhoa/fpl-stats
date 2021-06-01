@@ -49,7 +49,7 @@ const CaptainOpportunityWidget: React.FC = () => {
                                 <Player id={improvement.top.element.id} />
                             </div>
                             <div className="captain-opportunity-widget__swap-info">
-                                {(captainData.rawPoints || 0) * 2} <SwapIcon /> {(topData.rawPoints || 0) * 2}
+                                <b>{(captainData.rawPoints || 0) * 2}</b> <SwapIcon /> <b>{(topData.rawPoints || 0) * 2} </b>
                                 {' '}
                                 (
                                     <SiteLink event={captainData.event.id} />

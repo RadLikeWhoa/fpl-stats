@@ -35,25 +35,25 @@ const GameweekWidget: React.FC = () => {
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>{meanLabel('Difference to GW Average')}</span>
-                    <span>{getPointsLabel(round(meanValue(differences)))}</span>
+                    <b>{getPointsLabel(round(meanValue(differences)))}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Times Above GW Average</span>
-                    <span>{differences.filter(diff => diff >= 0).length}</span>
+                    <b>{differences.filter(diff => diff >= 0).length}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Times Below GW Average</span>
-                    <span>{differences.filter(diff => diff < 0).length}</span>
+                    <b>{differences.filter(diff => diff < 0).length}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>{meanLabel('GW Rank')}</span>
-                    <span>{thousandsSeparator(Number(round(meanValue(history.current.map(week => week.rank)))))}</span>
+                    <b>{thousandsSeparator(Number(round(meanValue(history.current.map(week => week.rank)))))}</b>
                 </li>
                 {bestGW && (
                     <li className="widget__list__item">
                         <span>Best Gameweek</span>
                         <span>
-                            {getPointsLabel(bestGW.points)}
+                            <b>{getPointsLabel(bestGW.points)}</b>
                             {' '}
                             (
                                 <SiteLink event={bestGW.event} />
@@ -65,7 +65,7 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Worst Gameweek</span>
                         <span>
-                            {getPointsLabel(worstGW.points)}
+                            <b>{getPointsLabel(worstGW.points)}</b>
                             {' '}
                             (
                                 <SiteLink event={worstGW.event} />
@@ -77,7 +77,7 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Best GW Rank</span>
                         <span>
-                            {thousandsSeparator(bestGWRank.rank)}
+                            <b>{thousandsSeparator(bestGWRank.rank)}</b>
                             {' '}
                             (
                                 <SiteLink event={bestGWRank.event} />
@@ -89,7 +89,7 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Worst GW Rank</span>
                         <span>
-                            {thousandsSeparator(worstGWRank.rank)}
+                            <b>{thousandsSeparator(worstGWRank.rank)}</b>
                             {' '}
                             (
                                 <SiteLink event={worstGWRank.event} />

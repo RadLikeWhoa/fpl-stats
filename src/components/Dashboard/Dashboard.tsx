@@ -97,17 +97,23 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
                     </div>
                     <div className="dashboard__totals">
                         <span className="dashboard__stat">
-                            {element.aggregates.totals.selections} ({element.data.length ? round(element.aggregates.totals.selections / element.data.length * 100) : 0}%)
-                        </span>
-                        <span className="dashboard__stat">
-                            {element.aggregates.totals.starts} ({element.data.length ? round(element.aggregates.totals.starts / element.data.length * 100) : 0}%)
-                        </span>
-                        <span className="dashboard__stat">
-                            {element.aggregates.totals.benched} ({element.data.length ? round(element.aggregates.totals.benched / element.data.length * 100) : 0}%)
+                            <span>
+                                <b>{element.aggregates.totals.selections}</b> ({element.data.length ? round(element.aggregates.totals.selections / element.data.length * 100) : 0}%)
+                            </span>
                         </span>
                         <span className="dashboard__stat">
                             <span>
-                                {element.aggregates.totals.points}
+                                <b>{element.aggregates.totals.starts}</b> ({element.data.length ? round(element.aggregates.totals.starts / element.data.length * 100) : 0}%)
+                            </span>
+                        </span>
+                        <span className="dashboard__stat">
+                            <span>
+                                <b>{element.aggregates.totals.benched}</b> ({element.data.length ? round(element.aggregates.totals.benched / element.data.length * 100) : 0}%)
+                            </span>
+                        </span>
+                        <span className="dashboard__stat">
+                            <span>
+                                <b>{element.aggregates.totals.points}</b>
                                 {' '}
                                 (
                                     {element.aggregates.totals.starts > 0 ? round(element.aggregates.totals.points / element.aggregates.totals.starts) : 0}

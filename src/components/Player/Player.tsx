@@ -26,7 +26,14 @@ const Player: React.FC<Props> = (props: Props) => {
             />
             <div className="player__detail">
                 <div className="player__name">
-                    <span>{player?.web_name}{typeof props.suffix === 'string' ? ` (${props.suffix})` : props.suffix ? props.suffix() : null}</span>
+                    <span>
+                        {props.suffix ? (
+                            <b>{player?.web_name}</b>
+                        ) : (
+                            player?.web_name
+                        )}
+                        {typeof props.suffix === 'string' ? ` (${props.suffix})` : props.suffix ? props.suffix() : null}
+                    </span>
                 </div>
                 <div className="player__info">
                     <span className="player__team" title={team?.name}>{team?.short_name}</span>

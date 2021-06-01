@@ -37,50 +37,50 @@ const HistoryWidget: React.FC = () => {
                 {bestRankedSeason && (
                     <li className="widget__list__item">
                         <span>Best Season Rank</span>
-                        <span>{thousandsSeparator(bestRankedSeason.rank)} ({bestRankedSeason.season_name})</span>
+                        <span><b>{thousandsSeparator(bestRankedSeason.rank)}</b> ({bestRankedSeason.season_name})</span>
                     </li>
                 )}
                 {worstRankedSeason && (
                     <li className="widget__list__item">
                         <span>Worst Season Rank</span>
-                        <span>{thousandsSeparator(worstRankedSeason.rank)} ({worstRankedSeason.season_name})</span>
+                        <span><b>{thousandsSeparator(worstRankedSeason.rank)}</b> ({worstRankedSeason.season_name})</span>
                     </li>
                 )}
                 {bestPointSeason && (
                     <li className="widget__list__item">
                         <span>Best Points Finish</span>
-                        <span>{thousandsSeparator(bestPointSeason.total_points)} ({bestPointSeason.season_name})</span>
+                        <span><b>{thousandsSeparator(bestPointSeason.total_points)}</b> ({bestPointSeason.season_name})</span>
                     </li>
                 )}
                 {worstPointSeason && (
                     <li className="widget__list__item">
                         <span>Worst Points Finish</span>
-                        <span>{thousandsSeparator(worstPointSeason.total_points)} ({worstPointSeason.season_name})</span>
+                        <span><b>{thousandsSeparator(worstPointSeason.total_points)}</b> ({worstPointSeason.season_name})</span>
                     </li>
                 )}
                 <li className="widget__list__item">
                     <span>{meanLabel('Rank')}</span>
-                    <span>{thousandsSeparator(Number(round(meanValue(pastSeasonsByRank.map((season) => season.rank)), 0)))}</span>
+                    <b>{thousandsSeparator(Number(round(meanValue(pastSeasonsByRank.map((season) => season.rank)), 0)))}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>{meanLabel('Points')}</span>
-                    <span>{thousandsSeparator(Number(round(meanValue(pastSeasonsByPoints.map((season) => season.total_points)), 0)))}</span>
+                    <b>{thousandsSeparator(Number(round(meanValue(pastSeasonsByPoints.map((season) => season.total_points)), 0)))}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Top 1K Finishes</span>
-                    <span>{top1k}</span>
+                    <b>{top1k}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Top 10K Finishes</span>
-                    <span>{top10k}</span>
+                    <b>{top10k}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Top 100K Finishes</span>
-                    <span>{top100k}</span>
+                    <b>{top100k}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Top 1M Finishes</span>
-                    <span>{top1m}</span>
+                    <b>{top1m}</b>
                 </li>
             </ul>
         </Widget>

@@ -39,7 +39,7 @@ const CaptainWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item" key={captain.player.element.id}>
                             <Player id={captain.player.element.id} />
-                            <span>{captain.data.length} ({getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)} <Metric metric="ppg" />)</span>
+                            <span><b>{captain.data.length}</b> ({getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)} <Metric metric="ppg" />)</span>
                         </li>
                     )
                 })}

@@ -52,13 +52,13 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
                 {props.top && topStarters.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        <span>{round(element.startsPercentage)}% ({element.starts})</span>
+                        <span><b>{round(element.startsPercentage)}%</b> ({element.starts})</span>
                     </li>
                 ))}
                 {!props.top && topBenchwarmers.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        <span>{round(element.benchedPercentage)}% ({element.benched})</span>
+                        <span><b>{round(element.benchedPercentage)}%</b> ({element.benched})</span>
                     </li>
                 ))}
             </ul>

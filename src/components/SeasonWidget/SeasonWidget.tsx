@@ -71,25 +71,25 @@ const SeasonWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>Total Hits Taken</span>
-                    <span>{totalHits} ({getPointsLabel(totalHits * -4)}, {entry.summary_overall_points > 0 ? round(totalHits * 4 / entry.summary_overall_points * 100) : 0}%)</span>
+                    <span><b>{totalHits}</b> ({getPointsLabel(totalHits * -4)}, {entry.summary_overall_points > 0 ? round(totalHits * 4 / entry.summary_overall_points * 100) : 0}%)</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points</span>
-                    <span>{getPointsLabel(thousandsSeparator(entry.summary_overall_points))}</span>
+                    <b>{getPointsLabel(thousandsSeparator(entry.summary_overall_points))}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points on Bench</span>
-                    <span>{getPointsLabel(thousandsSeparator(totalBenched))}</span>
+                    <b>{getPointsLabel(thousandsSeparator(totalBenched))}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Double Digit Hauls</span>
-                    <span>{doubleDigitHauls}{totalPlays > 0 && ` (${round(doubleDigitHauls / totalPlays)}%)`}</span>
+                    <span><b>{doubleDigitHauls}</b>{totalPlays > 0 && ` (${round(doubleDigitHauls / totalPlays)}%)`}</span>
                 </li>
                 {tc !== undefined && (
                     <li className="widget__list__item">
                         <span>Triple Captain Points Gained</span>
                         <span>
-                            {getPointsLabel((tc.points || 0) / 3)}
+                            <b>{getPointsLabel((tc.points || 0) / 3)}</b>
                             {' '}
                             (
                                 <SiteLink event={tc.event.id} />
@@ -101,7 +101,7 @@ const SeasonWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Bench Boost Points Gained</span>
                         <span>
-                            {getPointsLabel(bbPoints)}
+                            <b>{getPointsLabel(bbPoints)}</b>
                             {' '}
                             (
                                 <SiteLink event={Number(bbWeek)} />
@@ -111,59 +111,59 @@ const SeasonWidget: React.FC = () => {
                 )}
                 <li className="widget__list__item">
                     <span>Total Goals Scored</span>
-                    <span>{goals}</span>
+                    <b>{goals}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Assists</span>
-                    <span>{assists}</span>
+                    <b>{assists}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Own Goals</span>
-                    <span>{ownGoals}</span>
+                    <b>{ownGoals}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Goals Conceded</span>
-                    <span>{goalsConceded}</span>
+                    <b>{goalsConceded}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Clean Sheets</span>
-                    <span>{cleanSheets}</span>
+                    <b>{cleanSheets}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Saves</span>
-                    <span>{saves}</span>
+                    <b>{saves}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Penalties Missed</span>
-                    <span>{penaltiesMissed}</span>
+                    <b>{penaltiesMissed}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Penalties Saved</span>
-                    <span>{penaltiesSaved}</span>
+                    <b>{penaltiesSaved}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Minutes Played</span>
-                    <span>{thousandsSeparator(minutes)}</span>
+                    <b>{thousandsSeparator(minutes)}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Red Cards</span>
-                    <span>{reds}</span>
+                    <b>{reds}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Yellow Cards</span>
-                    <span>{yellows}</span>
+                    <b>{yellows}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Bonus Points</span>
-                    <span>{thousandsSeparator(bonus)}</span>
+                    <b>{thousandsSeparator(bonus)}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total BPS</span>
-                    <span>{thousandsSeparator(bps)}</span>
+                    <b>{thousandsSeparator(bps)}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Times in Dreamteam</span>
-                    <span>{inDreamteam}</span>
+                    <b>{inDreamteam}</b>
                 </li>
             </ul>
         </Widget>

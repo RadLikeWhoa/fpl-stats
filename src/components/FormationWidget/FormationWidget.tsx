@@ -59,7 +59,7 @@ const FormationWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item" key={formation}>
                             <span>{formatFormation(formation)}</span>
-                            <span>{information.count} ({getPointsLabel(thousandsSeparator(information.points))}, {round(information.points / information.count)} <Metric metric="ppg" />)</span>
+                            <span><b>{information.count}</b> ({getPointsLabel(thousandsSeparator(information.points))}, {round(information.points / information.count)} <Metric metric="ppg" />)</span>
                         </li>
                     )
                 })}

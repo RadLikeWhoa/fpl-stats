@@ -24,7 +24,7 @@ const TeamsWidget: React.FC = () => {
                 {elements.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        {element.aggregates.totals.selections}
+                        <b>{element.aggregates.totals.selections}</b>
                     </li>
                 ))}
             </ul>

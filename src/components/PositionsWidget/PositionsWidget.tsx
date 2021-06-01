@@ -38,7 +38,7 @@ const PositionsWidget: React.FC = () => {
                         <li className="widget__list__item" key={elementType}>
                             <span>{bootstrap.element_types.find(el => el.id === Number(elementType))?.plural_name}</span>
                             <span>
-                                {elements}
+                                <b>{elements}</b>
                                 {' '}
                                 ({getPointsLabel(thousandsSeparator(sumNumbers(totalPoints)))}, {round(meanValue(totalPoints))} <Metric metric="ppp" />)
                             </span>

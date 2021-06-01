@@ -39,12 +39,9 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
                         <div>
-                            <div>
-                                {element.element.total_points > 0 && `${round(getPointsShare(element))}%`}
-                            </div>
-                            <div>
-                                ({getPointsLabel(element.element.total_points - element.aggregates.totals.rawPoints)} in {getGWCountLabel(history.current.length - element.aggregates.totals.selections)})
-                            </div>
+                            <b>{element.element.total_points > 0 && `${round(getPointsShare(element))}%`}</b>
+                            {' '}
+                            ({getPointsLabel(element.element.total_points - element.aggregates.totals.rawPoints)} in {getGWCountLabel(history.current.length - element.aggregates.totals.selections)})
                         </div>
                     </li>
                 ))}
