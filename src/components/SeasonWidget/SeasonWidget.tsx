@@ -14,7 +14,9 @@ const SeasonWidget: React.FC = () => {
 
     const history = useSelector((state: RootState) => state.history.data)
 
-    if (!stats || !history || !chips) {
+    const entry = useSelector((state: RootState) => state.entry.data)
+
+    if (!stats || !history || !chips || !entry) {
         return (
             <Widget title="Season" />
         )
@@ -68,7 +70,7 @@ const SeasonWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>Total Hits Taken</span>
-                    <span>{totalHits} ({totalHits * -4} pts)</span>
+                    <span>{totalHits} ({totalHits * -4} pts{entry.summary_overall_points > 0 ? `, ${round(totalHits * 4 / entry.summary_overall_points * 100)}%)` : ')'}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points on Bench</span>
