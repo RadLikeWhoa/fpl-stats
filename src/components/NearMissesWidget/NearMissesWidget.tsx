@@ -5,7 +5,7 @@ import { getAllPlayers, getPointsLabel, sort, thousandsSeparator } from '../../u
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
-const MAX_ITEMS = 13
+const MAX_ITEMS = 15
 
 const NearMissesWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)

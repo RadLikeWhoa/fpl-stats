@@ -49,10 +49,8 @@ const StartStreakWidget: React.FC = () => {
                         <li className="widget__list__item" key={streaker.element.id}>
                             <Player id={streaker.element.id} />
                             <div>
-                                <div>
-                                    <SiteLink event={streak.start.id} />
-                                    {' – '}
-                                    <SiteLink event={streak.end.id} />
+                                <div className="duration">
+                                    <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
                                 </div>
                                 <div className="muted">
                                     {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)}, {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />

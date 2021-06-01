@@ -44,7 +44,7 @@ const CaptainOpportunityWidget: React.FC = () => {
 
                     return (
                         <li className="widget__list__item" key={captainData.event.id}>
-                            <div>
+                            <div className="captain-opportunity-widget__group">
                                 <div className="captain-opportunity-widget__player">
                                     <b>OUT:</b> <Player id={improvement.captain.element.id} />
                                 </div>

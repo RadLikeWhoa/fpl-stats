@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel } from '../../utilities'
+import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Metric } from '../Metric'
 
 type FormationInformation = {
@@ -61,7 +61,7 @@ const FormationWidget: React.FC = () => {
                             <span>{formatFormation(formation)}</span>
                             <div>
                                 <div>
-                                    <b>{information.count}</b>
+                                    <b>{getGWCountLabel(information.count)}</b>
                                 </div>
                                 <div className="muted">
                                     {getPointsLabel(thousandsSeparator(information.points))}, {round(information.points / information.count)} <Metric metric="ppg" />

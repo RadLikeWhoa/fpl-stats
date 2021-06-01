@@ -4,8 +4,16 @@
     .widget__list__item {
         @include up-to("M") {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             text-align: left;
+        }
+    }
+
+    &__group {
+        @include up-to("M") {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     }
 
@@ -26,7 +34,13 @@
         height: 2.5rem;
 
         b {
-            width: 3rem;
+            @include at-least("M") {
+                width: 3rem;
+            }
+
+            @include up-to("M") {
+                margin-right: 0.5rem;
+            }
         }
 
         .player {

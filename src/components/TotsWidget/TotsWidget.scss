@@ -25,33 +25,6 @@
             }
         }
 
-        .tots-player {
-            margin: 0 1rem;
-
-            @include up-to("M") {
-                width: 2.75rem;
-                margin: 0 0.25rem;
-            }
-
-            &__shirt {
-                @include up-to("M") {
-                    height: 2.5rem;
-                }
-            }
-
-            &__name {
-                @include up-to("M") {
-                    font-size: 0.5rem;
-                }
-            }
-
-            &__points {
-                @include up-to("M") {
-                    font-size: 0.5rem;
-                }
-            }
-        }
-
         @include up-to("M") {
             margin-bottom: 0.75rem;
 

@@ -1,13 +1,20 @@
+@import "../../styles/mixins";
+
 .tots-player {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
     width: 8rem;
+    margin: 0 1rem;
 
     &__shirt {
         height: 5rem;
         margin-bottom: 0.5rem;
+
+        @include up-to("M") {
+            height: 3rem;
+        }
     }
 
     &__detail {
@@ -16,6 +23,7 @@
 
     &__name {
         max-width: 100%;
+        padding: 0 0.25rem;
         color: #fff;
         font-weight: 700;
         font-size: 0.875rem;
@@ -24,6 +32,10 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+
+        @include up-to("M") {
+            font-size: 0.6rem;
+        }
     }
 
     &__points {
@@ -32,5 +44,14 @@
         text-align: center;
         background-color: rgb(0, 255, 135);
         border-radius: 0 0 3px 3px;
+
+        @include up-to("M") {
+            font-size: 0.6rem;
+        }
+    }
+
+    @include up-to("M") {
+        width: 3.25rem;
+        margin: 0 0.25rem;
     }
 }

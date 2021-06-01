@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, head, round, sort } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, head, round, sort } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
@@ -45,7 +45,7 @@ const WrongCaptainWidget: React.FC = () => {
                         <Player id={Number(player)} />
                         <div>
                             <div>
-                                <b>{count} out of {timesUsed[Number(player)]}</b>
+                                <b>{count} out of {getGWCountLabel(timesUsed[Number(player)])}</b>
                             </div>
                             <div className="muted">
                                 {round(count / timesUsed[Number(player)] * 100, 1)}%

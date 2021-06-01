@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, sort } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, sort } from '../../utilities'
 import { Player } from '../Player'
 
 const MAX_ITEMS = 10
@@ -24,7 +24,7 @@ const TeamsWidget: React.FC = () => {
                 {elements.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        <b>{element.aggregates.totals.selections}</b>
+                        <b>{getGWCountLabel(element.aggregates.totals.selections)}</b>
                     </li>
                 ))}
             </ul>

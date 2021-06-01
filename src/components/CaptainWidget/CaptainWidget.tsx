@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel } from '../../utilities'
+import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric';
@@ -41,7 +41,7 @@ const CaptainWidget: React.FC = () => {
                             <Player id={captain.player.element.id} />
                             <div>
                                 <div>
-                                    <b>{captain.data.length}</b>
+                                    <b>{getGWCountLabel(captain.data.length)}</b>
                                 </div>
                                 <div className="muted">
                                     {getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)} <Metric metric="ppg" />
