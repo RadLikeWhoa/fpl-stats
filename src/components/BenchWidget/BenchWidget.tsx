@@ -5,7 +5,7 @@ import { Widget } from '../Widget'
 import { getAllPlayers, getTotalBenched, sort } from '../../utilities'
 import { Player } from '../Player'
 
-const MAX_ITEMS = 5
+const MAX_ITEMS = 10
 
 const BenchWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)

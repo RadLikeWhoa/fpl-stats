@@ -10,7 +10,7 @@ type Props = {
     top?: boolean
 }
 
-const MAX_ITEMS = 5
+const MAX_ITEMS = 10
 
 const DifferenceWidget: React.FC<Props> = (props: Props) => {
     const stats = useSelector((state: RootState) => state.stats.data)

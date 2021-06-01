@@ -5,7 +5,7 @@ import { Widget } from '../Widget'
 import { getAllPlayers, getTotalStarts, sort } from '../../utilities'
 import { Player } from '../Player'
 
-const MAX_ITEMS = 5
+const MAX_ITEMS = 10
 
 const StarterWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
