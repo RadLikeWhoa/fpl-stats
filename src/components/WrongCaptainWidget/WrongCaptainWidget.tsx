@@ -43,7 +43,14 @@ const WrongCaptainWidget: React.FC = () => {
                 {sort(Object.entries(improvements), el => el[1]).map(([ player, count ]) => (
                     <li className="widget__list__item" key={player}>
                         <Player id={Number(player)} />
-                        <span><b>{count} out of {timesUsed[Number(player)]}</b> ({round(count / timesUsed[Number(player)] * 100, 1)}%)</span>
+                        <div>
+                            <div>
+                                <b>{count} out of {timesUsed[Number(player)]}</b>
+                            </div>
+                            <div className="muted">
+                                {round(count / timesUsed[Number(player)] * 100, 1)}%
+                            </div>
+                        </div>
                     </li>
                 ))}
             </ul>

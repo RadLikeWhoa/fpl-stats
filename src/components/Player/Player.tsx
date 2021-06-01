@@ -27,7 +27,7 @@ const Player: React.FC<Props> = (props: Props) => {
             <div className="player__detail">
                 <div className="player__name">
                     <span>
-                        {props.suffix ? (
+                        {props.suffix && props.condensed ? (
                             <b>{player?.web_name}</b>
                         ) : (
                             player?.web_name

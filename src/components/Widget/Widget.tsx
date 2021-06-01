@@ -18,7 +18,7 @@ const Widget: React.FC<Props> = (props: Props) => {
             'widget--cloaked': !id,
         })}>
             {props.title && (
-                <h2 className="widget__title">{props.title}</h2>
+                <h3 className="widget__title">{props.title}</h3>
             )}
             <div className="widget__content">
                 {props.children}

@@ -97,30 +97,32 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
                     </div>
                     <div className="dashboard__totals">
                         <span className="dashboard__stat">
-                            <span>
-                                <b>{element.aggregates.totals.selections}</b> ({element.data.length ? round(element.aggregates.totals.selections / element.data.length * 100) : 0}%)
-                            </span>
+                            <div>
+                                <b>{element.aggregates.totals.selections}</b> <span className="muted">({element.data.length ? round(element.aggregates.totals.selections / element.data.length * 100) : 0}%)</span>
+                            </div>
                         </span>
                         <span className="dashboard__stat">
-                            <span>
-                                <b>{element.aggregates.totals.starts}</b> ({element.data.length ? round(element.aggregates.totals.starts / element.data.length * 100) : 0}%)
-                            </span>
+                            <div>
+                                <b>{element.aggregates.totals.starts}</b> <span className="muted">({element.data.length ? round(element.aggregates.totals.starts / element.data.length * 100) : 0}%)</span>
+                            </div>
                         </span>
                         <span className="dashboard__stat">
-                            <span>
-                                <b>{element.aggregates.totals.benched}</b> ({element.data.length ? round(element.aggregates.totals.benched / element.data.length * 100) : 0}%)
-                            </span>
+                            <div>
+                                <b>{element.aggregates.totals.benched}</b> <span className="muted">({element.data.length ? round(element.aggregates.totals.benched / element.data.length * 100) : 0}%)</span>
+                            </div>
                         </span>
                         <span className="dashboard__stat">
-                            <span>
+                            <div>
                                 <b>{element.aggregates.totals.points}</b>
                                 {' '}
-                                (
-                                    {element.aggregates.totals.starts > 0 ? round(element.aggregates.totals.points / element.aggregates.totals.starts) : 0}
-                                    {' '}
-                                    <Metric metric="ppg" />
-                                )
-                            </span>
+                                <span className="muted">
+                                    (
+                                        {element.aggregates.totals.starts > 0 ? round(element.aggregates.totals.points / element.aggregates.totals.starts) : 0}
+                                        {' '}
+                                        <Metric metric="ppg" />
+                                    )
+                                </span>
+                            </div>
                         </span>
                     </div>
                 </li>
@@ -194,7 +196,7 @@ const Dashboard: React.FC = () => {
                         <Widget>
                             <h1 className="dashboard__title">
                                 <SiteLink label={entry.name} />
-                                <div className="small">{getPointsLabel(entry.summary_overall_points)} — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
+                                <div className="small muted">{getPointsLabel(entry.summary_overall_points)} — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
                             </h1>
                             {id !== undefined && (
                                 <Button
@@ -205,10 +207,20 @@ const Dashboard: React.FC = () => {
                         </Widget>
                     </header>
                 )}
-                <div className="dashboard__widgets dashboard__widgets--split">
+                <div className="dashboard__widgets dashboard__widgets--single">
                     <TotsWidget />
-                    <PlayerStatsWidget />
                 </div>
+                <div className="dashboard__widgets dashboard__widgets-duo">
+                    <PlayerStatsWidget />
+                    <SeasonWidget />
+                    <HistoryWidget />
+                </div>
+                <div className="dashboard__widgets">
+                    <GameweekWidget />
+                    <PositionsWidget />
+                    <FormationWidget />
+                </div>
+                <h2><span>Players</span></h2>
                 <div className="app__meta">
                     <label className="app__meta__label">
                         Sort by
@@ -283,23 +295,31 @@ const Dashboard: React.FC = () => {
                     <BenchWidget />
                     <DifferenceWidget title="Most Consistent Starters" top />
                     <DifferenceWidget title="Most Consistent Bench Players" />
+                </div>
+                <h2><span>Teams</span></h2>
+                <div className="dashboard__widgets dashboard__widgets--single">
                     <TeamsWidget />
-                    <PositionsWidget />
-                    <HistoryWidget />
-                    <FormationWidget />
+                </div>
+                <h2><span>Captains</span></h2>
+                <div className="dashboard__widgets">
                     <CaptainWidget />
-                    <GameweekWidget />
-                    <SeasonWidget />
+                    <CaptainOpportunityWidget />
+                    <WrongCaptainWidget />
+                </div>
+                <h2><span>Streaks</span></h2>
+                <div className="dashboard__widgets">
                     <NonBlankStreakWidget />
                     <SelectionStreakWidget />
                     <StartStreakWidget />
                     <BenchStreakWidget />
-                    <CaptainOpportunityWidget />
-                    <WrongCaptainWidget />
+                </div>
+                <h2><span>Contributions</span></h2>
+                <div className="dashboard__widgets">
                     <ContributionWidget />
                     <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
                     <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />
                 </div>
+                <h2><span>Graphs</span></h2>
                 <div className="dashboard__graphs">
                     <OverallRankWidget />
                     <PointsWidget />

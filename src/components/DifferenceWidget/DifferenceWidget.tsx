@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, round } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, round } from '../../utilities'
 import { Player } from '../Player'
 
 type Props = {
@@ -52,13 +52,27 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
                 {props.top && topStarters.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        <span><b>{round(element.startsPercentage)}%</b> ({element.starts})</span>
+                        <div>
+                            <div>
+                                <b>{round(element.startsPercentage)}%</b>
+                            </div>
+                            <div className="muted">
+                                {getGWCountLabel(element.starts)}
+                            </div>
+                        </div>
                     </li>
                 ))}
                 {!props.top && topBenchwarmers.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
-                        <span><b>{round(element.benchedPercentage)}%</b> ({element.benched})</span>
+                        <div>
+                            <div>
+                                <b>{round(element.benchedPercentage)}%</b>
+                            </div>
+                            <div className="muted">
+                                {getGWCountLabel(element.benched)}
+                            </div>
+                        </div>
                     </li>
                 ))}
             </ul>

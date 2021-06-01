@@ -54,10 +54,8 @@ const SelectionStreakWidget: React.FC = () => {
                                     {' – '}
                                     <SiteLink event={streak.end.id} />
                                 </div>
-                                <div>
-                                    (
-                                        {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)}, {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
-                                    )
+                                <div className="muted">
+                                    {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)}, {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
                                 </div>
                             </div>
                         </li>

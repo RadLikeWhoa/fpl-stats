@@ -40,7 +40,7 @@
         border-bottom: 1px solid rgb(239, 239, 239);
 
         .dashboard__stat {
-            font-weight: bold;
+            font-weight: 700;
 
             @include up-to("M") {
                 display: none;
@@ -200,7 +200,7 @@
         flex-shrink: 0;
         width: 12rem;
         padding: 0.5rem;
-        font-weight: bold;
+        font-weight: 700;
         background-color: #fff;
 
         &::after {
@@ -234,7 +234,7 @@
         // this hack.
         width: m#{i}n(100rem, calc(100vw - 3rem));
         padding: 0.5rem;
-        font-weight: bold;
+        font-weight: 700;
         background-color: #EFEFEF;
     }
 
@@ -288,18 +288,16 @@
             }
         }
 
-        &--split {
+        &--single {
             .widget {
-                &:first-child {
-                    width: calc(66.666% - 0.5rem);
+                width: 100%;
 
-                    @include up-to("L") {
-                        width: calc(50% - 0.75rem);
-                    }
+                @include up-to("L") {
+                    width: 100%;
+                }
 
-                    @include up-to("M") {
-                        width: 100%;
-                    }
+                @include up-to("M") {
+                    width: 100%;
                 }
             }
         }
@@ -357,7 +355,6 @@
         .small {
             font-size: 0.5em;
             font-weight: 400;
-            color: rgb(97, 96, 92);
         }
 
         .button {

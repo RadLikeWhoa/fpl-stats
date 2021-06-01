@@ -40,8 +40,8 @@ const BenchStreakWidget: React.FC = () => {
                                     {' – '}
                                     <SiteLink event={streak.end.id} />
                                 </div>
-                                <div>
-                                    ({getGWCountLabel(streak.length)})
+                                <div className="muted">
+                                    {getGWCountLabel(streak.length)}
                                 </div>
                             </div>
                         </li>

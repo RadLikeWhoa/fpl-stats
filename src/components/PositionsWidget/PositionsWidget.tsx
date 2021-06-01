@@ -37,11 +37,14 @@ const PositionsWidget: React.FC = () => {
                     return (
                         <li className="widget__list__item" key={elementType}>
                             <span>{bootstrap.element_types.find(el => el.id === Number(elementType))?.plural_name}</span>
-                            <span>
-                                <b>{elements}</b>
-                                {' '}
-                                ({getPointsLabel(thousandsSeparator(sumNumbers(totalPoints)))}, {round(meanValue(totalPoints))} <Metric metric="ppp" />)
-                            </span>
+                            <div>
+                                <div>
+                                    <b>{elements}</b>
+                                </div>
+                                <div className="muted">
+                                  {getPointsLabel(thousandsSeparator(sumNumbers(totalPoints)))}, {round(meanValue(totalPoints))} <Metric metric="ppp" />
+                                </div>
+                            </div>
                         </li>
                     )
                 })}

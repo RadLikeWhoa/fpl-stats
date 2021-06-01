@@ -44,14 +44,11 @@ const TeamsWidget: React.FC = () => {
                             <div>
                                 <div>
                                     <b>{counts[team.id] || 0}</b>
-                                    {' '}
-                                    (
-                                        {getPointsLabel(points)}, {players.length > 0 ? round(points / players.length) : 0}
-                                        {' '}
-                                        <Metric metric="ppp" />
-                                    )
                                 </div>
-                                <div>
+                                <div className="muted">
+                                    {getPointsLabel(points)}, {players.length > 0 ? round(points / players.length) : 0} <Metric metric="ppp" />
+                                </div>
+                                <div className="muted">
                                     {Object.entries(positions).filter(([ type, count ]) => count > 0).map(([ type, count ]) => (
                                         <span className="teams-widget__position" key={type}>
                                             {count} {initialCaps(bootstrap.element_types.find(el => el.id === Number(type))?.plural_name_short || '')}
