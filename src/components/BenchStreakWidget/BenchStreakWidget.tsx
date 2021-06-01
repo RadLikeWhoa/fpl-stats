@@ -13,7 +13,9 @@ const BenchStreakWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Highest Bench Appearance Streaks" />
+            <Widget title="Highest Bench Appearance Streaks">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -23,29 +25,33 @@ const BenchStreakWidget: React.FC = () => {
 
     return (
         <Widget title="Highest Bench Appearance Streaks">
-            <ul className="widget__list">
-                {streakers.map(streaker => {
-                    const streak = streaker.aggregates.streaks.bench
+            {streakers.length > 0 ? (
+                <ul className="widget__list">
+                    {streakers.map(streaker => {
+                        const streak = streaker.aggregates.streaks.bench
 
-                    if (!streak) {
-                        return null
-                    }
+                        if (!streak) {
+                            return null
+                        }
 
-                    return (
-                        <li className="widget__list__item" key={streaker.element.id}>
-                            <Player id={streaker.element.id} />
-                            <div>
-                                <div className="duration">
-                                    <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
+                        return (
+                            <li className="widget__list__item" key={streaker.element.id}>
+                                <Player id={streaker.element.id} />
+                                <div>
+                                    <div className="duration">
+                                        <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
+                                    </div>
+                                    <div className="muted">
+                                        {getGWCountLabel(streak.length)}
+                                    </div>
                                 </div>
-                                <div className="muted">
-                                    {getGWCountLabel(streak.length)}
-                                </div>
-                            </div>
-                        </li>
-                    )
-                })}
-            </ul>
+                            </li>
+                        )
+                    })}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

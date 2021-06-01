@@ -14,7 +14,9 @@ const PositionsWidget: React.FC = () => {
 
     if (!stats || !bootstrap) {
         return (
-            <Widget title="Positions" />
+            <Widget title="Positions">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -26,29 +28,33 @@ const PositionsWidget: React.FC = () => {
 
     return (
         <Widget title="Positions">
-            <ul className="widget__list">
-                <li className="widget__list__item">
-                    <span>Total</span>
-                    <b>{pluralise(reduce(Object.values(positions), el => el), 'Player', 'Players')}</b>
-                </li>
-                {Object.entries(positions).map(([ elementType, elements ]) => {
-                    const totalPoints = stats[Number(elementType)].map(player => player.aggregates.totals.points)
+            {Object.entries(positions).length > 0 ? (
+                <ul className="widget__list">
+                    <li className="widget__list__item">
+                        <span>Total</span>
+                        <b>{pluralise(reduce(Object.values(positions), el => el), 'Player', 'Players')}</b>
+                    </li>
+                    {Object.entries(positions).map(([ elementType, elements ]) => {
+                        const totalPoints = stats[Number(elementType)].map(player => player.aggregates.totals.points)
 
-                    return (
-                        <li className="widget__list__item" key={elementType}>
-                            <span>{bootstrap.element_types.find(el => el.id === Number(elementType))?.plural_name}</span>
-                            <div>
+                        return (
+                            <li className="widget__list__item" key={elementType}>
+                                <span>{bootstrap.element_types.find(el => el.id === Number(elementType))?.plural_name}</span>
                                 <div>
-                                    <b>{pluralise(elements, 'Player', 'Players')}</b>
+                                    <div>
+                                        <b>{pluralise(elements, 'Player', 'Players')}</b>
+                                    </div>
+                                    <div className="muted">
+                                    {getPointsLabel(thousandsSeparator(sumNumbers(totalPoints)))}, {round(meanValue(totalPoints))} <Metric metric="ppp" />
+                                    </div>
                                 </div>
-                                <div className="muted">
-                                  {getPointsLabel(thousandsSeparator(sumNumbers(totalPoints)))}, {round(meanValue(totalPoints))} <Metric metric="ppp" />
-                                </div>
-                            </div>
-                        </li>
-                    )
-                })}
-            </ul>
+                            </li>
+                        )
+                    })}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

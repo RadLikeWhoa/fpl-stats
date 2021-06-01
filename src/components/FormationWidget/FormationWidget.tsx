@@ -19,7 +19,9 @@ const FormationWidget: React.FC = () => {
 
     if (!stats || !history) {
         return (
-            <Widget title="Formations" />
+            <Widget title="Formations">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -54,23 +56,27 @@ const FormationWidget: React.FC = () => {
 
     return (
         <Widget title="Formations">
-            <ul className="widget__list">
-                {sort(Object.entries(data), el => el[1].count).map(([ formation, information ]) => {
-                    return (
-                        <li className="widget__list__item" key={formation}>
-                            <span>{formatFormation(formation)}</span>
-                            <div>
+            {Object.entries(data).length > 0 ? (
+                <ul className="widget__list">
+                    {sort(Object.entries(data), el => el[1].count).map(([ formation, information ]) => {
+                        return (
+                            <li className="widget__list__item" key={formation}>
+                                <span>{formatFormation(formation)}</span>
                                 <div>
-                                    <b>{getGWCountLabel(information.count)}</b>
+                                    <div>
+                                        <b>{getGWCountLabel(information.count)}</b>
+                                    </div>
+                                    <div className="muted">
+                                        {getPointsLabel(thousandsSeparator(information.points))}, {round(information.points / information.count)} <Metric metric="ppg" />
+                                    </div>
                                 </div>
-                                <div className="muted">
-                                    {getPointsLabel(thousandsSeparator(information.points))}, {round(information.points / information.count)} <Metric metric="ppg" />
-                                </div>
-                            </div>
-                        </li>
-                    )
-                })}
-            </ul>
+                            </li>
+                        )
+                    })}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

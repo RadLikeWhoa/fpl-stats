@@ -12,22 +12,28 @@ const TeamsWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Top Selections" />
+            <Widget title="Top Selections">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
-    const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.selections)
+    const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.selections).slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Top Selections">
-            <ul className="widget__list">
-                {elements.slice(0, MAX_ITEMS).map(element => (
-                    <li className="widget__list__item" key={element.element.id}>
-                        <Player id={element.element.id} />
-                        <b>{getGWCountLabel(element.aggregates.totals.selections)}</b>
-                    </li>
-                ))}
-            </ul>
+            {elements.length > 0 ? (
+                <ul className="widget__list">
+                    {elements.map(element => (
+                        <li className="widget__list__item" key={element.element.id}>
+                            <Player id={element.element.id} />
+                            <b>{getGWCountLabel(element.aggregates.totals.selections)}</b>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

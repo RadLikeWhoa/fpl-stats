@@ -15,7 +15,9 @@ const CaptainOpportunityWidget: React.FC = () => {
 
     if (!stats || !history) {
         return (
-            <Widget title="Missed Captaincies" />
+            <Widget title="Missed Captaincies">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -29,40 +31,44 @@ const CaptainOpportunityWidget: React.FC = () => {
 
     return (
         <Widget title="Missed Captaincies" cssClasses="captain-opportunity-widget">
-            <ul className="widget__list">
-                {improvements.map((improvement, index) => {
-                    if (!improvement.captain || !improvement.top) {
-                        return null
-                    }
+            {improvements.length > 0 ? (
+                <ul className="widget__list">
+                    {improvements.map((improvement, index) => {
+                        if (!improvement.captain || !improvement.top) {
+                            return null
+                        }
 
-                    const captainData = improvement.captain.data[index]
-                    const topData = improvement.top.data[index]
+                        const captainData = improvement.captain.data[index]
+                        const topData = improvement.top.data[index]
 
-                    if (captainData.rawPoints === topData.rawPoints) {
-                        return null
-                    }
+                        if (captainData.rawPoints === topData.rawPoints) {
+                            return null
+                        }
 
-                    return (
-                        <li className="widget__list__item" key={captainData.event.id}>
-                            <div className="captain-opportunity-widget__group">
-                                <div className="captain-opportunity-widget__player">
-                                    <b>OUT:</b> <Player id={improvement.captain.element.id} />
+                        return (
+                            <li className="widget__list__item" key={captainData.event.id}>
+                                <div className="captain-opportunity-widget__group">
+                                    <div className="captain-opportunity-widget__player">
+                                        <b>OUT:</b> <Player id={improvement.captain.element.id} />
+                                    </div>
+                                    <div className="captain-opportunity-widget__player">
+                                        <b>IN:</b> <Player id={improvement.top.element.id} />
+                                    </div>
                                 </div>
-                                <div className="captain-opportunity-widget__player">
-                                    <b>IN:</b> <Player id={improvement.top.element.id} />
+                                <div className="captain-opportunity-widget__swap-info">
+                                    <b>{getPointsLabel((captainData.rawPoints || 0) * 2)}</b> <SwapIcon /> <b>{getPointsLabel((topData.rawPoints || 0) * 2)} </b>
+                                    {' '}
+                                    (
+                                        <SiteLink event={captainData.event.id} />
+                                    )
                                 </div>
-                            </div>
-                            <div className="captain-opportunity-widget__swap-info">
-                                <b>{getPointsLabel((captainData.rawPoints || 0) * 2)}</b> <SwapIcon /> <b>{getPointsLabel((topData.rawPoints || 0) * 2)} </b>
-                                {' '}
-                                (
-                                    <SiteLink event={captainData.event.id} />
-                                )
-                            </div>
-                        </li>
-                    )
-                })}
-            </ul>
+                            </li>
+                        )
+                    })}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

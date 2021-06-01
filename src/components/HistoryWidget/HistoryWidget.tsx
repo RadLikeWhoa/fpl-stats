@@ -13,7 +13,9 @@ const HistoryWidget: React.FC = () => {
 
     if (!history) {
         return (
-            <Widget title="Historical Data" />
+            <Widget title="Historical Data">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 

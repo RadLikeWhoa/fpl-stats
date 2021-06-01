@@ -11,7 +11,9 @@ const OverallRankWidget: React.FC = () => {
 
     if (!history || !bootstrap) {
         return (
-            <Widget title="Gameweek Points" />
+            <Widget title="Gameweek Points">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 

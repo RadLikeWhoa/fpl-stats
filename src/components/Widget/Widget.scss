@@ -92,6 +92,14 @@
 
     &__content {
         position: relative;
-        min-height: 10rem;
+    }
+
+    &__empty {
+        padding: 1rem 0.5rem;
+        color: #61605c;
+
+        @include up-to("M") {
+            text-align: center;
+        }
     }
 }

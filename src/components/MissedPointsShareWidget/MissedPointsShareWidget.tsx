@@ -22,7 +22,9 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
 
     if (!stats || !history) {
         return (
-            <Widget title={props.title} />
+            <Widget title={props.title}>
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -34,21 +36,25 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
 
     return (
         <Widget title={props.title}>
-            <ul className="widget__list">
-                {elements.map(element => (
-                    <li className="widget__list__item" key={element.element.id}>
-                        <Player id={element.element.id} />
-                        <div>
+            {elements.length > 0 ? (
+                <ul className="widget__list">
+                    {elements.map(element => (
+                        <li className="widget__list__item" key={element.element.id}>
+                            <Player id={element.element.id} />
                             <div>
-                                <b>{element.element.total_points > 0 && `${round(getPointsShare(element))}%`}</b>
+                                <div>
+                                    <b>{element.element.total_points > 0 && `${round(getPointsShare(element))}%`}</b>
+                                </div>
+                                <div className="muted">
+                                    {getPointsLabel(element.element.total_points - element.aggregates.totals.rawPoints)} in {getGWCountLabel(history.current.length - element.aggregates.totals.selections)}
+                                </div>
                             </div>
-                            <div className="muted">
-                                {getPointsLabel(element.element.total_points - element.aggregates.totals.rawPoints)} in {getGWCountLabel(history.current.length - element.aggregates.totals.selections)}
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

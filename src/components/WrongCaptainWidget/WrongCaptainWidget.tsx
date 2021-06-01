@@ -12,7 +12,9 @@ const WrongCaptainWidget: React.FC = () => {
 
     if (!stats || !history) {
         return (
-            <Widget title="Wrong Captains" />
+            <Widget title="Wrong Captains">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -39,21 +41,25 @@ const WrongCaptainWidget: React.FC = () => {
 
     return (
         <Widget title="Wrong Captains">
-            <ul className="widget__list">
-                {sort(Object.entries(improvements), el => el[1]).map(([ player, count ]) => (
-                    <li className="widget__list__item" key={player}>
-                        <Player id={Number(player)} />
-                        <div>
+            {Object.entries(improvements).length > 0 ? (
+                <ul className="widget__list">
+                    {sort(Object.entries(improvements), el => el[1]).map(([ player, count ]) => (
+                        <li className="widget__list__item" key={player}>
+                            <Player id={Number(player)} />
                             <div>
-                                <b>{count} out of {getGWCountLabel(timesUsed[Number(player)])}</b>
+                                <div>
+                                    <b>{count} out of {getGWCountLabel(timesUsed[Number(player)])}</b>
+                                </div>
+                                <div className="muted">
+                                    {round(count / timesUsed[Number(player)] * 100, 1)}%
+                                </div>
                             </div>
-                            <div className="muted">
-                                {round(count / timesUsed[Number(player)] * 100, 1)}%
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

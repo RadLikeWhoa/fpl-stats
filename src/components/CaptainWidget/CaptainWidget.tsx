@@ -11,7 +11,9 @@ const CaptainWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Captains" />
+            <Widget title="Captains">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -32,25 +34,29 @@ const CaptainWidget: React.FC = () => {
 
     return (
         <Widget title="Captains">
-            <ul className="widget__list">
-                {captains.map(captain => {
-                    const sum = sumNumbers(captain.data.map(data => data.points || 0))
+            {captains.length > 0 ? (
+                <ul className="widget__list">
+                    {captains.map(captain => {
+                        const sum = sumNumbers(captain.data.map(data => data.points || 0))
 
-                    return (
-                        <li className="widget__list__item" key={captain.player.element.id}>
-                            <Player id={captain.player.element.id} />
-                            <div>
+                        return (
+                            <li className="widget__list__item" key={captain.player.element.id}>
+                                <Player id={captain.player.element.id} />
                                 <div>
-                                    <b>{getGWCountLabel(captain.data.length)}</b>
+                                    <div>
+                                        <b>{getGWCountLabel(captain.data.length)}</b>
+                                    </div>
+                                    <div className="muted">
+                                        {getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)} <Metric metric="ppg" />
+                                    </div>
                                 </div>
-                                <div className="muted">
-                                    {getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)} <Metric metric="ppg" />
-                                </div>
-                            </div>
-                        </li>
-                    )
-                })}
-            </ul>
+                            </li>
+                        )
+                    })}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

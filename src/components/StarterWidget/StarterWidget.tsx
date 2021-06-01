@@ -12,22 +12,28 @@ const StarterWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Top Starters" />
+            <Widget title="Top Starters">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
-    const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.starts)
+    const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.starts).slice(0, MAX_ITEMS)
 
     return (
         <Widget title="Top Starters">
-            <ul className="widget__list">
-                {elements.slice(0, MAX_ITEMS).map(element => (
-                    <li className="widget__list__item" key={element.element.id}>
-                        <Player id={element.element.id} />
-                        <b>{getGWCountLabel(element.aggregates.totals.starts)}</b>
-                    </li>
-                ))}
-            </ul>
+            {elements.length ? (
+                <ul className="widget__list">
+                    {elements.map(element => (
+                        <li className="widget__list__item" key={element.element.id}>
+                            <Player id={element.element.id} />
+                            <b>{getGWCountLabel(element.aggregates.totals.starts)}</b>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

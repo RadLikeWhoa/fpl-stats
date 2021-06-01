@@ -13,7 +13,9 @@ const NearMissesWidget: React.FC = () => {
 
     if (!stats || !tots) {
         return (
-            <Widget title="Near Misses" />
+            <Widget title="Near Misses">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -22,14 +24,18 @@ const NearMissesWidget: React.FC = () => {
 
     return (
         <Widget title="Near Misses">
-            <ul className="widget__list">
-                {players.map(player => (
-                    <li className="widget__list__item">
-                        <Player id={player.element.id} />
-                        <b>{getPointsLabel(thousandsSeparator(player.aggregates.totals.points))}</b>
-                    </li>
-                ))}
-            </ul>
+            {players.length > 0 ? (
+                <ul className="widget__list">
+                    {players.map(player => (
+                        <li className="widget__list__item">
+                            <Player id={player.element.id} />
+                            <b>{getPointsLabel(thousandsSeparator(player.aggregates.totals.points))}</b>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

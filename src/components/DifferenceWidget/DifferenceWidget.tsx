@@ -17,7 +17,9 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
 
     if (!stats) {
         return (
-            <Widget title={props.title} />
+            <Widget title={props.title}>
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -39,43 +41,47 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
     const topStarters = [ ...elements ].sort((a, b) => {
         const percentageDiff = b.startsPercentage - a.startsPercentage
         return percentageDiff === 0 ? b.starts - a.starts : percentageDiff
-    })
+    }).slice(0, MAX_ITEMS)
 
     const topBenchwarmers = [ ...elements ].sort((a, b) => {
         const percentageDiff = b.benchedPercentage - a.benchedPercentage
         return percentageDiff === 0 ? b.benched - a.benched : percentageDiff
-    })
+    }).slice(0, MAX_ITEMS)
 
     return (
         <Widget title={props.title}>
-            <ul className="widget__list">
-                {props.top && topStarters.slice(0, MAX_ITEMS).map(element => (
-                    <li className="widget__list__item" key={element.element.id}>
-                        <Player id={element.element.id} />
-                        <div>
+            {((props.top && topStarters.length > 0) || (!props.top && topBenchwarmers.length > 0)) ? (
+                <ul className="widget__list">
+                    {props.top && topStarters.map(element => (
+                        <li className="widget__list__item" key={element.element.id}>
+                            <Player id={element.element.id} />
                             <div>
-                                <b>{round(element.startsPercentage)}%</b>
+                                <div>
+                                    <b>{round(element.startsPercentage)}%</b>
+                                </div>
+                                <div className="muted">
+                                    {getGWCountLabel(element.starts)}
+                                </div>
                             </div>
-                            <div className="muted">
-                                {getGWCountLabel(element.starts)}
-                            </div>
-                        </div>
-                    </li>
-                ))}
-                {!props.top && topBenchwarmers.slice(0, MAX_ITEMS).map(element => (
-                    <li className="widget__list__item" key={element.element.id}>
-                        <Player id={element.element.id} />
-                        <div>
+                        </li>
+                    ))}
+                    {!props.top && topBenchwarmers.map(element => (
+                        <li className="widget__list__item" key={element.element.id}>
+                            <Player id={element.element.id} />
                             <div>
-                                <b>{round(element.benchedPercentage)}%</b>
+                                <div>
+                                    <b>{round(element.benchedPercentage)}%</b>
+                                </div>
+                                <div className="muted">
+                                    {getGWCountLabel(element.benched)}
+                                </div>
                             </div>
-                            <div className="muted">
-                                {getGWCountLabel(element.benched)}
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }

@@ -13,7 +13,9 @@ const ContributionWidget: React.FC = () => {
 
     if (!stats || !entry || entry.summary_overall_points === 0) {
         return (
-            <Widget title="Total Points Contribution" />
+            <Widget title="Total Points Contribution">
+                <div className="widget__empty">No data available.</div>
+            </Widget>
         )
     }
 
@@ -21,21 +23,25 @@ const ContributionWidget: React.FC = () => {
 
     return (
         <Widget title="Total Points Contribution">
-            <ul className="widget__list">
-                {contributions.map(player => (
-                    <li className="widget__list__item" key={player.element.id}>
-                        <Player id={player.element.id} />
-                        <div>
+            {contributions.length > 0 ? (
+                <ul className="widget__list">
+                    {contributions.map(player => (
+                        <li className="widget__list__item" key={player.element.id}>
+                            <Player id={player.element.id} />
                             <div>
-                                <b>{round(player.aggregates.totals.points / entry.summary_overall_points * 100)}%</b>
+                                <div>
+                                    <b>{round(player.aggregates.totals.points / entry.summary_overall_points * 100)}%</b>
+                                </div>
+                                <div className="muted">
+                                    {getPointsLabel(player.aggregates.totals.points)}
+                                </div>
                             </div>
-                            <div className="muted">
-                                {getPointsLabel(player.aggregates.totals.points)}
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="widget__empty">No data available.</div>
+            )}
         </Widget>
     )
 }
