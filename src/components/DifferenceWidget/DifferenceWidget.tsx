@@ -10,6 +10,8 @@ type Props = {
     top?: boolean
 }
 
+const MAX_ITEMS = 5
+
 const DifferenceWidget: React.FC<Props> = (props: Props) => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
@@ -47,13 +49,13 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
     return (
         <Widget title={props.title}>
             <ul className="widget__list">
-                {props.top && topStarters.slice(0, 5).map(element => (
+                {props.top && topStarters.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
                         <span>{round(element.startsPercentage)}% ({element.starts})</span>
                     </li>
                 ))}
-                {!props.top && topBenchwarmers.slice(0, 5).map(element => (
+                {!props.top && topBenchwarmers.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
                         <span>{round(element.benchedPercentage)}% ({element.benched})</span>

@@ -39,6 +39,7 @@ import { OverallRankWidget } from '../OverallRankWidget'
 import { PointsWidget } from '../PointsWidget'
 import { ValueWidget } from '../ValueWidget'
 import { SiteLink } from '../SiteLink'
+import { WrongCaptainWidget } from '../WrongCaptainWidget'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -280,6 +281,7 @@ const Dashboard: React.FC = () => {
                     <StartStreakWidget />
                     <BenchStreakWidget />
                     <CaptainOpportunityWidget />
+                    <WrongCaptainWidget />
                 </div>
                 <div className="dashboard__graphs">
                     <OverallRankWidget />

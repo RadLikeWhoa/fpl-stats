@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { aggregateStats, getAllPlayers, head, thousandsSeparator, sumNumbers, reduce } from '../../utilities'
+import { aggregateStats, getAllPlayers, head, thousandsSeparator, sumNumbers, reduce, round } from '../../utilities'
 import { SiteLink } from '../SiteLink'
 import { ElementStats, StatData } from '../../types'
 
@@ -54,6 +54,9 @@ const SeasonWidget: React.FC = () => {
             .map(player => player.data[Number(bbWeek) - 1].points || 0))
         : null
 
+    const doubleDigitHauls = reduce(allPlayers.map(player => player.data.filter(data => (data.rawPoints || 0) > 9).length), el => el)
+    const totalPlays = reduce(allPlayers.map(player => player.data.filter(data => data.multiplier !== null).length), el => el)
+
     return (
         <Widget title="Season">
             <ul className="widget__list">
@@ -70,6 +73,10 @@ const SeasonWidget: React.FC = () => {
                 <li className="widget__list__item">
                     <span>Total Points on Bench</span>
                     <span>{totalBenched} pts</span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Double Digit Hauls</span>
+                    <span>{doubleDigitHauls} {totalPlays > 0 && `(${round(doubleDigitHauls / totalPlays)}%)`}</span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Red Cards</span>

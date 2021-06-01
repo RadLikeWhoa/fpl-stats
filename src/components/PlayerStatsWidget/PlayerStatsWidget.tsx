@@ -95,6 +95,18 @@ const PlayerStatsWidget: React.FC = () => {
     const topSeasonReturner = head(sort(allPlayers, el => getTotalPoints(el)))
     const topBenchReturner = head(sort(allPlayers, el => getTotalBenchPoints(el)))
 
+    const weeks = history.current.length
+
+    const idealCaptain = head(sort(
+        Object.entries(Array.from(Array(weeks).keys())
+            .map((el, index) => head(sort(allPlayers, el => el.data[index].rawPoints || 0)))
+            .reduce((acc, curr) => curr ? ({
+                ...acc,
+                [curr.element.id]: acc[curr.element.id] ? acc[curr.element.id] + 1 : 1,
+            }) : acc, {} as Record<number, number>)),
+        el => el[1]
+    ))
+
     return (
         <Widget title="Player Stats">
             <ul className="widget__list">
@@ -260,6 +272,12 @@ const PlayerStatsWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Most Captaincies</span>
                         <Player id={mostCaptaincies.player.element.id} suffix={`${mostCaptaincies.value}`} condensed />
+                    </li>
+                )}
+                {idealCaptain && (
+                    <li className="widget__list__item">
+                        <span>Ideal Captain</span>
+                        <Player id={Number(idealCaptain[0])} suffix={`${idealCaptain[1]}`} condensed />
                     </li>
                 )}
             </ul>

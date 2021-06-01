@@ -5,6 +5,8 @@ import { Widget } from '../Widget'
 import { getAllPlayers, getTotalStarts, sort } from '../../utilities'
 import { Player } from '../Player'
 
+const MAX_ITEMS = 5
+
 const StarterWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
@@ -19,7 +21,7 @@ const StarterWidget: React.FC = () => {
     return (
         <Widget title="Top Starters">
             <ul className="widget__list">
-                {elements.slice(0, 5).map(element => (
+                {elements.slice(0, MAX_ITEMS).map(element => (
                     <li className="widget__list__item" key={element.element.id}>
                         <Player id={element.element.id} />
                         {getTotalStarts(element)}
