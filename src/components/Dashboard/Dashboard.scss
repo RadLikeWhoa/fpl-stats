@@ -301,6 +301,22 @@
                 }
             }
         }
+
+        &--split {
+            .widget {
+                &:first-child {
+                    width: calc(66.666% - 0.5rem);
+
+                    @include up-to("L") {
+                        width: calc(50% - 0.75rem);
+                    }
+
+                    @include up-to("M") {
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
 
     &__loading {

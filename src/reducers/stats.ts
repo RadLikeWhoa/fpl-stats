@@ -1,6 +1,6 @@
 import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit'
 import { Bootstrap, Picks, Stats, StatData, LiveEvent } from '../types'
-import { getPastEvents, getPlayerAggregate, getTotalPoints, getTotalBenchPoints, getTotalRawPoints, getTotalSelections, getTotalStarts, getTotalBenched, getTotalCaptaincies, getSelectionStreak, getStartStreak, getBenchStreak, getNonBlankStreak } from '../utilities'
+import { getPastEvents, getPlayerAggregate, getTotalPoints, getTotalBenchPoints, getTotalRawPoints, getTotalSelections, getTotalStarts, getTotalBenched, getTotalCaptaincies, getSelectionStreak, getStartStreak, getBenchStreak, getNonBlankStreak, getTeamOfTheSeason } from '../utilities'
 import { finishLoading, startLoading } from './loading'
 
 const emptyAggregates = {
@@ -40,15 +40,18 @@ const stats = createSlice({
     initialState: {
         data: undefined,
         chips: undefined,
+        tots: undefined,
     },
     reducers: {
         buildDataStart(state) {
             state.data = undefined
             state.chips = undefined
+            state.tots = undefined
         },
         buildDataSuccess(state, action) {
             state.data = action.payload.data
             state.chips = action.payload.chips
+            state.tots = action.payload.tots
         },
     },
 })
@@ -185,15 +188,18 @@ export const buildData = (bootstrap: Bootstrap, entry: number): ThunkAction<void
         }
     })
 
+    const data = Object.values(stats).reduce((acc: Stats, curr) => ({
+        ...acc,
+        [curr.element.element_type]: [
+            ...(acc[curr.element.element_type] || []),
+            curr,
+        ],
+    }), {})
+
     dispatch(buildDataSuccess({
-        data: Object.values(stats).reduce((acc: Stats, curr) => ({
-            ...acc,
-            [curr.element.element_type]: [
-                ...(acc[curr.element.element_type] || []),
-                curr,
-            ],
-        }), {}),
+        data,
         chips,
+        tots: getTeamOfTheSeason(data),
     }))
     dispatch(finishLoading())
 }

@@ -42,6 +42,7 @@ import { SiteLink } from '../SiteLink'
 import { WrongCaptainWidget } from '../WrongCaptainWidget'
 import { ContributionWidget } from '../ContributionWidget'
 import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
+import { NearMissesWidget } from '../NearMissesWidget'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -207,8 +208,9 @@ const Dashboard: React.FC = () => {
                         </Widget>
                     </header>
                 )}
-                <div className="dashboard__widgets dashboard__widgets--single">
+                <div className="dashboard__widgets dashboard__widgets--split">
                     <TotsWidget />
+                    <NearMissesWidget />
                 </div>
                 <div className="dashboard__widgets dashboard__widgets-duo">
                     <PlayerStatsWidget />

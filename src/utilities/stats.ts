@@ -1,19 +1,7 @@
-import { ElementStats, Event, StatData, Stats, StatDataGameweek } from '../types'
+import { ElementStats, StatData, Stats, StatDataGameweek, Streak } from '../types'
 import { StatAggregateTotals } from '../types/stat-aggregate-totals'
 import { head, reduce, sort } from './arrays'
 import { sumNumbers } from './numbers'
-
-export type Streak = {
-    start: Event
-    end: Event
-    length: number
-    points?: number
-}
-
-export type AggregateStat = {
-    player: StatData
-    value: number
-}
 
 export const getTotalSelections = (statData: StatData): number => {
     return statData.data.filter(pick => pick.multiplier !== null).length
@@ -106,3 +94,33 @@ export const getStartStreak = (statData: StatData): Streak | null => getStreak(s
 export const getBenchStreak = (statData: StatData): Streak | null => getStreak(statData, (gw) => gw.multiplier === 0, true)
 
 export const getNonBlankStreak = (statData: StatData): Streak | null => getStreak(statData, (gw) => (gw.rawPoints || 0) > 2)
+
+const MIN_GK = 1
+const MAX_GK = 2
+
+const MIN_DEF = 3
+const MAX_DEF = 5
+
+const MIN_MID = 2
+const MAX_MID = 5
+
+const MIN_FWD = 1
+const MAX_FWD = 3
+
+export const getTeamOfTheSeason = (stats: Stats): { xi: StatData[], bench: StatData[] } => {
+    const gk = sort(stats[1], el => el.aggregates.totals.points).slice(0, MAX_GK)
+    const def = sort(stats[2], el => el.aggregates.totals.points).slice(0, MAX_DEF)
+    const mid = sort(stats[3], el => el.aggregates.totals.points).slice(0, MAX_MID)
+    const fwd = sort(stats[4], el => el.aggregates.totals.points).slice(0, MAX_FWD)
+
+    const top = gk.slice(0, MIN_GK).concat(def.slice(0, MIN_DEF)).concat(mid.slice(0, MIN_MID)).concat(fwd.slice(0, MIN_FWD))
+    const rest = sort(def.slice(MIN_DEF).concat(mid.slice(MIN_MID)).concat(fwd.slice(MIN_FWD)), el => el.aggregates.totals.points)
+
+    const xi = sort(top.concat(rest.slice(0, 4)), el => el.element.element_type, 'asc')
+    const bench = sort(gk.slice(MIN_GK).concat(rest.slice(4)), el => el.element.element_type, 'asc')
+
+    return {
+        xi,
+        bench,
+    }
+}

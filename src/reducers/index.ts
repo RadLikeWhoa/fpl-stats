@@ -3,7 +3,7 @@ import bootstrap from './bootstrap'
 import stats from './stats'
 import settings from './settings'
 import entry from './entry'
-import { Bootstrap, Stats, History, Entry } from '../types'
+import { Bootstrap, Stats, History, Entry, StatData } from '../types'
 import history from './history'
 import loading from './loading'
 
@@ -16,6 +16,10 @@ export type RootState = {
         data: Stats | undefined
         chips: {
             [key: number]: string
+        } | undefined
+        tots: {
+            xi: StatData[]
+            bench: StatData[]
         } | undefined
     }
     settings: {
