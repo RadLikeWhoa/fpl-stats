@@ -197,7 +197,7 @@ const Dashboard: React.FC = () => {
                         <Widget>
                             <h1 className="dashboard__title">
                                 <SiteLink label={entry.name} />
-                                <div className="small muted">{getPointsLabel(entry.summary_overall_points)} — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
+                                <div className="small muted">{getPointsLabel(thousandsSeparator(entry.summary_overall_points))} — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
                             </h1>
                             {id !== undefined && (
                                 <Button
