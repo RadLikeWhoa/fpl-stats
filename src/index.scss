@@ -1,3 +1,7 @@
+@import "./styles/variables";
+
+$headline-color: #fff;
+
 * {
     box-sizing: border-box;
 }
@@ -5,7 +9,7 @@
 body {
     margin: 1.5rem 1.5rem 0;
     font: 400 100%/1.5 "Source Sans Pro", sans-serif;
-    background-color: #37003c;
+    background-color: $brand-color;
 }
 
 ul {
@@ -14,14 +18,14 @@ ul {
 }
 
 a {
-    color: rgb(233, 0, 82);
+    color: $link-color;
     text-decoration: none;
     font-weight: 700;
 }
 
 h2 {
     position: relative;
-    color: #fff;
+    color: $headline-color;
     max-width: 100rem;
     font-size: 2.5rem;
     line-height: 1.2;
@@ -30,7 +34,7 @@ h2 {
     span {
         display: inline-block;
         padding-right: 1rem;
-        background-color: #37003c;
+        background-color: $brand-color;
     }
 
     &::before {
@@ -41,7 +45,7 @@ h2 {
         right: 0;
         left: 0;
         height: 2px;
-        background-color: rgba(#fff, 0.5);
+        background-color: rgba($headline-color, 0.5);
     }
 }
 
@@ -51,7 +55,7 @@ h3 {
 }
 
 .muted {
-    color: #61605c;
+    color: $muted-color;
 }
 
 .duration {

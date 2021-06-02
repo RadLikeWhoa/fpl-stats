@@ -28,8 +28,8 @@
             left: 0.5rem;
             right: 0.5rem;
             height: 0.625rem;
-            background: rgba(0, 0, 0, 0) linear-gradient(to right, rgb(235, 255, 0), rgb(0, 255, 135)) repeat scroll 0%
-                0%;
+            background: rgba(#000, 0) linear-gradient(to right, $widget-bar-start-color, $widget-bar-end-color) repeat
+                scroll 0% 0%;
         }
     }
 
@@ -38,7 +38,7 @@
         top: 0;
         z-index: 2;
         display: flex;
-        border-bottom: 1px solid rgb(239, 239, 239);
+        border-bottom: 1px solid $light-grey;
 
         .dashboard__stat {
             font-weight: 700;
@@ -73,7 +73,7 @@
         display: flex;
         align-items: center;
         width: max-content;
-        border-bottom: 1px solid rgb(239, 239, 239);
+        border-bottom: 1px solid $light-grey;
 
         &:last-child {
             border-bottom: 0;
@@ -107,14 +107,14 @@
         height: 4rem;
         width: 4rem;
         background-color: #e7e7e5;
-        border-right: 1px solid rgb(239, 239, 239);
+        border-right: 1px solid $light-grey;
 
         &--benched {
             background-color: #fce45a;
         }
 
         &--started {
-            background-color: rgba(0, 111, 55, 0.9);
+            background-color: rgba(#006f37, 0.9);
         }
 
         &--triple {
@@ -157,7 +157,7 @@
         @include up-to("M") {
             flex-flow: wrap;
             width: 100%;
-            border-top: 1px solid rgb(239, 239, 239);
+            border-top: 1px solid $light-grey;
 
             .dashboard__stat {
                 flex-direction: row;
@@ -171,7 +171,7 @@
                 }
 
                 &:nth-child(-n + 2) {
-                    border-bottom: 1px solid rgb(239, 239, 239);
+                    border-bottom: 1px solid $light-grey;
                 }
 
                 &:nth-child(1)::before {
@@ -236,7 +236,7 @@
         width: m#{i}n(100rem, calc(100vw - 3rem));
         padding: 0.5rem;
         font-weight: 700;
-        background-color: #efefef;
+        background-color: $light-grey;
     }
 
     &__player {
@@ -262,7 +262,7 @@
         justify-content: space-between;
         max-width: 100rem;
         margin: 0 auto;
-        background-color: #37003c;
+        background-color: $brand-color;
 
         &::after {
             content: "";
@@ -410,7 +410,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #37003c;
+        background-color: $brand-color;
         opacity: 1;
         pointer-events: auto;
         transition: opacity 0.25s ease-in-out;
@@ -471,7 +471,7 @@
             }
 
             &--started {
-                background-color: rgba(0, 111, 55, 0.9);
+                background-color: rgba(#006f37, 0.9);
             }
 
             &--triple {

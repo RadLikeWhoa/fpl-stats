@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .base-player-widget {
     display: flex;
     flex-direction: column;
@@ -32,7 +34,7 @@
         }
 
         &__scroller {
-            border-top: 1px solid #efefef;
+            border-top: 1px solid $light-grey;
             overflow: auto;
         }
 

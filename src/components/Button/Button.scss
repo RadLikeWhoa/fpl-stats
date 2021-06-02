@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .button {
     padding: 0.75rem 1rem;
     font: inherit;
@@ -5,7 +7,7 @@
     font-weight: bold;
     color: #fff;
     text-align: left;
-    background-color: #37003c;
+    background-color: $brand-color;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -15,8 +17,8 @@
     }
 
     &--secondary {
-        color: #37003c;
+        color: $brand-color;
         background-color: #fff;
-        border: 1px solid #37003c;
+        border: 1px solid $brand-color;
     }
 }

@@ -1,7 +1,9 @@
 @import "../../styles/mixins";
 
+$bench-end-color: #e5e5e5;
+
 .tots-widget {
-    background-color: #e5e5e5;
+    background-color: $bench-end-color;
 }
 
 .tots {
@@ -18,7 +20,7 @@
             padding: 1.5rem 0;
             margin-top: 3rem;
             margin-bottom: 0;
-            background-image: linear-gradient(#e5e5e5 0%, #fff 40%, #ebebe6 40%, #e5e5e5 100%);
+            background-image: linear-gradient($bench-end-color 0%, #fff 40%, #ebebe6 40%, $bench-end-color 100%);
 
             @include up-to("M") {
                 margin-top: 1.5rem;

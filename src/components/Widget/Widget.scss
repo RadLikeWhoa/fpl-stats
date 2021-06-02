@@ -1,9 +1,11 @@
 @import "../../styles/mixins";
 
+$widget-background-color: #fff;
+
 .widget {
     position: relative;
     margin-bottom: 2.125rem;
-    background-color: #fff;
+    background-color: $widget-background-color;
 
     &--cloaked::before {
         content: "";
@@ -12,7 +14,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: #fff;
+        background: $widget-background-color;
         z-index: 10;
     }
 
@@ -26,7 +28,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0.5rem;
-            border-bottom: 1px solid #efefef;
+            border-bottom: 1px solid $light-grey;
 
             > :last-child:not(:only-child) {
                 @include at-least("M") {
@@ -74,8 +76,8 @@
         padding: 0.5rem;
         margin: 0;
         color: #2f2f2f;
-        border-bottom: 2px solid #efefef;
-        background-color: #fff;
+        border-bottom: 2px solid $light-grey;
+        background-color: $widget-background-color;
 
         .widget & .button {
             width: auto;
@@ -93,7 +95,8 @@
         left: 0.5rem;
         right: 0.5rem;
         height: 0.625rem;
-        background: rgba(#000, 0) linear-gradient(to right, #ebff00, #00ff87) repeat scroll 0% 0%;
+        background: rgba(#000, 0) linear-gradient(to right, $widget-bar-start-color, $widget-bar-end-color) repeat
+            scroll 0% 0%;
     }
 
     &__content {
@@ -102,7 +105,7 @@
 
     &__empty {
         padding: 1rem 0.5rem;
-        color: #61605c;
+        color: $muted-color;
 
         @include up-to("M") {
             text-align: center;

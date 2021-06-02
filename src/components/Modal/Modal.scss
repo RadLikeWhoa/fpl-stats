@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .modal {
     position: fixed;
     top: 0;
@@ -26,7 +28,7 @@
 
     &__header {
         padding: 1rem;
-        background-color: #37003c;
+        background-color: $brand-color;
         color: #fff;
         font-weight: 400;
     }
@@ -44,7 +46,7 @@
         width: 100%;
         padding: 0.5rem 1rem;
         font: inherit;
-        border: 1px solid #94968c;
+        border: 1px solid $muted-color;
         cursor: pointer;
 
         &:focus {

@@ -28,7 +28,7 @@
         font-weight: 700;
         font-size: 0.875rem;
         text-align: center;
-        background-color: rgba(0, 111, 55, 0.9);
+        background-color: rgba(#006f37, 0.9);
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -42,7 +42,7 @@
         font-weight: 700;
         font-size: 0.75rem;
         text-align: center;
-        background-color: rgb(0, 255, 135);
+        background-color: #00ff87;
         border-radius: 0 0 3px 3px;
 
         @include up-to("M") {
