@@ -46,6 +46,11 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
 
     const topPlayers = props.players.slice(0, props.max)
 
+    const close = (): void => {
+        setShowExtended(false)
+        setValue('')
+    }
+
     return (
         <>
             <Widget title={props.title} cssClasses={classNames('base-player-widget', props.cssClasses)}>
@@ -60,8 +65,8 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
             </Widget>
             {showExtended && (
                 <div className="modal modal--players">
-                    <div className="modal__backdrop" onClick={() => setShowExtended(false)}></div>
-                    <Widget title={props.title} onClose={() => setShowExtended(false)}>
+                    <div className="modal__backdrop" onClick={() => close()}></div>
+                    <Widget title={props.title} onClose={() => close()}>
                         <div className="modal__input-wrapper">
                             <label htmlFor="query">Name</label>
                             <input
