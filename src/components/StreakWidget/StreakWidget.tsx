@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
-import { getAllPlayers, getGWCountLabel, round, getPointsLabel } from '../../utilities'
+import { StatAggregateStreaks } from '../../types'
+import { getAllPlayers, getGWCountLabel, getPointsLabel, round } from '../../utilities'
 import { BasePlayerWidget } from '../BasePlayerWidget'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
@@ -9,22 +10,27 @@ import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 
 const MAX_ITEMS = 10
-const TITLE = 'Highest Non-Blank Streaks'
 
-const NonBlankStreakWidget: React.FC = () => {
+type Props = {
+    title: string
+    metric: keyof StatAggregateStreaks
+    showDetailedStats?: boolean
+}
+
+const StreakWidget: React.FC<Props> = (props: Props) => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return <Widget title={TITLE} />
+        return <Widget title={props.title} />
     }
 
     const streakers = getAllPlayers(stats)
         .sort((a, b) => {
-            const aStreak = a.aggregates.streaks.nonBlank
-            const bStreak = b.aggregates.streaks.nonBlank
+            const aStreak = a.aggregates.streaks[props.metric]
+            const bStreak = b.aggregates.streaks[props.metric]
 
-            const aStreakLength = a.aggregates.streaks.nonBlank?.length || 0
-            const bStreakLength = b.aggregates.streaks.nonBlank?.length || 0
+            const aStreakLength = a.aggregates.streaks[props.metric]?.length || 0
+            const bStreakLength = b.aggregates.streaks[props.metric]?.length || 0
 
             if (bStreakLength - aStreakLength === 0) {
                 return (bStreak?.points || 0) - (aStreak?.points || 0)
@@ -32,15 +38,15 @@ const NonBlankStreakWidget: React.FC = () => {
 
             return bStreakLength - aStreakLength
         })
-        .filter(streaker => streaker.aggregates.streaks.nonBlank !== null)
+        .filter(streaker => streaker.aggregates.streaks[props.metric] !== null)
 
     return (
         <BasePlayerWidget
-            title={TITLE}
+            title={props.title}
             players={streakers}
             max={MAX_ITEMS}
             renderItem={streaker => {
-                const streak = streaker.aggregates.streaks.nonBlank
+                const streak = streaker.aggregates.streaks[props.metric]
 
                 if (!streak) {
                     return null
@@ -54,8 +60,14 @@ const NonBlankStreakWidget: React.FC = () => {
                                 <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
                             </div>
                             <div className="muted">
-                                {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)},{' '}
-                                {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
+                                {props.showDetailedStats ? (
+                                    <>
+                                        {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)},{' '}
+                                        {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
+                                    </>
+                                ) : (
+                                    <div className="muted">{getGWCountLabel(streak.length)}</div>
+                                )}
                             </div>
                         </div>
                     </>
@@ -65,4 +77,4 @@ const NonBlankStreakWidget: React.FC = () => {
     )
 }
 
-export default NonBlankStreakWidget
+export default StreakWidget

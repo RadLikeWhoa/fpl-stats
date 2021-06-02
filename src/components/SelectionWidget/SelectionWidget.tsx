@@ -7,30 +7,34 @@ import { Player } from '../Player'
 import { BasePlayerWidget } from '../BasePlayerWidget'
 
 const MAX_ITEMS = 10
-const TITLE = 'Top Selections'
 
-const TeamsWidget: React.FC = () => {
+type Props = {
+    title: string
+    metric: 'selections' | 'starts' | 'benched'
+}
+
+const SelectionWidget: React.FC<Props> = (props: Props) => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return <Widget title={TITLE} />
+        return <Widget title={props.title} />
     }
 
-    const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.selections)
+    const elements = sort(getAllPlayers(stats), el => el.aggregates.totals[props.metric])
 
     return (
         <BasePlayerWidget
-            title={TITLE}
+            title={props.title}
             players={elements}
             max={MAX_ITEMS}
             renderItem={element => (
                 <>
                     <Player id={element.element.id} />
-                    <b>{getGWCountLabel(element.aggregates.totals.selections)}</b>
+                    <b>{getGWCountLabel(element.aggregates.totals[props.metric])}</b>
                 </>
             )}
         />
     )
 }
 
-export default TeamsWidget
+export default SelectionWidget

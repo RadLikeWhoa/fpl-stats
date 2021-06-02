@@ -31,14 +31,8 @@ import { PositionsWidget } from '../PositionsWidget'
 import { Metric } from '../Metric'
 import { SeasonWidget } from '../SeasonWidget'
 import { TeamsWidget } from '../TeamsWidget'
-import { NonBlankStreakWidget } from '../NonBlankStreakWidget'
-import { SelectionStreakWidget } from '../SelectionStreakWidget'
-import { StartStreakWidget } from '../StartStreakWidget'
-import { BenchStreakWidget } from '../BenchStreakWidget'
 import { CaptainOpportunityWidget } from '../CaptainOpportunityWidget'
 import { SelectionWidget } from '../SelectionWidget'
-import { StarterWidget } from '../StarterWidget'
-import { BenchWidget } from '../BenchWidget'
 import { DifferenceWidget } from '../DifferenceWidget'
 import { OverallRankWidget } from '../OverallRankWidget'
 import { PointsWidget } from '../PointsWidget'
@@ -48,6 +42,7 @@ import { WrongCaptainWidget } from '../WrongCaptainWidget'
 import { ContributionWidget } from '../ContributionWidget'
 import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
 import { NearMissesWidget } from '../NearMissesWidget'
+import { StreakWidget } from '../StreakWidget'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -310,9 +305,9 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
                 <div className="dashboard__widgets">
-                    <SelectionWidget />
-                    <StarterWidget />
-                    <BenchWidget />
+                    <SelectionWidget title="Top Selections" metric="selections" />
+                    <SelectionWidget title="Top Starters" metric="starts" />
+                    <SelectionWidget title="Top Bench Players" metric="benched" />
                     <DifferenceWidget title="Most Consistent Starters" top />
                     <DifferenceWidget title="Most Consistent Bench Players" />
                 </div>
@@ -334,10 +329,10 @@ const Dashboard: React.FC = () => {
                     <span>Streaks</span>
                 </h2>
                 <div className="dashboard__widgets">
-                    <NonBlankStreakWidget />
-                    <SelectionStreakWidget />
-                    <StartStreakWidget />
-                    <BenchStreakWidget />
+                    <StreakWidget title="Highest Non-Blank Streaks" metric="nonBlank" showDetailedStats />
+                    <StreakWidget title="Highest Selection Streaks" metric="selection" showDetailedStats />
+                    <StreakWidget title="Highest Start Streaks" metric="start" showDetailedStats />
+                    <StreakWidget title="Highest Bench Appearance Streaks" metric="bench" />
                 </div>
                 <h2>
                     <span>Contributions</span>
