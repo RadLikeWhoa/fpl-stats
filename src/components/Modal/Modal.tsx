@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { fetchDataWithId } from '../../reducers/settings'
 import { Button } from '../Button'
-import { useClickOutside } from '../../hooks'
 import { validateTeamId } from '../../utilities'
 import { RootState } from '../../reducers'
 import './Modal.scss'
@@ -36,8 +35,6 @@ const Modal: React.FC<Props> = (props: Props) => {
         [dispatch, props, value, id, history]
     )
 
-    const ref = useClickOutside<HTMLDivElement>(() => close(true))
-
     useEffect(() => {
         const listener = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -58,7 +55,8 @@ const Modal: React.FC<Props> = (props: Props) => {
             }}
         >
             <div className="modal">
-                <div className="modal__element" ref={ref}>
+                <div className="modal__backdrop" onClick={() => close(true)}></div>
+                <div className="modal__element">
                     <header className="modal__header">Enter Your Team ID</header>
                     <div className="modal__body">
                         <input

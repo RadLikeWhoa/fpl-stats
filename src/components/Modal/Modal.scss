@@ -11,6 +11,14 @@
     padding: 1.5rem;
     background-color: rgba(#000, 0.8);
 
+    &__backdrop {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
     &__element {
         width: 30rem;
         background-color: #fff;
