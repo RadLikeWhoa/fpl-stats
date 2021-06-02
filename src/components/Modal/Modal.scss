@@ -41,6 +41,22 @@
         padding: 0 1rem 1rem;
     }
 
+    &__input-wrapper {
+        position: relative;
+        padding-top: 0.25rem;
+
+        label {
+            position: absolute;
+            top: 0.25rem;
+            left: 0.5rem;
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+            background-color: #fff;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    }
+
     &__input {
         display: block;
         width: 100%;

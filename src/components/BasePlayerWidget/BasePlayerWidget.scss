@@ -43,8 +43,8 @@
         }
     }
 
-    .modal__input {
-        width: auto;
+    .modal__input-wrapper {
+        width: calc(100% - 1rem);
         margin: 0.5rem;
     }
 }

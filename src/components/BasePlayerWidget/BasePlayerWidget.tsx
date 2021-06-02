@@ -62,13 +62,17 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
                 <div className="modal modal--players">
                     <div className="modal__backdrop" onClick={() => setShowExtended(false)}></div>
                     <Widget title={props.title} onClose={() => setShowExtended(false)}>
-                        <input
-                            className="modal__input"
-                            type="text"
-                            placeholder="Filter by name"
-                            value={value}
-                            onChange={e => setValue(e.target.value)}
-                        />
+                        <div className="modal__input-wrapper">
+                            <label htmlFor="query">Name</label>
+                            <input
+                                className="modal__input"
+                                type="text"
+                                placeholder="Filter by name"
+                                value={value}
+                                onChange={e => setValue(e.target.value)}
+                                id="query"
+                            />
+                        </div>
                         <div className="widget__scroller">
                             {filteredPlayers.length > 0 ? (
                                 renderList(filteredPlayers, props.renderItem)

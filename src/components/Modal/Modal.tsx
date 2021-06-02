@@ -59,13 +59,16 @@ const Modal: React.FC<Props> = (props: Props) => {
                 <div className="modal__element">
                     <header className="modal__header">Enter Your Team ID</header>
                     <div className="modal__body">
-                        <input
-                            className="modal__input"
-                            type="text"
-                            placeholder="e.g. 4654486"
-                            value={value}
-                            onChange={e => setValue(e.target.value)}
-                        />
+                        <div className="modal__input-wrapper">
+                            <label htmlFor="query">Team ID</label>
+                            <input
+                                className="modal__input"
+                                type="text"
+                                placeholder="e.g. 4654486"
+                                value={value}
+                                onChange={e => setValue(e.target.value)}
+                            />
+                        </div>
                     </div>
                     <footer className="modal__footer">
                         <Button label="Show Stats" type="submit" disabled={!validateTeamId(value)} />
