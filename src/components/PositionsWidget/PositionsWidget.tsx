@@ -6,6 +6,8 @@ import { thousandsSeparator, sumNumbers, round, reduce, getPointsLabel, pluralis
 import { Widget } from '../Widget'
 import { Metric } from '../Metric'
 
+const TITLE = 'Positions'
+
 const PositionsWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
@@ -13,7 +15,7 @@ const PositionsWidget: React.FC = () => {
     const meanValue = useMeanValue()
 
     if (!stats || !bootstrap) {
-        return <Widget title="Positions" />
+        return <Widget title={TITLE} />
     }
 
     const positions: Record<string, number> = Object.entries(stats).reduce(
@@ -25,7 +27,7 @@ const PositionsWidget: React.FC = () => {
     )
 
     return (
-        <Widget title="Positions">
+        <Widget title={TITLE}>
             {Object.entries(positions).length > 0 && (
                 <ul className="widget__list">
                     <li className="widget__list__item">

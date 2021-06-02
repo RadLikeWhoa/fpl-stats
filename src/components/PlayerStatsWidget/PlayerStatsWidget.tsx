@@ -16,6 +16,8 @@ import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 
+const TITLE = 'Player Stats'
+
 const renderTopBenchGWReturner = (returner: StatData): JSX.Element | null => {
     const week = head(returner.data)
 
@@ -47,7 +49,7 @@ const PlayerStatsWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
 
     if (!history || !stats) {
-        return <Widget title="Player Stats" />
+        return <Widget title={TITLE} />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -120,7 +122,7 @@ const PlayerStatsWidget: React.FC = () => {
     )
 
     return (
-        <Widget title="Player Stats">
+        <Widget title={TITLE}>
             <ul className="widget__list">
                 {topReturner && (
                     <li className="widget__list__item">

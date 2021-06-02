@@ -5,13 +5,14 @@ import { getAllPlayers, getGWCountLabel, head, round, sort } from '../../utiliti
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
+const TITLE = 'Wrong Captains'
+
 const WrongCaptainWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
-
     const history = useSelector((state: RootState) => state.history.data)
 
     if (!stats || !history) {
-        return <Widget title="Wrong Captains" />
+        return <Widget title={TITLE} />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -46,7 +47,7 @@ const WrongCaptainWidget: React.FC = () => {
     }, {} as Record<number, number>)
 
     return (
-        <Widget title="Wrong Captains">
+        <Widget title={TITLE}>
             {Object.entries(improvements).length > 0 && (
                 <ul className="widget__list">
                     {sort(Object.entries(improvements), el => el[1]).map(([player, count]) => (

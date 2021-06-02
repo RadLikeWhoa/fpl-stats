@@ -6,11 +6,13 @@ import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric'
 
+const TITLE = 'Captains'
+
 const CaptainWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return <Widget title="Captains" />
+        return <Widget title={TITLE} />
     }
 
     const captains = sort(
@@ -28,7 +30,7 @@ const CaptainWidget: React.FC = () => {
     )
 
     return (
-        <Widget title="Captains">
+        <Widget title={TITLE}>
             {captains.length > 0 && (
                 <ul className="widget__list">
                     {captains.map(captain => {

@@ -9,3 +9,5 @@ export const pluralise = (value: number | string, singular: string, plural: stri
 export const getGWCountLabel = (value: number | string): string => pluralise(value, 'GW', 'GWs')
 
 export const getPointsLabel = (value: number | string): string => pluralise(value, 'pt', 'pts')
+
+export const normaliseDiacritics = (value: string): string => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')

@@ -6,6 +6,7 @@ import { getAllPlayers, getPointsLabel, round, sort } from '../../utilities'
 import { Player } from '../Player'
 import { getGWCountLabel } from '../../utilities/strings'
 import { StatData } from '../../types'
+import { BasePlayerWidget } from '../BasePlayerWidget'
 
 type Props = {
     title: string
@@ -29,29 +30,28 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
         getAllPlayers(stats).filter(player => player.aggregates.totals.points > 0),
         el => getPointsShare(el),
         props.top ? 'desc' : 'asc'
-    ).slice(0, MAX_ITEMS)
+    )
 
     return (
-        <Widget title={props.title}>
-            {elements.length > 0 && (
-                <ul className="widget__list">
-                    {elements.map(element => (
-                        <li className="widget__list__item" key={element.element.id}>
-                            <Player id={element.element.id} />
-                            <div>
-                                <div>
-                                    <b>{element.element.total_points > 0 && `${round(getPointsShare(element))}%`}</b>
-                                </div>
-                                <div className="muted">
-                                    {getPointsLabel(element.element.total_points - element.aggregates.totals.rawPoints)}{' '}
-                                    in {getGWCountLabel(history.current.length - element.aggregates.totals.selections)}
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+        <BasePlayerWidget
+            title={props.title}
+            players={elements}
+            max={MAX_ITEMS}
+            renderItem={element => (
+                <>
+                    <Player id={element.element.id} />
+                    <div>
+                        <div>
+                            <b>{element.element.total_points > 0 && `${round(getPointsShare(element))}%`}</b>
+                        </div>
+                        <div className="muted">
+                            {getPointsLabel(element.element.total_points - element.aggregates.totals.rawPoints)} in{' '}
+                            {getGWCountLabel(history.current.length - element.aggregates.totals.selections)}
+                        </div>
+                    </div>
+                </>
             )}
-        </Widget>
+        />
     )
 }
 

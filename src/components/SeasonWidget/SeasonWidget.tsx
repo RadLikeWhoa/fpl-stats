@@ -7,6 +7,8 @@ import { SiteLink } from '../SiteLink'
 import { StatData } from '../../types'
 import { StatAggregateTotals } from '../../types'
 
+const TITLE = 'Season'
+
 const getAggregateValues = (players: StatData[], key: keyof StatAggregateTotals): number =>
     sumNumbers(players.map(player => player.aggregates.totals[key]))
 
@@ -19,7 +21,7 @@ const SeasonWidget: React.FC = () => {
     const entry = useSelector((state: RootState) => state.entry.data)
 
     if (!stats || !history || !chips || !entry) {
-        return <Widget title="Season" />
+        return <Widget title={TITLE} />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -67,7 +69,7 @@ const SeasonWidget: React.FC = () => {
     )
 
     return (
-        <Widget title="Season">
+        <Widget title={TITLE}>
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>Total Transfers Made</span>

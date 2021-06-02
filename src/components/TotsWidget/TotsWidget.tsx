@@ -5,15 +5,17 @@ import { TotsPlayer } from '../TotsPlayer'
 import { Widget } from '../Widget'
 import './TotsWidget.scss'
 
+const TITLE = 'Team of the Season'
+
 const TotsWidget: React.FC = () => {
     const tots = useSelector((state: RootState) => state.stats.tots)
 
     if (!tots) {
-        return <Widget title="Team of the Season" />
+        return <Widget title={TITLE} />
     }
 
     return (
-        <Widget title="Team of the Season" cssClasses="tots-widget">
+        <Widget title={TITLE} cssClasses="tots-widget">
             <div className="tots">
                 <div className="tots__row">
                     {tots.xi

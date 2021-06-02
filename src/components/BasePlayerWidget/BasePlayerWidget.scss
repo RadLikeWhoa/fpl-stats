@@ -1,0 +1,48 @@
+.base-player-widget {
+    display: flex;
+    flex-direction: column;
+
+    .widget__content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .widget__list {
+        flex-grow: 1;
+    }
+
+    .button {
+        align-self: center;
+        margin: 0 0.5rem 0.5rem;
+    }
+}
+
+.modal--players {
+    .widget {
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        overflow: hidden;
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        &__scroller {
+            border-top: 1px solid #efefef;
+            overflow: auto;
+        }
+
+        &::after {
+            content: none;
+        }
+    }
+
+    .modal__input {
+        width: auto;
+        margin: 0.5rem;
+    }
+}

@@ -4,6 +4,7 @@ import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getAllPlayers, getGWCountLabel, round } from '../../utilities'
 import { Player } from '../Player'
+import { BasePlayerWidget } from '../BasePlayerWidget'
 
 type Props = {
     title: string
@@ -33,51 +34,46 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
         }
     })
 
-    const topStarters = [...elements]
-        .sort((a, b) => {
-            const percentageDiff = b.startsPercentage - a.startsPercentage
-            return percentageDiff === 0 ? b.starts - a.starts : percentageDiff
-        })
-        .slice(0, MAX_ITEMS)
+    const starters = [...elements].sort((a, b) => {
+        const percentageDiff = b.startsPercentage - a.startsPercentage
+        return percentageDiff === 0 ? b.starts - a.starts : percentageDiff
+    })
 
-    const topBenchwarmers = [...elements]
-        .sort((a, b) => {
-            const percentageDiff = b.benchedPercentage - a.benchedPercentage
-            return percentageDiff === 0 ? b.benched - a.benched : percentageDiff
-        })
-        .slice(0, MAX_ITEMS)
+    const benchwarmers = [...elements].sort((a, b) => {
+        const percentageDiff = b.benchedPercentage - a.benchedPercentage
+        return percentageDiff === 0 ? b.benched - a.benched : percentageDiff
+    })
 
     return (
-        <Widget title={props.title}>
-            {((props.top && topStarters.length > 0) || (!props.top && topBenchwarmers.length > 0)) && (
-                <ul className="widget__list">
-                    {props.top &&
-                        topStarters.map(element => (
-                            <li className="widget__list__item" key={element.element.id}>
-                                <Player id={element.element.id} />
-                                <div>
-                                    <div>
-                                        <b>{round(element.startsPercentage)}%</b>
-                                    </div>
-                                    <div className="muted">{getGWCountLabel(element.starts)}</div>
-                                </div>
-                            </li>
-                        ))}
-                    {!props.top &&
-                        topBenchwarmers.map(element => (
-                            <li className="widget__list__item" key={element.element.id}>
-                                <Player id={element.element.id} />
-                                <div>
-                                    <div>
-                                        <b>{round(element.benchedPercentage)}%</b>
-                                    </div>
-                                    <div className="muted">{getGWCountLabel(element.benched)}</div>
-                                </div>
-                            </li>
-                        ))}
-                </ul>
+        <BasePlayerWidget
+            title={props.title}
+            players={props.top ? starters : benchwarmers}
+            max={MAX_ITEMS}
+            renderItem={element => (
+                <>
+                    <Player id={element.element.id} />
+                    <div>
+                        <div>
+                            <b>
+                                {round(
+                                    ((props.top
+                                        ? element.aggregates.totals.starts
+                                        : element.aggregates.totals.benched) /
+                                        element.aggregates.totals.selections) *
+                                        100
+                                )}
+                                %
+                            </b>
+                        </div>
+                        <div className="muted">
+                            {getGWCountLabel(
+                                props.top ? element.aggregates.totals.starts : element.aggregates.totals.benched
+                            )}
+                        </div>
+                    </div>
+                </>
             )}
-        </Widget>
+        />
     )
 }
 

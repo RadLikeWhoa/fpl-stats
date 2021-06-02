@@ -5,6 +5,8 @@ import { head, last, round, sort, thousandsSeparator } from '../../utilities'
 import { Widget } from '../Widget'
 import { useMeanValue, useMeanLabel } from '../../hooks'
 
+const TITLE = 'Historical Data'
+
 const HistoryWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
 
@@ -12,7 +14,7 @@ const HistoryWidget: React.FC = () => {
     const meanValue = useMeanValue()
 
     if (!history) {
-        return <Widget title="Historical Data" />
+        return <Widget title={TITLE} />
     }
 
     const pastSeasonsByRank = sort(history.past, el => el.rank, 'asc')
@@ -30,7 +32,7 @@ const HistoryWidget: React.FC = () => {
     const top1m = pastSeasonsByRank.filter(season => season.rank <= 1000000).length
 
     return (
-        <Widget title="Historical Data">
+        <Widget title={TITLE}>
             <ul className="widget__list">
                 {bestRankedSeason && (
                     <li className="widget__list__item">

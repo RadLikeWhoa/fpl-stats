@@ -7,12 +7,14 @@ import { getAllPlayers, getPointsLabel, round, sort, sumNumbers } from '../../ut
 import { Metric } from '../Metric'
 import './TeamsWidget.scss'
 
+const TITLE = 'Teams'
+
 const TeamsWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!stats || !bootstrap) {
-        return <Widget title="Teams" />
+        return <Widget title={TITLE} />
     }
 
     const counts = Object.values(stats)
@@ -24,7 +26,7 @@ const TeamsWidget: React.FC = () => {
     const allPlayers = getAllPlayers(stats)
 
     return (
-        <Widget title="Teams" cssClasses="teams-widget">
+        <Widget title={TITLE} cssClasses="teams-widget">
             {teams.length > 0 && (
                 <ul className="widget__list">
                     {teams.map(team => {

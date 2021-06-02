@@ -5,12 +5,14 @@ import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, initialCaps } from '../../utilities'
 
+const TITLE = 'Team Value Evolution'
+
 const ValueWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!history || !bootstrap) {
-        return <Widget title="Team Value Evolution" />
+        return <Widget title={TITLE} />
     }
 
     const data = history.current.map(entry => {
@@ -23,7 +25,7 @@ const ValueWidget: React.FC = () => {
     })
 
     return (
-        <Widget title="Team Value Evolution">
+        <Widget title={TITLE}>
             <div className="chart">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>

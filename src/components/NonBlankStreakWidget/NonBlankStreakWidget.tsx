@@ -2,18 +2,20 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { getAllPlayers, getGWCountLabel, round, getPointsLabel } from '../../utilities'
+import { BasePlayerWidget } from '../BasePlayerWidget'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 
 const MAX_ITEMS = 10
+const TITLE = 'Highest Non-Blank Streaks'
 
 const NonBlankStreakWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return <Widget title="Highest Non-Blank Streaks" />
+        return <Widget title={TITLE} />
     }
 
     const streakers = getAllPlayers(stats)
@@ -31,37 +33,35 @@ const NonBlankStreakWidget: React.FC = () => {
             return bStreakLength - aStreakLength
         })
         .filter(streaker => streaker.aggregates.streaks.nonBlank !== null)
-        .slice(0, MAX_ITEMS)
 
     return (
-        <Widget title="Highest Non-Blank Streaks">
-            {streakers.length > 0 && (
-                <ul className="widget__list">
-                    {streakers.map(streaker => {
-                        const streak = streaker.aggregates.streaks.nonBlank
+        <BasePlayerWidget
+            title={TITLE}
+            players={streakers}
+            max={MAX_ITEMS}
+            renderItem={streaker => {
+                const streak = streaker.aggregates.streaks.nonBlank
 
-                        if (!streak) {
-                            return null
-                        }
+                if (!streak) {
+                    return null
+                }
 
-                        return (
-                            <li className="widget__list__item" key={streaker.element.id}>
-                                <Player id={streaker.element.id} />
-                                <div>
-                                    <div className="duration">
-                                        <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
-                                    </div>
-                                    <div className="muted">
-                                        {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)},{' '}
-                                        {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
-                                    </div>
-                                </div>
-                            </li>
-                        )
-                    })}
-                </ul>
-            )}
-        </Widget>
+                return (
+                    <>
+                        <Player id={streaker.element.id} />
+                        <div>
+                            <div className="duration">
+                                <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
+                            </div>
+                            <div className="muted">
+                                {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)},{' '}
+                                {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
+                            </div>
+                        </div>
+                    </>
+                )
+            }}
+        />
     )
 }
 

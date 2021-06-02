@@ -5,12 +5,14 @@ import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, initialCaps } from '../../utilities'
 
+const TITLE = 'Gameweek Points'
+
 const OverallRankWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!history || !bootstrap) {
-        return <Widget title="Gameweek Points" />
+        return <Widget title={TITLE} />
     }
 
     const data = history.current.map(entry => {
@@ -24,7 +26,7 @@ const OverallRankWidget: React.FC = () => {
     })
 
     return (
-        <Widget title="Gameweek Points">
+        <Widget title={TITLE}>
             <div className="chart">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>

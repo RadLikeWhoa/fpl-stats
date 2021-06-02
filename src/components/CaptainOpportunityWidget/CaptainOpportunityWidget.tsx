@@ -8,13 +8,15 @@ import { SwapIcon } from '../SwapIcon'
 import { SiteLink } from '../SiteLink'
 import './CaptainOpportunityWidget.scss'
 
+const TITLE = 'Missed Captaincies'
+
 const CaptainOpportunityWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     const history = useSelector((state: RootState) => state.history.data)
 
     if (!stats || !history) {
-        return <Widget title="Missed Captaincies" />
+        return <Widget title={TITLE} />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -26,7 +28,7 @@ const CaptainOpportunityWidget: React.FC = () => {
     }))
 
     return (
-        <Widget title="Missed Captaincies" cssClasses="captain-opportunity-widget">
+        <Widget title={TITLE} cssClasses="captain-opportunity-widget">
             {improvements.length > 0 && (
                 <ul className="widget__list">
                     {improvements.map((improvement, index) => {

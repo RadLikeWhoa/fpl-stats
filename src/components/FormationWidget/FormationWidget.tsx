@@ -10,6 +10,8 @@ type FormationInformation = {
     points: number
 }
 
+const TITLE = 'Formations'
+
 const formatFormation = (formation: string) =>
     sumNumbers(formation.split('-').map(position => Number(position))) > 10 ? 'Bench Boost' : formation
 
@@ -19,7 +21,7 @@ const FormationWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
 
     if (!stats || !history) {
-        return <Widget title="Formations" />
+        return <Widget title={TITLE} />
     }
 
     const weeks = history.current.length
@@ -48,7 +50,7 @@ const FormationWidget: React.FC = () => {
         )
 
     return (
-        <Widget title="Formations">
+        <Widget title={TITLE}>
             {Object.entries(data).length > 0 && (
                 <ul className="widget__list">
                     {sort(Object.entries(data), el => el[1].count).map(([formation, information]) => {

@@ -5,12 +5,14 @@ import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, head, sort, thousandsSeparator, thousandsShorthand } from '../../utilities'
 
+const TITLE = 'Overall Rank Evolution'
+
 const OverallRankWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!history || !bootstrap) {
-        return <Widget title="Overall Rank Evolution" />
+        return <Widget title={TITLE} />
     }
 
     let data = history.current.map(entry => {
@@ -30,7 +32,7 @@ const OverallRankWidget: React.FC = () => {
     }))
 
     return (
-        <Widget title="Overall Rank Evolution">
+        <Widget title={TITLE}>
             <div className="chart chart--reversed">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>

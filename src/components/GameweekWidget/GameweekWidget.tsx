@@ -6,6 +6,8 @@ import { Widget } from '../Widget'
 import { head, last, round, sort, thousandsSeparator, getPointsLabel } from '../../utilities'
 import { SiteLink } from '../SiteLink'
 
+const TITLE = 'Gameweeks'
+
 const GameweekWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
@@ -14,7 +16,7 @@ const GameweekWidget: React.FC = () => {
     const meanValue = useMeanValue()
 
     if (!history || !bootstrap) {
-        return <Widget title="Gameweeks" />
+        return <Widget title={TITLE} />
     }
 
     const differences = history.current.map((week, index) => week.points - bootstrap.events[index].average_entry_score)
@@ -29,7 +31,7 @@ const GameweekWidget: React.FC = () => {
     const worstGWRank = last(sortedRanks)
 
     return (
-        <Widget title="Gameweeks">
+        <Widget title={TITLE}>
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>{meanLabel('Difference to GW Average')}</span>
