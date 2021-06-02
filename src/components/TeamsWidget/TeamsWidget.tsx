@@ -55,10 +55,10 @@ const TeamsWidget: React.FC = () => {
                                         }
 
                                         return (
-                                            <div className="teams-widget__position" data-position={bootstrap.element_types.find(el => el.id === Number(position))?.plural_name_short}>
+                                            <div className="teams-widget__position" data-position={bootstrap.element_types.find(el => el.id === Number(position))?.plural_name_short} key={position}>
                                                 {sort(positionPlayers.filter(player => player.element.team === team.id), el => el.aggregates.totals.points)
                                                     .map(player => (
-                                                        <div>{player.element.web_name} ({getPointsLabel(player.aggregates.totals.points)})</div>
+                                                        <div key={player.element.id}>{player.element.web_name} ({getPointsLabel(player.aggregates.totals.points)})</div>
                                                     ))
                                                 }
                                             </div>

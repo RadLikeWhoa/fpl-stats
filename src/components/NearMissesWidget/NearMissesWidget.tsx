@@ -25,7 +25,7 @@ const NearMissesWidget: React.FC = () => {
             {players.length > 0 && (
                 <ul className="widget__list">
                     {players.map(player => (
-                        <li className="widget__list__item">
+                        <li className="widget__list__item" key={player.element.id}>
                             <Player id={player.element.id} />
                             <b>{getPointsLabel(thousandsSeparator(player.aggregates.totals.points))}</b>
                         </li>

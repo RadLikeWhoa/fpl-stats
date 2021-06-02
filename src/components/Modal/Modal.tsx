@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setId } from '../../reducers/settings'
+import { useHistory } from 'react-router-dom'
+import { fetchDataWithId } from '../../reducers/settings'
 import { Button } from '../Button'
 import { useClickOutside } from '../../hooks'
 import { validateTeamId } from '../../utilities'
@@ -17,10 +18,12 @@ const Modal: React.FC<Props> = (props: Props) => {
     const id = useSelector((state: RootState) => state.settings.id)
 
     const dispatch = useDispatch()
+    const history = useHistory()
 
     const close = useCallback((cancel: boolean) => {
         if (!cancel) {
-            dispatch(setId(Number(value)))
+            dispatch(fetchDataWithId(Number(value)))
+            history.push(`/${value}/`)
         } else if (!id) {
             return
         }
@@ -28,7 +31,7 @@ const Modal: React.FC<Props> = (props: Props) => {
         if (props.onClose) {
             props.onClose()
         }
-    }, [ dispatch, props, value, id ])
+    }, [ dispatch, props, value, id, history ])
 
     const ref = useClickOutside<HTMLDivElement>(() => close(true))
 

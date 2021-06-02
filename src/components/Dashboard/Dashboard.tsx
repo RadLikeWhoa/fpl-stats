@@ -2,19 +2,16 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
 import Select, { ValueType } from 'react-select'
-import queryString from 'query-string'
+import { useParams, useHistory } from 'react-router-dom'
 import { Bootstrap, StatData, Stats } from '../../types'
-import { fetchBootstrap } from '../../reducers/bootstrap'
 import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Spinner } from '../Spinner'
 import { getPastEvents, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, round, sort, getPointsLabel } from '../../utilities'
 import { Modal } from '../Modal'
-import { setId } from '../../reducers/settings'
-import { buildData } from '../../reducers/stats'
+import { fetchDataWithId } from '../../reducers/settings'
 import { Button } from '../Button'
-import { fetchHistory } from '../../reducers/history'
 import { HistoryWidget } from '../HistoryWidget'
 import { TotsWidget } from '../TotsWidget'
 import { PlayerStatsWidget } from '../PlayerStatsWidget'
@@ -22,7 +19,6 @@ import { FormationWidget } from '../FormationWidget'
 import { CaptainWidget } from '../CaptainWidget'
 import { GameweekWidget } from '../GameweekWidget'
 import { PositionsWidget } from '../PositionsWidget'
-import { fetchEntry } from '../../reducers/entry'
 import { Metric } from '../Metric'
 import { SeasonWidget } from '../SeasonWidget'
 import { TeamsWidget } from '../TeamsWidget'
@@ -50,7 +46,7 @@ type OptionType = {
     label: string
 }
 
-type QueryString = {
+type DashboardParams = {
     team?: string
 }
 
@@ -133,7 +129,6 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
 ))
 
 const Dashboard: React.FC = () => {
-    const [ isModalOpen, setIsModalOpen ] = useState(true)
     const [ sort, setSort ] = useState<ValueType<OptionType>>(sortOptions[0])
 
     const isLoading = useSelector((state: RootState) => state.loading > 0)
@@ -147,19 +142,26 @@ const Dashboard: React.FC = () => {
 
     const entry = useSelector((state: RootState) => state.entry.data)
 
+    const { team } = useParams<DashboardParams>()
+    const history = useHistory()
+
+    const [ isModalOpen, setIsModalOpen ] = useState(!team)
+
     const dashboardRef = useRef<HTMLDivElement>(null)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchBootstrap())
-
-        const query: QueryString = queryString.parse(window.location.hash)
-
-        if (query.team && validateTeamId(query.team)) {
-            dispatch(setId(query.team))
+        if (id && !team) {
+            history.push(`/${id}/`)
+        } else if (team && validateTeamId(team)) {
+            if (Number(team) !== id) {
+                dispatch(fetchDataWithId(Number(team)))
+            }
+        } else {
+            history.push('/')
         }
-    }, [ dispatch ])
+    }, [ team, history, dispatch, id ])
 
     useEffect(() => {
         setTimeout(() => {
@@ -170,16 +172,8 @@ const Dashboard: React.FC = () => {
     }, [ stats ])
 
     useEffect(() => {
-        setIsModalOpen(!id)
-
-        if (bootstrap && id) {
-            dispatch(buildData(bootstrap, id))
-            dispatch(fetchHistory(id))
-            dispatch(fetchEntry(id))
-
-            window.location.hash = queryString.stringify({ team: id })
-        }
-    }, [ id, dispatch, bootstrap ])
+        setIsModalOpen(!team)
+    }, [ team ])
 
     return (
         <div className="app">
