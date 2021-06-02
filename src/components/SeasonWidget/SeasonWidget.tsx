@@ -19,9 +19,7 @@ const SeasonWidget: React.FC = () => {
 
     if (!stats || !history || !chips || !entry) {
         return (
-            <Widget title="Season">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Season" />
         )
     }
 

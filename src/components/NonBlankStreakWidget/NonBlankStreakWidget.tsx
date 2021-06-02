@@ -14,9 +14,7 @@ const NonBlankStreakWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Highest Non-Blank Streaks">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Highest Non-Blank Streaks" />
         )
     }
 
@@ -39,7 +37,7 @@ const NonBlankStreakWidget: React.FC = () => {
 
     return (
         <Widget title="Highest Non-Blank Streaks">
-            {streakers.length > 0 ? (
+            {streakers.length > 0 && (
                 <ul className="widget__list">
                     {streakers.map(streaker => {
                         const streak = streaker.aggregates.streaks.nonBlank
@@ -63,8 +61,6 @@ const NonBlankStreakWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

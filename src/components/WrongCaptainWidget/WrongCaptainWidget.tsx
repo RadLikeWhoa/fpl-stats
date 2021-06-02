@@ -12,9 +12,7 @@ const WrongCaptainWidget: React.FC = () => {
 
     if (!stats || !history) {
         return (
-            <Widget title="Wrong Captains">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Wrong Captains" />
         )
     }
 
@@ -41,7 +39,7 @@ const WrongCaptainWidget: React.FC = () => {
 
     return (
         <Widget title="Wrong Captains">
-            {Object.entries(improvements).length > 0 ? (
+            {Object.entries(improvements).length > 0 && (
                 <ul className="widget__list">
                     {sort(Object.entries(improvements), el => el[1]).map(([ player, count ]) => (
                         <li className="widget__list__item" key={player}>
@@ -57,8 +55,6 @@ const WrongCaptainWidget: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

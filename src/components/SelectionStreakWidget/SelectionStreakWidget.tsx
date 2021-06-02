@@ -14,9 +14,7 @@ const SelectionStreakWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Highest Selection Streaks">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Highest Selection Streaks" />
         )
     }
 
@@ -39,7 +37,7 @@ const SelectionStreakWidget: React.FC = () => {
 
     return (
         <Widget title="Highest Selection Streaks">
-            {streakers.length > 0 ? (
+            {streakers.length > 0 && (
                 <ul className="widget__list">
                     {streakers.map(streaker => {
                         const streak = streaker.aggregates.streaks.selection
@@ -63,8 +61,6 @@ const SelectionStreakWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

@@ -10,9 +10,7 @@ const TotsWidget: React.FC = () => {
 
     if (!tots) {
         return (
-            <Widget title="Team of the Season">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Team of the Season" />
         )
     }
 

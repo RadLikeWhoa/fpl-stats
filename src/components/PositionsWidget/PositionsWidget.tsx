@@ -14,9 +14,7 @@ const PositionsWidget: React.FC = () => {
 
     if (!stats || !bootstrap) {
         return (
-            <Widget title="Positions">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Positions" />
         )
     }
 
@@ -28,7 +26,7 @@ const PositionsWidget: React.FC = () => {
 
     return (
         <Widget title="Positions">
-            {Object.entries(positions).length > 0 ? (
+            {Object.entries(positions).length > 0 && (
                 <ul className="widget__list">
                     <li className="widget__list__item">
                         <span>Total</span>
@@ -52,8 +50,6 @@ const PositionsWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

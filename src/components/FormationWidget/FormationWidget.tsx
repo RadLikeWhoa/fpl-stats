@@ -19,9 +19,7 @@ const FormationWidget: React.FC = () => {
 
     if (!stats || !history) {
         return (
-            <Widget title="Formations">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Formations" />
         )
     }
 
@@ -56,7 +54,7 @@ const FormationWidget: React.FC = () => {
 
     return (
         <Widget title="Formations">
-            {Object.entries(data).length > 0 ? (
+            {Object.entries(data).length > 0 && (
                 <ul className="widget__list">
                     {sort(Object.entries(data), el => el[1].count).map(([ formation, information ]) => {
                         return (
@@ -74,8 +72,6 @@ const FormationWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

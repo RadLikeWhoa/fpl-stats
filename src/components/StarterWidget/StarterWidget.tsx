@@ -12,9 +12,7 @@ const StarterWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Top Starters">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Top Starters" />
         )
     }
 
@@ -22,7 +20,7 @@ const StarterWidget: React.FC = () => {
 
     return (
         <Widget title="Top Starters">
-            {elements.length ? (
+            {elements.length > 0 && (
                 <ul className="widget__list">
                     {elements.map(element => (
                         <li className="widget__list__item" key={element.element.id}>
@@ -31,8 +29,6 @@ const StarterWidget: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

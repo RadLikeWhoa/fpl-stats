@@ -14,9 +14,7 @@ const StartStreakWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Highest Start Streaks">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Highest Start Streaks" />
         )
     }
 
@@ -39,7 +37,7 @@ const StartStreakWidget: React.FC = () => {
 
     return (
         <Widget title="Highest Start Streaks">
-            {streakers.length > 0 ? (
+            {streakers.length > 0 && (
                 <ul className="widget__list">
                     {streakers.map(streaker => {
                         const streak = streaker.aggregates.streaks.start
@@ -63,8 +61,6 @@ const StartStreakWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

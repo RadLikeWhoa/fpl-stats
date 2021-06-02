@@ -13,9 +13,7 @@ const ContributionWidget: React.FC = () => {
 
     if (!stats || !entry || entry.summary_overall_points === 0) {
         return (
-            <Widget title="Total Points Contribution">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Total Points Contribution" />
         )
     }
 
@@ -23,7 +21,7 @@ const ContributionWidget: React.FC = () => {
 
     return (
         <Widget title="Total Points Contribution">
-            {contributions.length > 0 ? (
+            {contributions.length > 0 && (
                 <ul className="widget__list">
                     {contributions.map(player => (
                         <li className="widget__list__item" key={player.element.id}>
@@ -39,8 +37,6 @@ const ContributionWidget: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

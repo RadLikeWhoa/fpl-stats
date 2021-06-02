@@ -13,9 +13,7 @@ const BenchStreakWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Highest Bench Appearance Streaks">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Highest Bench Appearance Streaks" />
         )
     }
 
@@ -25,7 +23,7 @@ const BenchStreakWidget: React.FC = () => {
 
     return (
         <Widget title="Highest Bench Appearance Streaks">
-            {streakers.length > 0 ? (
+            {streakers.length > 0 && (
                 <ul className="widget__list">
                     {streakers.map(streaker => {
                         const streak = streaker.aggregates.streaks.bench
@@ -49,8 +47,6 @@ const BenchStreakWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

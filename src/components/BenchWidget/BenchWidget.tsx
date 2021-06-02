@@ -12,9 +12,7 @@ const BenchWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Top Bench Players">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Top Bench Players" />
         )
     }
 
@@ -22,7 +20,7 @@ const BenchWidget: React.FC = () => {
 
     return (
         <Widget title="Top Bench Players">
-            {elements.length > 0 ? (
+            {elements.length > 0 && (
                 <ul className="widget__list">
                     {elements.map(element => (
                         <li className="widget__list__item" key={element.element.id}>
@@ -31,8 +29,6 @@ const BenchWidget: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

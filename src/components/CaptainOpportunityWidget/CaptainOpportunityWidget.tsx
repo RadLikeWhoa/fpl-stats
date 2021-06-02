@@ -15,9 +15,7 @@ const CaptainOpportunityWidget: React.FC = () => {
 
     if (!stats || !history) {
         return (
-            <Widget title="Missed Captaincies">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Missed Captaincies" />
         )
     }
 
@@ -31,7 +29,7 @@ const CaptainOpportunityWidget: React.FC = () => {
 
     return (
         <Widget title="Missed Captaincies" cssClasses="captain-opportunity-widget">
-            {improvements.length > 0 ? (
+            {improvements.length > 0 && (
                 <ul className="widget__list">
                     {improvements.map((improvement, index) => {
                         if (!improvement.captain || !improvement.top) {
@@ -66,8 +64,6 @@ const CaptainOpportunityWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

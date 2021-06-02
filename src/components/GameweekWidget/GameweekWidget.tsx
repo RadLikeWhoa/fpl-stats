@@ -15,9 +15,7 @@ const GameweekWidget: React.FC = () => {
 
     if (!history || !bootstrap) {
         return (
-            <Widget title="Gameweeks">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Gameweeks" />
         )
     }
 

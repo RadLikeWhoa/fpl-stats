@@ -12,9 +12,7 @@ const TeamsWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Top Selections">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Top Selections" />
         )
     }
 
@@ -22,7 +20,7 @@ const TeamsWidget: React.FC = () => {
 
     return (
         <Widget title="Top Selections">
-            {elements.length > 0 ? (
+            {elements.length > 0 && (
                 <ul className="widget__list">
                     {elements.map(element => (
                         <li className="widget__list__item" key={element.element.id}>
@@ -31,8 +29,6 @@ const TeamsWidget: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

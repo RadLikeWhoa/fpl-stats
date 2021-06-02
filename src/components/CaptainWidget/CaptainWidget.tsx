@@ -11,9 +11,7 @@ const CaptainWidget: React.FC = () => {
 
     if (!stats) {
         return (
-            <Widget title="Captains">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Captains" />
         )
     }
 
@@ -34,7 +32,7 @@ const CaptainWidget: React.FC = () => {
 
     return (
         <Widget title="Captains">
-            {captains.length > 0 ? (
+            {captains.length > 0 && (
                 <ul className="widget__list">
                     {captains.map(captain => {
                         const sum = sumNumbers(captain.data.map(data => data.points || 0))
@@ -54,8 +52,6 @@ const CaptainWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

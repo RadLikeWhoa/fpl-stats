@@ -45,9 +45,7 @@ const PlayerStatsWidget: React.FC = () => {
 
     if (!history || !stats) {
         return (
-            <Widget title="Player Stats">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Player Stats" />
         )
     }
 

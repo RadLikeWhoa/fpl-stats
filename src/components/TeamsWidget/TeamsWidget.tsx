@@ -13,9 +13,7 @@ const TeamsWidget: React.FC = () => {
 
     if (!stats || !bootstrap) {
         return (
-            <Widget title="Teams">
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title="Teams" />
         )
     }
 
@@ -29,7 +27,7 @@ const TeamsWidget: React.FC = () => {
 
     return (
         <Widget title="Teams" cssClasses="teams-widget">
-            {teams.length > 0 ? (
+            {teams.length > 0 && (
                 <ul className="widget__list">
                     {teams.map(team => {
                         const players = allPlayers.filter(player => player.element.team === team.id)
@@ -71,8 +69,6 @@ const TeamsWidget: React.FC = () => {
                         )
                     })}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

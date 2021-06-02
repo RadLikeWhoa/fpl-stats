@@ -17,9 +17,7 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
 
     if (!stats) {
         return (
-            <Widget title={props.title}>
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title={props.title} />
         )
     }
 
@@ -50,7 +48,7 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
 
     return (
         <Widget title={props.title}>
-            {((props.top && topStarters.length > 0) || (!props.top && topBenchwarmers.length > 0)) ? (
+            {((props.top && topStarters.length > 0) || (!props.top && topBenchwarmers.length > 0)) && (
                 <ul className="widget__list">
                     {props.top && topStarters.map(element => (
                         <li className="widget__list__item" key={element.element.id}>
@@ -79,8 +77,6 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
                         </li>
                     ))}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

@@ -22,9 +22,7 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
 
     if (!stats || !history) {
         return (
-            <Widget title={props.title}>
-                <div className="widget__empty">No data available.</div>
-            </Widget>
+            <Widget title={props.title} />
         )
     }
 
@@ -36,7 +34,7 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
 
     return (
         <Widget title={props.title}>
-            {elements.length > 0 ? (
+            {elements.length > 0 && (
                 <ul className="widget__list">
                     {elements.map(element => (
                         <li className="widget__list__item" key={element.element.id}>
@@ -52,8 +50,6 @@ const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
                         </li>
                     ))}
                 </ul>
-            ) : (
-                <div className="widget__empty">No data available.</div>
             )}
         </Widget>
     )

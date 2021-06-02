@@ -21,7 +21,9 @@ const Widget: React.FC<Props> = (props: Props) => {
                 <h3 className="widget__title">{props.title}</h3>
             )}
             <div className="widget__content">
-                {props.children}
+                {props.children || (
+                    <div className="widget__empty">No data available.</div>
+                )}
             </div>
         </div>
     )
