@@ -11,9 +11,7 @@ const BenchWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return (
-            <Widget title="Top Bench Players" />
-        )
+        return <Widget title="Top Bench Players" />
     }
 
     const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.benched).slice(0, MAX_ITEMS)

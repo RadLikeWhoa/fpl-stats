@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
+import { Bootstrap, Stats, History, Entry, StatData } from '../types'
 import bootstrap from './bootstrap'
 import stats from './stats'
 import settings from './settings'
 import entry from './entry'
-import { Bootstrap, Stats, History, Entry, StatData } from '../types'
 import history from './history'
 import loading from './loading'
 
@@ -14,13 +14,17 @@ export type RootState = {
     }
     stats: {
         data: Stats | undefined
-        chips: {
-            [key: number]: string
-        } | undefined
-        tots: {
-            xi: StatData[]
-            bench: StatData[]
-        } | undefined
+        chips:
+            | {
+                  [key: number]: string
+              }
+            | undefined
+        tots:
+            | {
+                  xi: StatData[]
+                  bench: StatData[]
+              }
+            | undefined
     }
     settings: {
         id: number | undefined

@@ -11,9 +11,7 @@ const StarterWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return (
-            <Widget title="Top Starters" />
-        )
+        return <Widget title="Top Starters" />
     }
 
     const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.starts).slice(0, MAX_ITEMS)

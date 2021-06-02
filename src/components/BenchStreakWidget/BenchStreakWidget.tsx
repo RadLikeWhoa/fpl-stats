@@ -12,9 +12,7 @@ const BenchStreakWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return (
-            <Widget title="Highest Bench Appearance Streaks" />
-        )
+        return <Widget title="Highest Bench Appearance Streaks" />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -39,9 +37,7 @@ const BenchStreakWidget: React.FC = () => {
                                     <div className="duration">
                                         <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
                                     </div>
-                                    <div className="muted">
-                                        {getGWCountLabel(streak.length)}
-                                    </div>
+                                    <div className="muted">{getGWCountLabel(streak.length)}</div>
                                 </div>
                             </li>
                         )

@@ -4,7 +4,7 @@ import rootReducer from './reducers'
 export default function configureAppStore() {
     const store = configureStore({
         reducer: rootReducer,
-        middleware: [ ...getDefaultMiddleware() ],
+        middleware: [...getDefaultMiddleware()],
     })
 
     return store

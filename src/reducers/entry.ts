@@ -19,16 +19,20 @@ const entry = createSlice({
 
 export const { fetchEntryStart, fetchEntrySuccess } = entry.actions
 
-export const fetchEntry = (id: number): ThunkAction<void, History, unknown, Action<string>> => async dispatch => {
-    dispatch(fetchEntryStart())
-    dispatch(startLoading())
+export const fetchEntry =
+    (id: number): ThunkAction<void, History, unknown, Action<string>> =>
+    async dispatch => {
+        dispatch(fetchEntryStart())
+        dispatch(startLoading())
 
-    const response = await fetch(`https://jsonp.afeld.me/?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${id}/`)}`)
+        const response = await fetch(
+            `https://jsonp.afeld.me/?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${id}/`)}`
+        )
 
-    const data = await response.json()
+        const data = await response.json()
 
-    dispatch(fetchEntrySuccess(data))
-    dispatch(finishLoading())
-}
+        dispatch(fetchEntrySuccess(data))
+        dispatch(finishLoading())
+    }
 
 export default entry.reducer

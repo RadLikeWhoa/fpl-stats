@@ -13,9 +13,7 @@ const StartStreakWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return (
-            <Widget title="Highest Start Streaks" />
-        )
+        return <Widget title="Highest Start Streaks" />
     }
 
     const streakers = getAllPlayers(stats)
@@ -54,7 +52,8 @@ const StartStreakWidget: React.FC = () => {
                                         <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
                                     </div>
                                     <div className="muted">
-                                        {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)}, {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
+                                        {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)},{' '}
+                                        {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
                                     </div>
                                 </div>
                             </li>

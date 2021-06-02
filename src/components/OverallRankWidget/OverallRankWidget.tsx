@@ -10,9 +10,7 @@ const OverallRankWidget: React.FC = () => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!history || !bootstrap) {
-        return (
-            <Widget title="Overall Rank Evolution" />
-        )
+        return <Widget title="Overall Rank Evolution" />
     }
 
     let data = history.current.map(entry => {
@@ -24,9 +22,9 @@ const OverallRankWidget: React.FC = () => {
         }
     })
 
-    const max = (head(sort([ ...data ], el => el.value))?.value || 0) * 1.05
+    const max = (head(sort([...data], el => el.value))?.value || 0) * 1.05
 
-    data = [ ...data ].map(element => ({
+    data = [...data].map(element => ({
         ...element,
         max,
     }))
@@ -38,10 +36,22 @@ const OverallRankWidget: React.FC = () => {
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
                         <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="1" />
                         <Area type="monotone" dataKey="value" stroke="#177B47" fill="#ffffff" fillOpacity="1" />
-                        <YAxis reversed={true} tickFormatter={value => thousandsShorthand(value)} domain={[1, max]} interval="preserveStartEnd" tickCount={10} />
+                        <YAxis
+                            reversed={true}
+                            tickFormatter={value => thousandsShorthand(value)}
+                            domain={[1, max]}
+                            interval="preserveStartEnd"
+                            tickCount={10}
+                        />
                         <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
                         <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
-                        <Tooltip isAnimationActive={false} formatter={(value, name) => name === 'max' ? [undefined, undefined] : [ thousandsSeparator(Number(value)), 'Rank' ]} separator=": " />
+                        <Tooltip
+                            isAnimationActive={false}
+                            formatter={(value, name) =>
+                                name === 'max' ? [undefined, undefined] : [thousandsSeparator(Number(value)), 'Rank']
+                            }
+                            separator=": "
+                        />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>

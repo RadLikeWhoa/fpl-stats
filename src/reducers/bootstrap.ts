@@ -21,20 +21,26 @@ const bootstrap = createSlice({
 
 export const { fetchBootstrapStart, fetchBootstrapSuccess } = bootstrap.actions
 
-export const fetchBootstrap = (id: number): ThunkAction<void, any, unknown, Action<string>> => async dispatch => {
-    dispatch(fetchBootstrapStart())
-    dispatch(startLoading())
+export const fetchBootstrap =
+    (id: number): ThunkAction<void, any, unknown, Action<string>> =>
+    async dispatch => {
+        dispatch(fetchBootstrapStart())
+        dispatch(startLoading())
 
-    const response = await fetch(`https://jsonp.afeld.me/?url=${encodeURIComponent('https://fantasy.premierleague.com/api/bootstrap-static/')}`)
+        const response = await fetch(
+            `https://jsonp.afeld.me/?url=${encodeURIComponent(
+                'https://fantasy.premierleague.com/api/bootstrap-static/'
+            )}`
+        )
 
-    const data = await response.json()
+        const data = await response.json()
 
-    dispatch(buildData(data, id))
-    dispatch(fetchHistory(id))
-    dispatch(fetchEntry(id))
+        dispatch(buildData(data, id))
+        dispatch(fetchHistory(id))
+        dispatch(fetchEntry(id))
 
-    dispatch(fetchBootstrapSuccess(data))
-    dispatch(finishLoading())
-}
+        dispatch(fetchBootstrapSuccess(data))
+        dispatch(finishLoading())
+    }
 
 export default bootstrap.reducer

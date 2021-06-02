@@ -13,25 +13,28 @@ type Props = {
 }
 
 const Modal: React.FC<Props> = (props: Props) => {
-    const [ value, setValue ] = useState<string>('')
+    const [value, setValue] = useState<string>('')
 
     const id = useSelector((state: RootState) => state.settings.id)
 
     const dispatch = useDispatch()
     const history = useHistory()
 
-    const close = useCallback((cancel: boolean) => {
-        if (!cancel) {
-            dispatch(fetchDataWithId(Number(value)))
-            history.push(`/${value}/`)
-        } else if (!id) {
-            return
-        }
+    const close = useCallback(
+        (cancel: boolean) => {
+            if (!cancel) {
+                dispatch(fetchDataWithId(Number(value)))
+                history.push(`/${value}/`)
+            } else if (!id) {
+                return
+            }
 
-        if (props.onClose) {
-            props.onClose()
-        }
-    }, [ dispatch, props, value, id, history ])
+            if (props.onClose) {
+                props.onClose()
+            }
+        },
+        [dispatch, props, value, id, history]
+    )
 
     const ref = useClickOutside<HTMLDivElement>(() => close(true))
 
@@ -45,15 +48,18 @@ const Modal: React.FC<Props> = (props: Props) => {
         document.addEventListener('keyup', listener)
 
         return () => document.removeEventListener('keyup', listener)
-    }, [ close ])
+    }, [close])
 
     return (
-        <form onSubmit={e => { close(false); e.preventDefault() }}>
+        <form
+            onSubmit={e => {
+                close(false)
+                e.preventDefault()
+            }}
+        >
             <div className="modal">
                 <div className="modal__element" ref={ref}>
-                    <header className="modal__header">
-                        Enter Your Team ID
-                    </header>
+                    <header className="modal__header">Enter Your Team ID</header>
                     <div className="modal__body">
                         <input
                             className="modal__input"
@@ -64,11 +70,7 @@ const Modal: React.FC<Props> = (props: Props) => {
                         />
                     </div>
                     <footer className="modal__footer">
-                        <Button
-                            label="Show Stats"
-                            type="submit"
-                            disabled={!validateTeamId(value)}
-                        />
+                        <Button label="Show Stats" type="submit" disabled={!validateTeamId(value)} />
                     </footer>
                 </div>
             </div>

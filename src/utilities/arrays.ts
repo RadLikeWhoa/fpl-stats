@@ -1,5 +1,5 @@
 export const sort = <T>(series: T[], comparator: (element: T) => number, direction: 'asc' | 'desc' = 'desc'): T[] => {
-    return [ ...series ].sort((a, b) => (comparator(a) - comparator(b)) * (direction === 'desc' ? -1 : 1))
+    return [...series].sort((a, b) => (comparator(a) - comparator(b)) * (direction === 'desc' ? -1 : 1))
 }
 
 export const head = <T>(series: T[]): T | null => {

@@ -12,13 +12,11 @@ const TeamsWidget: React.FC = () => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!stats || !bootstrap) {
-        return (
-            <Widget title="Teams" />
-        )
+        return <Widget title="Teams" />
     }
 
     const counts = Object.values(stats)
-        .reduce((acc: number[], curr) => [ ...acc, ...curr.map(el => el.element.team) ], [])
+        .reduce((acc: number[], curr) => [...acc, ...curr.map(el => el.element.team)], [])
         .reduce((acc: { [key: number]: number }, curr) => ({ ...acc, [curr]: (acc[Number(curr)] || 0) + 1 }), {})
 
     const teams = sort(bootstrap.teams, el => counts[el.id] || 0)
@@ -42,25 +40,40 @@ const TeamsWidget: React.FC = () => {
                                             <b>{counts[team.id] || 0}</b>
                                         </div>
                                         <div className="muted">
-                                            {getPointsLabel(points)}, {players.length > 0 ? round(points / players.length) : 0} <Metric metric="ppp" />
+                                            {getPointsLabel(points)},{' '}
+                                            {players.length > 0 ? round(points / players.length) : 0}{' '}
+                                            <Metric metric="ppp" />
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    {Object.entries(stats).map(([ position, players ]) => {
-                                        const positionPlayers = players.filter(player => player.element.team === team.id)
+                                    {Object.entries(stats).map(([position, players]) => {
+                                        const positionPlayers = players.filter(
+                                            player => player.element.team === team.id
+                                        )
 
                                         if (!positionPlayers.length) {
                                             return null
                                         }
 
                                         return (
-                                            <div className="teams-widget__position" data-position={bootstrap.element_types.find(el => el.id === Number(position))?.plural_name_short} key={position}>
-                                                {sort(positionPlayers.filter(player => player.element.team === team.id), el => el.aggregates.totals.points)
-                                                    .map(player => (
-                                                        <div key={player.element.id}>{player.element.web_name} ({getPointsLabel(player.aggregates.totals.points)})</div>
-                                                    ))
+                                            <div
+                                                className="teams-widget__position"
+                                                data-position={
+                                                    bootstrap.element_types.find(el => el.id === Number(position))
+                                                        ?.plural_name_short
                                                 }
+                                                key={position}
+                                            >
+                                                {sort(
+                                                    positionPlayers.filter(player => player.element.team === team.id),
+                                                    el => el.aggregates.totals.points
+                                                ).map(player => (
+                                                    <div key={player.element.id}>
+                                                        {player.element.web_name} (
+                                                        {getPointsLabel(player.aggregates.totals.points)})
+                                                    </div>
+                                                ))}
                                             </div>
                                         )
                                     })}

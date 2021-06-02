@@ -21,15 +21,17 @@ const settings = createSlice({
         setMeanStrategy(state, action) {
             state.meanStrategy = action.payload
             localStorage.setItem('meanStrategy', state.meanStrategy)
-        }
+        },
     },
 })
 
 export const { setId, setMeanStrategy } = settings.actions
 
-export const fetchDataWithId = (id: number): ThunkAction<void, Bootstrap, unknown, Action<string>> => async dispatch => {
-    dispatch(setId(id))
-    dispatch(fetchBootstrap(id))
-}
+export const fetchDataWithId =
+    (id: number): ThunkAction<void, Bootstrap, unknown, Action<string>> =>
+    async dispatch => {
+        dispatch(setId(id))
+        dispatch(fetchBootstrap(id))
+    }
 
 export default settings.reducer

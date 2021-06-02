@@ -8,7 +8,16 @@ import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Spinner } from '../Spinner'
-import { getPastEvents, getChipAbbreviation, thousandsSeparator, getShortName, validateTeamId, round, sort, getPointsLabel } from '../../utilities'
+import {
+    getPastEvents,
+    getChipAbbreviation,
+    thousandsSeparator,
+    getShortName,
+    validateTeamId,
+    round,
+    sort,
+    getPointsLabel,
+} from '../../utilities'
 import { Modal } from '../Modal'
 import { fetchDataWithId } from '../../reducers/settings'
 import { Button } from '../Button'
@@ -50,14 +59,14 @@ type DashboardParams = {
     team?: string
 }
 
-const sortings: { [ key: string ]: (statData: StatData) => number } = {
+const sortings: { [key: string]: (statData: StatData) => number } = {
     points: el => el.aggregates.totals.points,
     selection: el => el.aggregates.totals.selections,
     start: el => el.aggregates.totals.starts,
     bench: el => el.aggregates.totals.benched,
     alphabet: (statData: StatData): number => {
         return statData.element.web_name.toLowerCase().charCodeAt(0) * -1
-    }
+    },
 }
 
 const sortOptions = [
@@ -68,14 +77,17 @@ const sortOptions = [
     { value: 'alphabet', label: 'Alphabetically' },
 ]
 
-const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionType): JSX.Element[] => Object.entries(stats).map(([ elementType, statData ]) => (
-    <div key={elementType}>
-        <li className="dashboard__category">
-            <span>{bootstrap?.element_types.find(el => el.id === Number(elementType))?.plural_name_short}</span>
-            <span>{statData.length}</span>
-        </li>
-        {sort(statData.filter(element => element.data.filter(pick => pick.multiplier !== null).length), el => sortings[sorting.value](el))
-            .map(element => (
+const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionType): JSX.Element[] =>
+    Object.entries(stats).map(([elementType, statData]) => (
+        <div key={elementType}>
+            <li className="dashboard__category">
+                <span>{bootstrap?.element_types.find(el => el.id === Number(elementType))?.plural_name_short}</span>
+                <span>{statData.length}</span>
+            </li>
+            {sort(
+                statData.filter(element => element.data.filter(pick => pick.multiplier !== null).length),
+                el => sortings[sorting.value](el)
+            ).map(element => (
                 <li key={element.element.id} className="dashboard__item">
                     <div className="dashboard__player">
                         <Player id={element.element.id} extended />
@@ -95,41 +107,60 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
                     <div className="dashboard__totals">
                         <span className="dashboard__stat">
                             <div>
-                                <b>{element.aggregates.totals.selections}</b> <span className="muted">({element.data.length ? round(element.aggregates.totals.selections / element.data.length * 100) : 0}%)</span>
-                            </div>
-                        </span>
-                        <span className="dashboard__stat">
-                            <div>
-                                <b>{element.aggregates.totals.starts}</b> <span className="muted">({element.data.length ? round(element.aggregates.totals.starts / element.data.length * 100) : 0}%)</span>
-                            </div>
-                        </span>
-                        <span className="dashboard__stat">
-                            <div>
-                                <b>{element.aggregates.totals.benched}</b> <span className="muted">({element.data.length ? round(element.aggregates.totals.benched / element.data.length * 100) : 0}%)</span>
-                            </div>
-                        </span>
-                        <span className="dashboard__stat">
-                            <div>
-                                <b>{element.aggregates.totals.points}</b>
-                                {' '}
+                                <b>{element.aggregates.totals.selections}</b>{' '}
                                 <span className="muted">
                                     (
-                                        {element.aggregates.totals.starts > 0 ? round(element.aggregates.totals.points / element.aggregates.totals.starts) : 0}
-                                        {' '}
-                                        <Metric metric="ppg" />
-                                    )
+                                    {element.data.length
+                                        ? round((element.aggregates.totals.selections / element.data.length) * 100)
+                                        : 0}
+                                    %)
+                                </span>
+                            </div>
+                        </span>
+                        <span className="dashboard__stat">
+                            <div>
+                                <b>{element.aggregates.totals.starts}</b>{' '}
+                                <span className="muted">
+                                    (
+                                    {element.data.length
+                                        ? round((element.aggregates.totals.starts / element.data.length) * 100)
+                                        : 0}
+                                    %)
+                                </span>
+                            </div>
+                        </span>
+                        <span className="dashboard__stat">
+                            <div>
+                                <b>{element.aggregates.totals.benched}</b>{' '}
+                                <span className="muted">
+                                    (
+                                    {element.data.length
+                                        ? round((element.aggregates.totals.benched / element.data.length) * 100)
+                                        : 0}
+                                    %)
+                                </span>
+                            </div>
+                        </span>
+                        <span className="dashboard__stat">
+                            <div>
+                                <b>{element.aggregates.totals.points}</b>{' '}
+                                <span className="muted">
+                                    (
+                                    {element.aggregates.totals.starts > 0
+                                        ? round(element.aggregates.totals.points / element.aggregates.totals.starts)
+                                        : 0}{' '}
+                                    <Metric metric="ppg" />)
                                 </span>
                             </div>
                         </span>
                     </div>
                 </li>
-            ))
-        }
-    </div>
-))
+            ))}
+        </div>
+    ))
 
 const Dashboard: React.FC = () => {
-    const [ sort, setSort ] = useState<ValueType<OptionType>>(sortOptions[0])
+    const [sort, setSort] = useState<ValueType<OptionType>>(sortOptions[0])
 
     const isLoading = useSelector((state: RootState) => state.loading > 0)
 
@@ -145,7 +176,7 @@ const Dashboard: React.FC = () => {
     const { team } = useParams<DashboardParams>()
     const history = useHistory()
 
-    const [ isModalOpen, setIsModalOpen ] = useState(!team)
+    const [isModalOpen, setIsModalOpen] = useState(!team)
 
     const dashboardRef = useRef<HTMLDivElement>(null)
 
@@ -161,7 +192,7 @@ const Dashboard: React.FC = () => {
         } else {
             history.push('/')
         }
-    }, [ team, history, dispatch, id ])
+    }, [team, history, dispatch, id])
 
     useEffect(() => {
         setTimeout(() => {
@@ -169,20 +200,20 @@ const Dashboard: React.FC = () => {
                 dashboardRef.current.scrollTo(dashboardRef.current.scrollWidth, 0)
             }
         }, 1)
-    }, [ stats ])
+    }, [stats])
 
     useEffect(() => {
         setIsModalOpen(!team)
-    }, [ team ])
+    }, [team])
 
     return (
         <div className="app">
-            {isModalOpen && (
-                <Modal onClose={() => setIsModalOpen(false)} />
-            )}
-            <div className={classNames('app__loading', {
-                'app__loading--hidden': !isLoading,
-            })}>
+            {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
+            <div
+                className={classNames('app__loading', {
+                    'app__loading--hidden': !isLoading,
+                })}
+            >
                 <Spinner />
             </div>
             <div className="app__content">
@@ -191,14 +222,12 @@ const Dashboard: React.FC = () => {
                         <Widget>
                             <h1 className="dashboard__title">
                                 <SiteLink label={entry.name} />
-                                <div className="small muted">{getPointsLabel(thousandsSeparator(entry.summary_overall_points))} — Rank {thousandsSeparator(entry.summary_overall_rank)}</div>
+                                <div className="small muted">
+                                    {getPointsLabel(thousandsSeparator(entry.summary_overall_points))} — Rank{' '}
+                                    {thousandsSeparator(entry.summary_overall_rank)}
+                                </div>
                             </h1>
-                            {id !== undefined && (
-                                <Button
-                                    onClick={() => setIsModalOpen(true)}
-                                    label="Change Team"
-                                />
-                            )}
+                            {id !== undefined && <Button onClick={() => setIsModalOpen(true)} label="Change Team" />}
                         </Widget>
                     </header>
                 )}
@@ -216,18 +245,18 @@ const Dashboard: React.FC = () => {
                     <PositionsWidget />
                     <FormationWidget />
                 </div>
-                <h2><span>Players</span></h2>
+                <h2>
+                    <span>Players</span>
+                </h2>
                 <div className="app__meta">
-                    <label className="app__meta__label">
-                        Sort by
-                    </label>
+                    <label className="app__meta__label">Sort by</label>
                     <Select
                         options={sortOptions}
                         value={sort}
                         onChange={option => setSort(option)}
                         styles={{
-                            container: (provided) => ({ ...provided, width: '100%' }),
-                            menu: (provided) => ({ ...provided, zIndex: 20 })
+                            container: provided => ({ ...provided, width: '100%' }),
+                            menu: provided => ({ ...provided, zIndex: 20 }),
                         }}
                     />
                     <div className="app__legend">
@@ -249,35 +278,30 @@ const Dashboard: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className={classNames('dashboard', {
-                    'dashboard--cloaked': !id,
-                })}>
+                <div
+                    className={classNames('dashboard', {
+                        'dashboard--cloaked': !id,
+                    })}
+                >
                     <div className="dashboard__container" ref={dashboardRef}>
                         <header className="dashboard__header">
-                            <span className="dashboard__heading">
-                                Player
-                            </span>
-                            {bootstrap?.events && getPastEvents(bootstrap.events).filter(event => event.top_element_info.points > 0).map(event => (
-                                <span className="dashboard__stat" key={event.id}>
-                                    {getShortName(event)}
-                                    {chips && chips[event.id] && (
-                                        <div>{getChipAbbreviation(chips[event.id])}</div>
-                                    )}
-                                </span>
-                            ))}
+                            <span className="dashboard__heading">Player</span>
+                            {bootstrap?.events &&
+                                getPastEvents(bootstrap.events)
+                                    .filter(event => event.top_element_info.points > 0)
+                                    .map(event => (
+                                        <span className="dashboard__stat" key={event.id}>
+                                            {getShortName(event)}
+                                            {chips && chips[event.id] && (
+                                                <div>{getChipAbbreviation(chips[event.id])}</div>
+                                            )}
+                                        </span>
+                                    ))}
                             <div className="dashboard__totals">
-                                <span className="dashboard__stat">
-                                    Selected
-                                </span>
-                                <span className="dashboard__stat">
-                                    Starting
-                                </span>
-                                <span className="dashboard__stat">
-                                    Benched
-                                </span>
-                                <span className="dashboard__stat">
-                                    Points
-                                </span>
+                                <span className="dashboard__stat">Selected</span>
+                                <span className="dashboard__stat">Starting</span>
+                                <span className="dashboard__stat">Benched</span>
+                                <span className="dashboard__stat">Points</span>
                             </div>
                         </header>
                         <ul className="dashboard__list">
@@ -292,37 +316,50 @@ const Dashboard: React.FC = () => {
                     <DifferenceWidget title="Most Consistent Starters" top />
                     <DifferenceWidget title="Most Consistent Bench Players" />
                 </div>
-                <h2><span>Teams</span></h2>
+                <h2>
+                    <span>Teams</span>
+                </h2>
                 <div className="dashboard__widgets dashboard__widgets--single">
                     <TeamsWidget />
                 </div>
-                <h2><span>Captains</span></h2>
+                <h2>
+                    <span>Captains</span>
+                </h2>
                 <div className="dashboard__widgets">
                     <CaptainWidget />
                     <CaptainOpportunityWidget />
                     <WrongCaptainWidget />
                 </div>
-                <h2><span>Streaks</span></h2>
+                <h2>
+                    <span>Streaks</span>
+                </h2>
                 <div className="dashboard__widgets">
                     <NonBlankStreakWidget />
                     <SelectionStreakWidget />
                     <StartStreakWidget />
                     <BenchStreakWidget />
                 </div>
-                <h2><span>Contributions</span></h2>
+                <h2>
+                    <span>Contributions</span>
+                </h2>
                 <div className="dashboard__widgets">
                     <ContributionWidget />
                     <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
                     <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />
                 </div>
-                <h2><span>Graphs</span></h2>
+                <h2>
+                    <span>Graphs</span>
+                </h2>
                 <div className="dashboard__graphs">
                     <OverallRankWidget />
                     <PointsWidget />
                     <ValueWidget />
                 </div>
                 <div className="app__legal">
-                    <p>FPL Stats uses data from the official Premier League Fantasy API. This site is not affiliated with the Premier League.</p>
+                    <p>
+                        FPL Stats uses data from the official Premier League Fantasy API. This site is not affiliated
+                        with the Premier League.
+                    </p>
                 </div>
             </div>
         </div>

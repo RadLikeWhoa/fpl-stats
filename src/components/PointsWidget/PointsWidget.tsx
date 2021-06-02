@@ -10,9 +10,7 @@ const OverallRankWidget: React.FC = () => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!history || !bootstrap) {
-        return (
-            <Widget title="Gameweek Points" />
-        )
+        return <Widget title="Gameweek Points" />
     }
 
     const data = history.current.map(entry => {
@@ -35,7 +33,11 @@ const OverallRankWidget: React.FC = () => {
                         <YAxis interval="preserveStartEnd" />
                         <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
                         <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
-                        <Tooltip isAnimationActive={false} formatter={(value, name) => [ value, initialCaps(name) ]} separator=": " />
+                        <Tooltip
+                            isAnimationActive={false}
+                            formatter={(value, name) => [value, initialCaps(name)]}
+                            separator=": "
+                        />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>

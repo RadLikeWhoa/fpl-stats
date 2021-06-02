@@ -4,20 +4,17 @@ import { RootState } from '../../reducers'
 import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
-import { Metric } from '../Metric';
+import { Metric } from '../Metric'
 
 const CaptainWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return (
-            <Widget title="Captains" />
-        )
+        return <Widget title="Captains" />
     }
 
     const captains = sort(
-        Object
-            .values(stats)
+        Object.values(stats)
             .map(position => {
                 return position
                     .map(player => ({
@@ -45,7 +42,8 @@ const CaptainWidget: React.FC = () => {
                                         <b>{getGWCountLabel(captain.data.length)}</b>
                                     </div>
                                     <div className="muted">
-                                        {getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)} <Metric metric="ppg" />
+                                        {getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)}{' '}
+                                        <Metric metric="ppg" />
                                     </div>
                                 </div>
                             </li>

@@ -7,7 +7,8 @@ import { SiteLink } from '../SiteLink'
 import { StatData } from '../../types'
 import { StatAggregateTotals } from '../../types'
 
-const getAggregateValues = (players: StatData[], key: keyof StatAggregateTotals): number => sumNumbers(players.map(player => player.aggregates.totals[key]))
+const getAggregateValues = (players: StatData[], key: keyof StatAggregateTotals): number =>
+    sumNumbers(players.map(player => player.aggregates.totals[key]))
 
 const SeasonWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
@@ -18,9 +19,7 @@ const SeasonWidget: React.FC = () => {
     const entry = useSelector((state: RootState) => state.entry.data)
 
     if (!stats || !history || !chips || !entry) {
-        return (
-            <Widget title="Season" />
-        )
+        return <Widget title="Season" />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -46,19 +45,26 @@ const SeasonWidget: React.FC = () => {
 
     const tc = allPlayers
         .find(player => player.data.findIndex(data => data.multiplier === 3) !== -1)
-        ?.data
-        .find(data => data.multiplier === 3)
+        ?.data.find(data => data.multiplier === 3)
 
-    const bbWeek = head(Object.entries(chips).find(([ gw, chip ]) => chip === 'bboost') || [])
+    const bbWeek = head(Object.entries(chips).find(([gw, chip]) => chip === 'bboost') || [])
 
     const bbPoints = bbWeek
-        ? sumNumbers(allPlayers
-            .filter(player => (player.data[Number(bbWeek) - 1].position || 0) > 11)
-            .map(player => player.data[Number(bbWeek) - 1].points || 0))
+        ? sumNumbers(
+              allPlayers
+                  .filter(player => (player.data[Number(bbWeek) - 1].position || 0) > 11)
+                  .map(player => player.data[Number(bbWeek) - 1].points || 0)
+          )
         : null
 
-    const doubleDigitHauls = reduce(allPlayers.map(player => player.data.filter(data => (data.rawPoints || 0) > 9).length), el => el)
-    const totalPlays = reduce(allPlayers.map(player => player.data.filter(data => data.multiplier !== null).length), el => el)
+    const doubleDigitHauls = reduce(
+        allPlayers.map(player => player.data.filter(data => (data.rawPoints || 0) > 9).length),
+        el => el
+    )
+    const totalPlays = reduce(
+        allPlayers.map(player => player.data.filter(data => data.multiplier !== null).length),
+        el => el
+    )
 
     return (
         <Widget title="Season">
@@ -71,7 +77,13 @@ const SeasonWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>Total Hits Taken</span>
-                    <span><b>{totalHits}</b> ({getPointsLabel(totalHits * -4)}, {entry.summary_overall_points > 0 ? round(totalHits * 4 / entry.summary_overall_points * 100) : 0}%)</span>
+                    <span>
+                        <b>{totalHits}</b> ({getPointsLabel(totalHits * -4)},{' '}
+                        {entry.summary_overall_points > 0
+                            ? round(((totalHits * 4) / entry.summary_overall_points) * 100)
+                            : 0}
+                        %)
+                    </span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points</span>
@@ -83,17 +95,17 @@ const SeasonWidget: React.FC = () => {
                 </li>
                 <li className="widget__list__item">
                     <span>Double Digit Hauls</span>
-                    <span><b>{doubleDigitHauls}</b>{totalPlays > 0 && ` (${round(doubleDigitHauls / totalPlays)}%)`}</span>
+                    <span>
+                        <b>{doubleDigitHauls}</b>
+                        {totalPlays > 0 && ` (${round(doubleDigitHauls / totalPlays)}%)`}
+                    </span>
                 </li>
                 {tc !== undefined && (
                     <li className="widget__list__item">
                         <span>Triple Captain Points Gained</span>
                         <span>
-                            <b>{getPointsLabel((tc.points || 0) / 3)}</b>
-                            {' '}
-                            (
-                                <SiteLink event={tc.event.id} />
-                            )
+                            <b>{getPointsLabel((tc.points || 0) / 3)}</b> (
+                            <SiteLink event={tc.event.id} />)
                         </span>
                     </li>
                 )}
@@ -101,11 +113,8 @@ const SeasonWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Bench Boost Points Gained</span>
                         <span>
-                            <b>{getPointsLabel(bbPoints)}</b>
-                            {' '}
-                            (
-                                <SiteLink event={Number(bbWeek)} />
-                            )
+                            <b>{getPointsLabel(bbPoints)}</b> (
+                            <SiteLink event={Number(bbWeek)} />)
                         </span>
                     </li>
                 )}

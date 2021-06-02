@@ -2,7 +2,15 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { StatData } from '../../types'
-import { getAllPlayers, getTopStatAggregate, thousandsSeparator, round, sort, head, getPointsLabel } from '../../utilities'
+import {
+    getAllPlayers,
+    getTopStatAggregate,
+    thousandsSeparator,
+    round,
+    sort,
+    head,
+    getPointsLabel,
+} from '../../utilities'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
@@ -24,14 +32,9 @@ const renderTopBenchGWReturner = (returner: StatData): JSX.Element | null => {
                     suffix={() => (
                         <>
                             {' '}
-                            (
-                                {getPointsLabel(week.rawPoints || 0)},
-                                {' '}
-                                <SiteLink event={week.event.id} />
-                            )
+                            ({getPointsLabel(week.rawPoints || 0)}, <SiteLink event={week.event.id} />)
                         </>
                     )}
-
                     reversed
                 />
             </span>
@@ -44,9 +47,7 @@ const PlayerStatsWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
 
     if (!history || !stats) {
-        return (
-            <Widget title="Player Stats" />
-        )
+        return <Widget title="Player Stats" />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -68,39 +69,55 @@ const PlayerStatsWidget: React.FC = () => {
 
     const mostCaptaincies = head(sort(allPlayers, el => el.aggregates.totals.captaincies))
 
-    const topReturner = head(sort(
-        allPlayers
-            .map(player => ({
+    const topReturner = head(
+        sort(
+            allPlayers.map(player => ({
                 ...player,
-                data: sort([ ...player.data ], el => el.points || 0),
+                data: sort([...player.data], el => el.points || 0),
             })),
-        el => head(el.data)?.points || 0
-    ))
+            el => head(el.data)?.points || 0
+        )
+    )
 
-    const topBenchGWReturner = head(sort(
-        allPlayers
-            .map(player => ({
-                ...player,
-                data: sort(player.data.filter(data => data.multiplier === 0), el => el.rawPoints || 0),
-            }))
-            .filter(player => player.data.length),
-        el => head(el.data)?.rawPoints || 0
-    ))
+    const topBenchGWReturner = head(
+        sort(
+            allPlayers
+                .map(player => ({
+                    ...player,
+                    data: sort(
+                        player.data.filter(data => data.multiplier === 0),
+                        el => el.rawPoints || 0
+                    ),
+                }))
+                .filter(player => player.data.length),
+            el => head(el.data)?.rawPoints || 0
+        )
+    )
 
     const topSeasonReturner = head(sort(allPlayers, el => el.aggregates.totals.points))
     const topBenchReturner = head(sort(allPlayers, el => el.aggregates.totals.benchPoints))
 
     const weeks = history.current.length
 
-    const idealCaptain = head(sort(
-        Object.entries(Array.from(Array(weeks).keys())
-            .map((el, index) => head(sort(allPlayers, el => el.data[index].rawPoints || 0)))
-            .reduce((acc, curr) => curr ? ({
-                ...acc,
-                [curr.element.id]: (acc[curr.element.id] ? acc[curr.element.id] : 0) + 1,
-            }) : acc, {} as Record<number, number>)),
-        el => el[1]
-    ))
+    const idealCaptain = head(
+        sort(
+            Object.entries(
+                Array.from(Array(weeks).keys())
+                    .map((el, index) => head(sort(allPlayers, el => el.data[index].rawPoints || 0)))
+                    .reduce(
+                        (acc, curr) =>
+                            curr
+                                ? {
+                                      ...acc,
+                                      [curr.element.id]: (acc[curr.element.id] ? acc[curr.element.id] : 0) + 1,
+                                  }
+                                : acc,
+                        {} as Record<number, number>
+                    )
+            ),
+            el => el[1]
+        )
+    )
 
     return (
         <Widget title="Player Stats">
@@ -121,15 +138,10 @@ const PlayerStatsWidget: React.FC = () => {
                                     return (
                                         <>
                                             {' '}
-                                            (
-                                                {getPointsLabel(week.points || 0)},
-                                                {' '}
-                                                <SiteLink event={week.event.id} />
-                                            )
+                                            ({getPointsLabel(week.points || 0)}, <SiteLink event={week.event.id} />)
                                         </>
                                     )
                                 }}
-
                                 reversed
                             />
                         </span>
@@ -144,16 +156,14 @@ const PlayerStatsWidget: React.FC = () => {
                                 suffix={() => (
                                     <>
                                         {' '}
-                                        (
-                                            {getPointsLabel(topSeasonReturner.aggregates.totals.points)},
-                                            {' '}
-                                            {round(topSeasonReturner.aggregates.totals.points / topSeasonReturner.aggregates.totals.starts)}
-                                            {' '}
-                                            <Metric metric="ppg" />
-                                        )
+                                        ({getPointsLabel(topSeasonReturner.aggregates.totals.points)},{' '}
+                                        {round(
+                                            topSeasonReturner.aggregates.totals.points /
+                                                topSeasonReturner.aggregates.totals.starts
+                                        )}{' '}
+                                        <Metric metric="ppg" />)
                                     </>
                                 )}
-
                                 reversed
                             />
                         )}
@@ -169,16 +179,14 @@ const PlayerStatsWidget: React.FC = () => {
                                 suffix={() => (
                                     <>
                                         {' '}
-                                        (
-                                            {getPointsLabel(topBenchReturner.aggregates.totals.benchPoints)},
-                                            {' '}
-                                            {round(topBenchReturner.aggregates.totals.benchPoints / topBenchReturner.aggregates.totals.benched)}
-                                            {' '}
-                                            <Metric metric="ppg" />
-                                        )
+                                        ({getPointsLabel(topBenchReturner.aggregates.totals.benchPoints)},{' '}
+                                        {round(
+                                            topBenchReturner.aggregates.totals.benchPoints /
+                                                topBenchReturner.aggregates.totals.benched
+                                        )}{' '}
+                                        <Metric metric="ppg" />)
                                     </>
                                 )}
-
                                 reversed
                             />
                         )}
@@ -205,13 +213,21 @@ const PlayerStatsWidget: React.FC = () => {
                 {goalsConceded && goalsConceded.aggregates.totals.goalsConceded > 0 && (
                     <li className="widget__list__item">
                         <span>Most Goals Conceded</span>
-                        <Player id={goalsConceded.element.id} suffix={`${goalsConceded.aggregates.totals.goalsConceded}`} reversed />
+                        <Player
+                            id={goalsConceded.element.id}
+                            suffix={`${goalsConceded.aggregates.totals.goalsConceded}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {cleanSheets && cleanSheets.aggregates.totals.cleanSheets > 0 && (
                     <li className="widget__list__item">
                         <span>Most Clean Sheets</span>
-                        <Player id={cleanSheets.element.id} suffix={`${cleanSheets.aggregates.totals.cleanSheets}`} reversed />
+                        <Player
+                            id={cleanSheets.element.id}
+                            suffix={`${cleanSheets.aggregates.totals.cleanSheets}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {saves && saves.aggregates.totals.saves > 0 && (
@@ -223,19 +239,31 @@ const PlayerStatsWidget: React.FC = () => {
                 {penaltiesMissed && penaltiesMissed.aggregates.totals.penaltiesMissed > 0 && (
                     <li className="widget__list__item">
                         <span>Most Penalties Missed</span>
-                        <Player id={penaltiesMissed.element.id} suffix={`${penaltiesMissed.aggregates.totals.penaltiesMissed}`} reversed />
+                        <Player
+                            id={penaltiesMissed.element.id}
+                            suffix={`${penaltiesMissed.aggregates.totals.penaltiesMissed}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {penaltiesSaved && penaltiesSaved.aggregates.totals.penaltiesSaved > 0 && (
                     <li className="widget__list__item">
                         <span>Most Penalties Saved</span>
-                        <Player id={penaltiesSaved.element.id} suffix={`${penaltiesSaved.aggregates.totals.penaltiesSaved}`} reversed />
+                        <Player
+                            id={penaltiesSaved.element.id}
+                            suffix={`${penaltiesSaved.aggregates.totals.penaltiesSaved}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {minutes && minutes.aggregates.totals.minutes > 0 && (
                     <li className="widget__list__item">
                         <span>Most Minutes</span>
-                        <Player id={minutes.element.id} suffix={`${thousandsSeparator(minutes.aggregates.totals.minutes as number)}`} reversed />
+                        <Player
+                            id={minutes.element.id}
+                            suffix={`${thousandsSeparator(minutes.aggregates.totals.minutes as number)}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {reds && reds.aggregates.totals.redCards > 0 && (
@@ -259,19 +287,31 @@ const PlayerStatsWidget: React.FC = () => {
                 {bps && bps.aggregates.totals.bps > 0 && (
                     <li className="widget__list__item">
                         <span>Highest Total BPS</span>
-                        <Player id={bps.element.id} suffix={`${thousandsSeparator(bps.aggregates.totals.bps)}`} reversed />
+                        <Player
+                            id={bps.element.id}
+                            suffix={`${thousandsSeparator(bps.aggregates.totals.bps)}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {inDreamteam && inDreamteam.aggregates.totals.timesInDreamteam > 0 && (
                     <li className="widget__list__item">
                         <span>Most Times in Dreamteam</span>
-                        <Player id={inDreamteam.element.id} suffix={`${inDreamteam.aggregates.totals.timesInDreamteam}`} reversed />
+                        <Player
+                            id={inDreamteam.element.id}
+                            suffix={`${inDreamteam.aggregates.totals.timesInDreamteam}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {mostCaptaincies && mostCaptaincies.aggregates.totals.captaincies > 0 && (
                     <li className="widget__list__item">
                         <span>Most Captaincies</span>
-                        <Player id={mostCaptaincies.element.id} suffix={`${mostCaptaincies.aggregates.totals.captaincies}`} reversed />
+                        <Player
+                            id={mostCaptaincies.element.id}
+                            suffix={`${mostCaptaincies.aggregates.totals.captaincies}`}
+                            reversed
+                        />
                     </li>
                 )}
                 {idealCaptain && (

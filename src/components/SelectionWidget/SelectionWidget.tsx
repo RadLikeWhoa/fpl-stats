@@ -11,9 +11,7 @@ const TeamsWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
     if (!stats) {
-        return (
-            <Widget title="Top Selections" />
-        )
+        return <Widget title="Top Selections" />
     }
 
     const elements = sort(getAllPlayers(stats), el => el.aggregates.totals.selections).slice(0, MAX_ITEMS)

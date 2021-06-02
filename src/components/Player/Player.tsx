@@ -19,25 +19,30 @@ const Player: React.FC<Props> = (props: Props) => {
     const position = bootstrap?.element_types.find(el => el.id === player?.element_type)
 
     return (
-        <div className={classNames('player', { 'player--condensed': !props.extended, 'player--reversed': props.reversed })}>
+        <div
+            className={classNames('player', {
+                'player--condensed': !props.extended,
+                'player--reversed': props.reversed,
+            })}
+        >
             <img
-                src={`https://fantasy.premierleague.com/dist/img/shirts/special/shirt_${team?.code}${position?.singular_name_short === 'GKP' ? '_1' : ''}-66.png`}
+                src={`https://fantasy.premierleague.com/dist/img/shirts/special/shirt_${team?.code}${
+                    position?.singular_name_short === 'GKP' ? '_1' : ''
+                }-66.png`}
                 alt={player?.web_name}
                 className="player__shirt"
             />
             <div className="player__detail">
                 <div className="player__name">
                     <span>
-                        {props.suffix && !props.extended ? (
-                            <b>{player?.web_name}</b>
-                        ) : (
-                            player?.web_name
-                        )}
+                        {props.suffix && !props.extended ? <b>{player?.web_name}</b> : player?.web_name}
                         {typeof props.suffix === 'string' ? ` (${props.suffix})` : props.suffix ? props.suffix() : null}
                     </span>
                 </div>
                 <div className="player__info">
-                    <span className="player__team" title={team?.name}>{team?.short_name}</span>
+                    <span className="player__team" title={team?.name}>
+                        {team?.short_name}
+                    </span>
                     <span className="player__position">{position?.singular_name_short}</span>
                 </div>
             </div>

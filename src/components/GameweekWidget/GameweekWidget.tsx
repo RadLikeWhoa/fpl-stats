@@ -14,9 +14,7 @@ const GameweekWidget: React.FC = () => {
     const meanValue = useMeanValue()
 
     if (!history || !bootstrap) {
-        return (
-            <Widget title="Gameweeks" />
-        )
+        return <Widget title="Gameweeks" />
     }
 
     const differences = history.current.map((week, index) => week.points - bootstrap.events[index].average_entry_score)
@@ -53,11 +51,8 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Best Gameweek</span>
                         <span>
-                            <b>{getPointsLabel(bestGW.points)}</b>
-                            {' '}
-                            (
-                                <SiteLink event={bestGW.event} />
-                            )
+                            <b>{getPointsLabel(bestGW.points)}</b> (
+                            <SiteLink event={bestGW.event} />)
                         </span>
                     </li>
                 )}
@@ -65,11 +60,8 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Worst Gameweek</span>
                         <span>
-                            <b>{getPointsLabel(worstGW.points)}</b>
-                            {' '}
-                            (
-                                <SiteLink event={worstGW.event} />
-                            )
+                            <b>{getPointsLabel(worstGW.points)}</b> (
+                            <SiteLink event={worstGW.event} />)
                         </span>
                     </li>
                 )}
@@ -77,11 +69,8 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Best GW Rank</span>
                         <span>
-                            <b>{thousandsSeparator(bestGWRank.rank)}</b>
-                            {' '}
-                            (
-                                <SiteLink event={bestGWRank.event} />
-                            )
+                            <b>{thousandsSeparator(bestGWRank.rank)}</b> (
+                            <SiteLink event={bestGWRank.event} />)
                         </span>
                     </li>
                 )}
@@ -89,11 +78,8 @@ const GameweekWidget: React.FC = () => {
                     <li className="widget__list__item">
                         <span>Worst GW Rank</span>
                         <span>
-                            <b>{thousandsSeparator(worstGWRank.rank)}</b>
-                            {' '}
-                            (
-                                <SiteLink event={worstGWRank.event} />
-                            )
+                            <b>{thousandsSeparator(worstGWRank.rank)}</b> (
+                            <SiteLink event={worstGWRank.event} />)
                         </span>
                     </li>
                 )}

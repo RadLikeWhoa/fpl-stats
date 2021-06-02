@@ -11,9 +11,7 @@ const WrongCaptainWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
 
     if (!stats || !history) {
-        return (
-            <Widget title="Wrong Captains" />
-        )
+        return <Widget title="Wrong Captains" />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -24,11 +22,21 @@ const WrongCaptainWidget: React.FC = () => {
             top: head(sort(allPlayers, el => el.data[index].rawPoints || 0)),
             captain: allPlayers.find(player => (player.data[index].multiplier || 0) > 1),
         }))
-        .filter((element, index) => (element.top?.data[index].rawPoints || 0) > (element.captain?.data[index].rawPoints || 0))
-        .reduce((acc, curr) => curr.captain ? ({
-            ...acc,
-            [curr.captain.element.id]: (acc[curr.captain.element.id] ? acc[curr.captain.element.id] : 0) + 1,
-        }) : acc, {} as Record<number, number>)
+        .filter(
+            (element, index) =>
+                (element.top?.data[index].rawPoints || 0) > (element.captain?.data[index].rawPoints || 0)
+        )
+        .reduce(
+            (acc, curr) =>
+                curr.captain
+                    ? {
+                          ...acc,
+                          [curr.captain.element.id]:
+                              (acc[curr.captain.element.id] ? acc[curr.captain.element.id] : 0) + 1,
+                      }
+                    : acc,
+            {} as Record<number, number>
+        )
 
     const timesUsed = allPlayers.reduce((acc, curr) => {
         return {
@@ -41,16 +49,16 @@ const WrongCaptainWidget: React.FC = () => {
         <Widget title="Wrong Captains">
             {Object.entries(improvements).length > 0 && (
                 <ul className="widget__list">
-                    {sort(Object.entries(improvements), el => el[1]).map(([ player, count ]) => (
+                    {sort(Object.entries(improvements), el => el[1]).map(([player, count]) => (
                         <li className="widget__list__item" key={player}>
                             <Player id={Number(player)} />
                             <div>
                                 <div>
-                                    <b>{count} out of {getGWCountLabel(timesUsed[Number(player)])}</b>
+                                    <b>
+                                        {count} out of {getGWCountLabel(timesUsed[Number(player)])}
+                                    </b>
                                 </div>
-                                <div className="muted">
-                                    {round(count / timesUsed[Number(player)] * 100, 1)}%
-                                </div>
+                                <div className="muted">{round((count / timesUsed[Number(player)]) * 100, 1)}%</div>
                             </div>
                         </li>
                     ))}

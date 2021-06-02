@@ -18,7 +18,9 @@ const TotsPlayer: React.FC<Props> = (props: Props) => {
     return (
         <div className="tots-player">
             <img
-                src={`https://fantasy.premierleague.com/dist/img/shirts/special/shirt_${team?.code}${position?.singular_name_short === 'GKP' ? '_1' : ''}-66.png`}
+                src={`https://fantasy.premierleague.com/dist/img/shirts/special/shirt_${team?.code}${
+                    position?.singular_name_short === 'GKP' ? '_1' : ''
+                }-66.png`}
                 alt={player?.web_name}
                 className="tots-player__shirt"
             />
@@ -26,9 +28,7 @@ const TotsPlayer: React.FC<Props> = (props: Props) => {
                 <div className="tots-player__name">
                     <span>{player?.web_name}</span>
                 </div>
-                <div className="tots-player__points">
-                    {props.points}
-                </div>
+                <div className="tots-player__points">{props.points}</div>
             </div>
         </div>
     )

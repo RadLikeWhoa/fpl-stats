@@ -10,9 +10,7 @@ const ValueWidget: React.FC = () => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     if (!history || !bootstrap) {
-        return (
-            <Widget title="Team Value Evolution" />
-        )
+        return <Widget title="Team Value Evolution" />
     }
 
     const data = history.current.map(entry => {
@@ -30,10 +28,18 @@ const ValueWidget: React.FC = () => {
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
                         <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" fillOpacity="1" />
-                        <YAxis tickFormatter={value => `£${value / 10}`} domain={[ 'auto', 'auto' ]} interval="preserveStartEnd" />
+                        <YAxis
+                            tickFormatter={value => `£${value / 10}`}
+                            domain={['auto', 'auto']}
+                            interval="preserveStartEnd"
+                        />
                         <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
                         <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
-                        <Tooltip isAnimationActive={false} formatter={(value, name) => [ `£${Number(value) / 10}`, initialCaps(name) ]} separator=": " />
+                        <Tooltip
+                            isAnimationActive={false}
+                            formatter={(value, name) => [`£${Number(value) / 10}`, initialCaps(name)]}
+                            separator=": "
+                        />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>

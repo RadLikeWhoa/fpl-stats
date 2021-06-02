@@ -10,12 +10,7 @@ type Props = {
 const Checkbox: React.FC<Props> = (props: Props) => (
     <div className="checkbox">
         <label className="checkbox__label">
-            <input
-                type="checkbox"
-                className="checkbox__element"
-                checked={props.checked}
-                onChange={props.onChange}
-            />
+            <input type="checkbox" className="checkbox__element" checked={props.checked} onChange={props.onChange} />
             <div className="checkbox__visual"></div>
             {props.label}
         </label>

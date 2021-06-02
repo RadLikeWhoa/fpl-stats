@@ -14,9 +14,7 @@ const CaptainOpportunityWidget: React.FC = () => {
     const history = useSelector((state: RootState) => state.history.data)
 
     if (!stats || !history) {
-        return (
-            <Widget title="Missed Captaincies" />
-        )
+        return <Widget title="Missed Captaincies" />
     }
 
     const allPlayers = getAllPlayers(stats)
@@ -54,11 +52,9 @@ const CaptainOpportunityWidget: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className="captain-opportunity-widget__swap-info">
-                                    <b>{getPointsLabel((captainData.rawPoints || 0) * 2)}</b> <SwapIcon /> <b>{getPointsLabel((topData.rawPoints || 0) * 2)} </b>
-                                    {' '}
-                                    (
-                                        <SiteLink event={captainData.event.id} />
-                                    )
+                                    <b>{getPointsLabel((captainData.rawPoints || 0) * 2)}</b> <SwapIcon />{' '}
+                                    <b>{getPointsLabel((topData.rawPoints || 0) * 2)} </b> (
+                                    <SiteLink event={captainData.event.id} />)
                                 </div>
                             </li>
                         )
