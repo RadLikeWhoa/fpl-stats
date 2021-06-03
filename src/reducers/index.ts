@@ -11,6 +11,7 @@ export type RootState = {
     loading: number
     bootstrap: {
         data: Bootstrap | undefined
+        latestFetch: number | null
     }
     stats: {
         data: Stats | undefined

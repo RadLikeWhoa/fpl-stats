@@ -5,22 +5,15 @@ import { fetchBootstrap } from './bootstrap'
 const settings = createSlice({
     name: 'settings',
     initialState: {
-        id: localStorage.getItem('id') || undefined,
-        meanStrategy: localStorage.getItem('meanStrategy') || 'average',
+        id: undefined,
+        meanStrategy: 'average',
     },
     reducers: {
         setId(state, action) {
             state.id = action.payload
-
-            if (state.id) {
-                localStorage.setItem('id', state.id)
-            } else {
-                localStorage.removeItem('id')
-            }
         },
         setMeanStrategy(state, action) {
             state.meanStrategy = action.payload
-            localStorage.setItem('meanStrategy', state.meanStrategy)
         },
     },
 })

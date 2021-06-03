@@ -375,6 +375,15 @@
         }
 
         .button {
+            + button {
+                margin-left: 0.5rem;
+
+                @include up-to("M") {
+                    margin-top: 0.5rem;
+                    margin-left: 0;
+                }
+            }
+
             @include up-to("M") {
                 width: 100%;
             }

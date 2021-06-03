@@ -8,6 +8,7 @@ const bootstrap = createSlice({
     name: 'bootstrap',
     initialState: {
         data: undefined,
+        latestFetch: null,
     },
     reducers: {
         fetchBootstrapStart(state) {
@@ -15,6 +16,7 @@ const bootstrap = createSlice({
         },
         fetchBootstrapSuccess(state, action) {
             state.data = action.payload
+            localStorage.setItem('latestFetch', `${Date.now()}`)
         },
     },
 })
@@ -35,12 +37,13 @@ export const fetchBootstrap =
 
         const data = await response.json()
 
+        dispatch(finishLoading())
+
         dispatch(buildData(data, id))
         dispatch(fetchHistory(id))
         dispatch(fetchEntry(id))
 
         dispatch(fetchBootstrapSuccess(data))
-        dispatch(finishLoading())
     }
 
 export default bootstrap.reducer

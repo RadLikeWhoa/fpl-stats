@@ -1,36 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { fetchDataWithId } from '../../reducers/settings'
 import { Button } from '../Button'
 import { validateTeamId } from '../../utilities'
 import { RootState } from '../../reducers'
 import './Modal.scss'
 
-type Props = {
-    onClose?: () => void
-}
-
-const Modal: React.FC<Props> = (props: Props) => {
+const Modal: React.FC = () => {
     const [value, setValue] = useState<string>('')
+    const isLoading = useSelector((state: RootState) => state.loading > 0)
 
-    const id = useSelector((state: RootState) => state.settings.id)
-
-    const dispatch = useDispatch()
     const history = useHistory()
 
     const close = useCallback(
         (cancel: boolean) => {
             if (!cancel) {
-                dispatch(fetchDataWithId(Number(value)))
                 history.push(`/${value}/`)
-            } else if (!id) {
-                return
             }
-
-            props.onClose?.()
         },
-        [dispatch, props, value, id, history]
+        [value, history]
     )
 
     useEffect(() => {
@@ -72,7 +60,7 @@ const Modal: React.FC<Props> = (props: Props) => {
                         </div>
                     </div>
                     <footer className="modal__footer">
-                        <Button label="Show Stats" type="submit" disabled={!validateTeamId(value)} />
+                        <Button label="Show Stats" type="submit" disabled={!validateTeamId(value) || isLoading} />
                     </footer>
                 </div>
             </div>

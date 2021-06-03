@@ -43,6 +43,7 @@ import { ContributionWidget } from '../ContributionWidget'
 import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
 import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
+import { finishLoading, startLoading } from '../../reducers/loading'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -181,8 +182,15 @@ const Dashboard: React.FC = () => {
         if (id && !team) {
             history.push(`/${id}/`)
         } else if (team && validateTeamId(team)) {
+            setIsModalOpen(false)
+
             if (Number(team) !== id) {
-                dispatch(fetchDataWithId(Number(team)))
+                dispatch(startLoading())
+
+                setTimeout(() => {
+                    dispatch(fetchDataWithId(Number(team)))
+                    dispatch(finishLoading())
+                }, 1)
             }
         } else {
             history.push('/')
@@ -203,7 +211,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="app">
-            {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
+            {isModalOpen && <Modal />}
             <div
                 className={classNames('app__loading', {
                     'app__loading--hidden': !isLoading,
@@ -222,7 +230,27 @@ const Dashboard: React.FC = () => {
                                     {thousandsSeparator(entry.summary_overall_rank)}
                                 </div>
                             </h1>
-                            {id !== undefined && <Button onClick={() => setIsModalOpen(true)} label="Change Team" />}
+                            {id !== undefined && (
+                                <div>
+                                    <Button
+                                        onClick={() => {
+                                            dispatch(startLoading())
+
+                                            setTimeout(() => {
+                                                dispatch(fetchDataWithId(id))
+                                                dispatch(finishLoading())
+                                            }, 1)
+                                        }}
+                                        disabled={isLoading}
+                                        label="Refresh Data"
+                                    />
+                                    <Button
+                                        onClick={() => setIsModalOpen(true)}
+                                        label="Change Team"
+                                        disabled={isLoading}
+                                    />
+                                </div>
+                            )}
                         </Widget>
                     </header>
                 )}
