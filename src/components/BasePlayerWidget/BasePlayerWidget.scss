@@ -43,6 +43,10 @@
         &::after {
             content: none;
         }
+
+        .button {
+            align-self: center;
+        }
     }
 
     .modal__input-wrapper {

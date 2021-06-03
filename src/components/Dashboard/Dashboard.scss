@@ -1,3 +1,4 @@
+@import "../../styles/variables";
 @import "../../styles/mixins";
 
 .dashboard {
@@ -6,6 +7,7 @@
     min-height: 20rem;
     margin: 0 auto 2.125rem;
     background-color: #fff;
+    border-radius: $border-radius;
 
     &--cloaked::before {
         content: "";
@@ -19,18 +21,10 @@
     }
 
     &__container {
-        overflow: auto;
+        @include widget-bar();
 
-        &::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 0.5rem;
-            right: 0.5rem;
-            height: 0.625rem;
-            background: rgba(#000, 0) linear-gradient(to right, $widget-bar-start-color, $widget-bar-end-color) repeat
-                scroll 0% 0%;
-        }
+        border-radius: $border-radius;
+        overflow: auto;
     }
 
     &__header {
@@ -366,7 +360,7 @@
                 align-items: center;
                 justify-content: space-between;
                 min-height: 0;
-                padding: 0.5rem;
+                padding: 1rem;
 
                 @include up-to("M") {
                     flex-direction: column;
@@ -388,7 +382,14 @@
     }
 
     &__title {
+        display: inline-grid;
         margin: 0;
+
+        a {
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
 
         @include up-to("M") {
             margin-bottom: 1rem;
@@ -450,9 +451,13 @@
         align-items: center;
         justify-content: flex-end;
         flex-shrink: 0;
+        align-self: stretch;
         max-width: 100rem;
+        padding: 0.5rem 1rem;
         margin-left: 1.5rem;
         font-size: 0.75rem;
+        background-color: #fff;
+        border-radius: $border-radius;
 
         @include up-to("M") {
             width: 100%;
@@ -464,7 +469,7 @@
 
     &__color {
         display: flex;
-        color: #fff;
+        align-items: center;
 
         &__indicator {
             height: 1rem;

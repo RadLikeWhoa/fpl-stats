@@ -1,14 +1,15 @@
 @import "../../styles/mixins";
 
-$bench-end-color: #e5e5e5;
+$bench-color: #e5e5e5;
 
 .tots-widget {
-    background-color: $bench-end-color;
+    background-color: $bench-color;
 }
 
 .tots {
     padding-top: 3rem;
     background-image: repeating-radial-gradient(circle at 50% 100%, #00ae55, #00ae55 10%, #01ba5c 10%, #01ba5c 20%);
+    border-radius: 0 0 $border-radius $border-radius;
     overflow: hidden;
 
     &__row {
@@ -20,7 +21,8 @@ $bench-end-color: #e5e5e5;
             padding: 1.5rem 0;
             margin-top: 3rem;
             margin-bottom: 0;
-            background-image: linear-gradient($bench-end-color 0%, #fff 40%, #ebebe6 40%, $bench-end-color 100%);
+            background-color: $bench-color;
+            border-radius: 0 0 $border-radius $border-radius;
 
             @include up-to("M") {
                 margin-top: 1.5rem;
