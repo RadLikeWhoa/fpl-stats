@@ -28,9 +28,7 @@ const Modal: React.FC<Props> = (props: Props) => {
                 return
             }
 
-            if (props.onClose) {
-                props.onClose()
-            }
+            props.onClose?.()
         },
         [dispatch, props, value, id, history]
     )
@@ -46,6 +44,8 @@ const Modal: React.FC<Props> = (props: Props) => {
 
         return () => document.removeEventListener('keyup', listener)
     }, [close])
+
+    const callbackRef = useCallback(inputElement => inputElement?.focus(), [])
 
     return (
         <form
@@ -67,6 +67,7 @@ const Modal: React.FC<Props> = (props: Props) => {
                                 placeholder="e.g. 4654486"
                                 value={value}
                                 onChange={e => setValue(e.target.value)}
+                                ref={callbackRef}
                             />
                         </div>
                     </div>

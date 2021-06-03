@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { StatData } from '../../types'
 import { normaliseDiacritics } from '../../utilities'
@@ -36,6 +36,25 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
     const [value, setValue] = useState<string>('')
     const [showExtended, setShowExtended] = useState<boolean>(false)
 
+    const callbackRef = useCallback(inputElement => inputElement?.focus(), [])
+
+    const close = useCallback(() => {
+        setShowExtended(false)
+        setValue('')
+    }, [setShowExtended, setValue])
+
+    useEffect(() => {
+        const listener = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                close()
+            }
+        }
+
+        document.addEventListener('keyup', listener)
+
+        return () => document.removeEventListener('keyup', listener)
+    }, [close])
+
     const filteredPlayers = value
         ? props.players.filter(player =>
               normaliseDiacritics(player.element.web_name)
@@ -45,11 +64,6 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
         : props.players
 
     const topPlayers = props.players.slice(0, props.max)
-
-    const close = (): void => {
-        setShowExtended(false)
-        setValue('')
-    }
 
     return (
         <>
@@ -76,6 +90,7 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
                                 value={value}
                                 onChange={e => setValue(e.target.value)}
                                 id="query"
+                                ref={callbackRef}
                             />
                         </div>
                         <div className="widget__scroller">
