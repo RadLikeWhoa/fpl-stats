@@ -4,8 +4,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-shrink: 0;
-    width: 8rem;
+    flex-shrink: 1;
+    max-width: 8rem;
+    width: 100%;
     margin: 0 1rem;
 
     &__shirt {

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Route, Switch } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
 import { Dashboard } from './components/Dashboard'
 import configureAppStore from './store'
@@ -10,7 +10,7 @@ import './index.scss'
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={configureAppStore()}>
-            <BrowserRouter basename="/fpl-stats">
+            <HashRouter basename={process.env.PUBLIC_URL}>
                 <Switch>
                     <Route path="/:team/">
                         <Dashboard />
@@ -19,7 +19,7 @@ ReactDOM.render(
                         <Dashboard />
                     </Route>
                 </Switch>
-            </BrowserRouter>
+            </HashRouter>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root')

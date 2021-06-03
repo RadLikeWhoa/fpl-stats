@@ -234,8 +234,6 @@ const Dashboard: React.FC = () => {
                     <PlayerStatsWidget />
                     <SeasonWidget />
                     <HistoryWidget />
-                </div>
-                <div className="dashboard__widgets">
                     <GameweekWidget />
                     <PositionsWidget />
                     <FormationWidget />
