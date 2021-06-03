@@ -6,7 +6,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 30;
+    z-index: 100;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,9 +19,12 @@
         right: 0;
         bottom: 0;
         left: 0;
+        z-index: 100;
     }
 
     &__element {
+        position: relative;
+        z-index: 101;
         width: 30rem;
         background-color: #fff;
     }

@@ -24,6 +24,8 @@
     .widget {
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 101;
         height: 80vh;
         overflow: hidden;
 
