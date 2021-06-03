@@ -4,7 +4,8 @@
     flex-shrink: 0;
     width: 12rem;
     padding: 0.5rem;
-    background-color: #fff;
+    color: var(--player-color);
+    background-color: var(--player-background-color);
 
     &--condensed {
         width: auto;

@@ -7,6 +7,7 @@ const settings = createSlice({
     initialState: {
         id: undefined,
         meanStrategy: 'average',
+        theme: 'light',
     },
     reducers: {
         setId(state, action) {
@@ -15,10 +16,13 @@ const settings = createSlice({
         setMeanStrategy(state, action) {
             state.meanStrategy = action.payload
         },
+        setTheme(state, action) {
+            state.theme = action.payload
+        },
     },
 })
 
-export const { setId, setMeanStrategy } = settings.actions
+export const { setId, setMeanStrategy, setTheme } = settings.actions
 
 export const fetchDataWithId =
     (id: number): ThunkAction<void, Bootstrap, unknown, Action<string>> =>

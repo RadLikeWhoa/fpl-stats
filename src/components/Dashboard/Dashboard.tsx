@@ -44,6 +44,7 @@ import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
 import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
 import { finishLoading, startLoading } from '../../reducers/loading'
+import Settings from '../Settings/Settings'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -157,6 +158,7 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
 
 const Dashboard: React.FC = () => {
     const [sort, setSort] = useState<ValueType<OptionType>>(sortOptions[0])
+    const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false)
 
     const isLoading = useSelector((state: RootState) => state.loading > 0)
 
@@ -166,6 +168,7 @@ const Dashboard: React.FC = () => {
     const chips = useSelector((state: RootState) => state.stats.chips)
 
     const id = useSelector((state: RootState) => state.settings.id)
+    const theme = useSelector((state: RootState) => state.settings.theme)
 
     const entry = useSelector((state: RootState) => state.entry.data)
 
@@ -177,6 +180,10 @@ const Dashboard: React.FC = () => {
     const dashboardRef = useRef<HTMLDivElement>(null)
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme)
+    }, [theme])
 
     useEffect(() => {
         if (id && !team) {
@@ -211,7 +218,8 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="app">
-            {isModalOpen && <Modal />}
+            {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
+            {isSettingsOpen && <Settings onClose={() => setIsSettingsOpen(false)} />}
             <div
                 className={classNames('app__loading', {
                     'app__loading--hidden': !isLoading,
@@ -230,27 +238,30 @@ const Dashboard: React.FC = () => {
                                     {thousandsSeparator(entry.summary_overall_rank)}
                                 </div>
                             </h1>
-                            {id !== undefined && (
-                                <div>
-                                    <Button
-                                        onClick={() => {
-                                            dispatch(startLoading())
+                            <div>
+                                <Button onClick={() => setIsSettingsOpen(true)} label="Settings" />
+                                {id !== undefined && (
+                                    <>
+                                        <Button
+                                            onClick={() => {
+                                                dispatch(startLoading())
 
-                                            setTimeout(() => {
-                                                dispatch(fetchDataWithId(id))
-                                                dispatch(finishLoading())
-                                            }, 1)
-                                        }}
-                                        disabled={isLoading}
-                                        label="Refresh Data"
-                                    />
-                                    <Button
-                                        onClick={() => setIsModalOpen(true)}
-                                        label="Change Team"
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                            )}
+                                                setTimeout(() => {
+                                                    dispatch(fetchDataWithId(id))
+                                                    dispatch(finishLoading())
+                                                }, 1)
+                                            }}
+                                            disabled={isLoading}
+                                            label="Refresh Data"
+                                        />
+                                        <Button
+                                            onClick={() => setIsModalOpen(true)}
+                                            label="Change Team"
+                                            disabled={isLoading}
+                                        />
+                                    </>
+                                )}
+                            </div>
                         </Widget>
                     </header>
                 )}

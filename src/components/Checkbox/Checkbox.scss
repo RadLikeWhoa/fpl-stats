@@ -1,0 +1,41 @@
+@import "../../styles/variables";
+
+.checkbox {
+    &__label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    &__element {
+        position: absolute;
+        left: -999rem;
+        height: 0;
+        width: 0;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    &__visual {
+        position: relative;
+        flex-shrink: 0;
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-right: 0.5rem;
+        background-color: var(--checkbox-background-color);
+        border: 1px solid var(--checkbox-border-color);
+        border-radius: $border-radius;
+
+        .checkbox__element:checked + &::after {
+            content: "";
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            bottom: 0.25rem;
+            left: 0.25rem;
+            background-color: var(--checkbox-active-color);
+            border-radius: $border-radius;
+        }
+    }
+}

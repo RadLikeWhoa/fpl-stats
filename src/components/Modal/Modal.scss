@@ -11,7 +11,8 @@
     justify-content: center;
     align-items: center;
     padding: 1.5rem;
-    background-color: rgba(#000, 0.8);
+    color: var(--modal-color);
+    background-color: var(--modal-backdrop-color);
 
     &__backdrop {
         position: absolute;
@@ -26,14 +27,17 @@
         position: relative;
         z-index: 101;
         width: 30rem;
-        background-color: #fff;
+        background-color: var(--modal-background-color);
+        border-radius: $border-radius;
     }
 
     &__header {
-        padding: 1rem;
-        background-color: $brand-color;
-        color: #fff;
-        font-weight: 400;
+        padding: 0.5rem 1rem;
+        margin: 0;
+        color: var(--modal-header-color);
+        font-weight: 700;
+        background-color: var(--modal-header-background-color);
+        border-radius: $border-radius $border-radius 0 0;
     }
 
     &__body {
@@ -54,7 +58,7 @@
             left: 0.5rem;
             padding: 0 0.5rem;
             font-size: 0.75rem;
-            background-color: #fff;
+            background-color: var(--modal-background-color);
             transform: translateY(-50%);
             cursor: pointer;
         }
@@ -65,11 +69,28 @@
         width: 100%;
         padding: 0.5rem 1rem;
         font: inherit;
-        border: 1px solid $muted-color;
+        background-color: var(--input-background-color);
+        border: 1px solid var(--input-border-color);
         cursor: pointer;
 
         &:focus {
             cursor: text;
+        }
+
+        &::-webkit-input-placeholder {
+            color: var(--input-placeholder-color);
+        }
+
+        &::-moz-placeholder {
+            color: var(--input-placeholder-color);
+        }
+
+        &:-ms-input-placeholder {
+            color: var(--input-placeholder-color);
+        }
+
+        &:-moz-placeholder {
+            color: var(--input-placeholder-color);
         }
     }
 

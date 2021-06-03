@@ -6,7 +6,7 @@
     max-width: 100rem;
     min-height: 20rem;
     margin: 0 auto 2.125rem;
-    background-color: #fff;
+    background-color: var(--widget-background-color);
     border-radius: $border-radius;
 
     &--cloaked::before {
@@ -16,7 +16,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: #fff;
+        background: var(--widget-background-color);
         z-index: 5;
     }
 
@@ -32,7 +32,7 @@
         top: 0;
         z-index: 2;
         display: flex;
-        border-bottom: 1px solid $light-grey;
+        border-bottom: 1px solid var(--widget-separator-color);
 
         .dashboard__stat {
             font-weight: 700;
@@ -67,7 +67,7 @@
         display: flex;
         align-items: center;
         width: max-content;
-        border-bottom: 1px solid $light-grey;
+        border-bottom: 1px solid var(--widget-separator-color);
 
         &:last-child {
             border-bottom: 0;
@@ -100,19 +100,19 @@
         flex-shrink: 0;
         height: 4rem;
         width: 4rem;
-        background-color: #e7e7e5;
-        border-right: 1px solid $light-grey;
+        background-color: var(--dashboard-selected-color);
+        border-right: 1px solid var(--widget-separator-color);
 
         &--benched {
-            background-color: #fce45a;
+            background-color: var(--dashboard-benched-color);
         }
 
         &--started {
-            background-color: rgba(#006f37, 0.9);
+            background-color: var(--dashboard-started-color);
         }
 
         &--triple {
-            background-color: #00ff87;
+            background-color: var(--dashboard-triple-color);
         }
 
         &--wide {
@@ -149,13 +149,17 @@
             bottom: 0;
             right: 100%;
             width: 0.5rem;
-            background-image: linear-gradient(to left, rgba(#000, 0.05), rgba(#000, 0));
+            background-image: linear-gradient(
+                to left,
+                var(--dashboard-total-shadow-start-color),
+                var(--dashboard-total-shadow-end-color)
+            );
         }
 
         @include up-to("L") {
             flex-flow: wrap;
             width: 100%;
-            border-top: 1px solid $light-grey;
+            border-top: 1px solid var(--widget-separator-color);
 
             .dashboard__stat {
                 flex-direction: row;
@@ -169,7 +173,7 @@
                 }
 
                 &:nth-child(-n + 2) {
-                    border-bottom: 1px solid $light-grey;
+                    border-bottom: 1px solid var(--widget-separator-color);
                 }
 
                 &:nth-child(1)::before {
@@ -200,7 +204,8 @@
         width: 12rem;
         padding: 0.5rem;
         font-weight: 700;
-        background-color: #fff;
+        color: var(--widget-color);
+        background-color: var(--widget-background-color);
 
         &::after {
             content: "";
@@ -209,7 +214,11 @@
             bottom: 0;
             left: 100%;
             width: 0.5rem;
-            background-image: linear-gradient(to right, rgba(#000, 0.05), rgba(#000, 0));
+            background-image: linear-gradient(
+                to right,
+                var(--dashboard-total-shadow-start-color),
+                var(--dashboard-total-shadow-end-color)
+            );
         }
 
         @include up-to("L") {
@@ -233,8 +242,9 @@
         // this hack.
         width: m#{i}n(100rem, calc(100vw - 3rem));
         padding: 0.5rem;
+        color: var(--dashboard-category-color);
         font-weight: 700;
-        background-color: $light-grey;
+        background-color: var(--dashboard-category-background-color);
     }
 
     &__player {
@@ -249,7 +259,11 @@
                 bottom: 0;
                 left: 100%;
                 width: 0.5rem;
-                background-image: linear-gradient(to right, rgba(#000, 0.05), rgba(#000, 0));
+                background-image: linear-gradient(
+                    to right,
+                    var(--dashboard-total-shadow-start-color),
+                    var(--dashboard-total-shadow-end-color)
+                );
             }
         }
     }
@@ -260,7 +274,7 @@
         justify-content: space-between;
         max-width: 100rem;
         margin: 0 auto;
-        background-color: $brand-color;
+        background-color: var(--body-background-color);
 
         &::after {
             content: "";
@@ -317,23 +331,6 @@
                     }
                 }
             }
-        }
-    }
-
-    &__loading {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #fff;
-
-        .spinner__item {
-            background-color: #333;
         }
     }
 
@@ -426,7 +423,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: $brand-color;
+        background-color: var(--body-background-color);
         opacity: 1;
         pointer-events: auto;
         transition: opacity 0.25s ease-in-out;
@@ -446,7 +443,7 @@
         &__label {
             display: block;
             flex-shrink: 0;
-            color: #fff;
+            color: var(--dashboard-meta-color);
             margin-right: 1rem;
         }
 
@@ -464,8 +461,9 @@
         max-width: 100rem;
         padding: 0.5rem 1rem;
         margin-left: 1.5rem;
+        color: var(--dashboard-legend-color);
         font-size: 0.75rem;
-        background-color: #fff;
+        background-color: var(--dashboard-legend-background-color);
         border-radius: $border-radius;
 
         @include up-to("M") {
@@ -484,18 +482,18 @@
             height: 1rem;
             width: 1rem;
             margin-right: 0.5rem;
-            background-color: #e7e7e5;
+            background-color: var(--dashboard-selected-color);
 
             &--benched {
-                background-color: #fce45a;
+                background-color: var(--dashboard-benched-color);
             }
 
             &--started {
-                background-color: rgba(#006f37, 0.9);
+                background-color: var(--dashboard-started-color);
             }
 
             &--triple {
-                background-color: #00ff87;
+                background-color: var(--dashboard-triple-color);
             }
         }
 
@@ -507,7 +505,7 @@
     &__legal {
         max-width: 100rem;
         margin: 0 auto 1.5rem;
-        color: #fff;
+        color: var(--dashboard-legal-color);
         font-size: 0.75rem;
         line-height: 2;
         text-align: center;

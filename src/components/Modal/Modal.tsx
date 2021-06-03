@@ -6,7 +6,11 @@ import { validateTeamId } from '../../utilities'
 import { RootState } from '../../reducers'
 import './Modal.scss'
 
-const Modal: React.FC = () => {
+type Props = {
+    onClose?: () => void
+}
+
+const Modal: React.FC<Props> = (props: Props) => {
     const [value, setValue] = useState<string>('')
     const isLoading = useSelector((state: RootState) => state.loading > 0)
 
@@ -16,9 +20,11 @@ const Modal: React.FC = () => {
         (cancel: boolean) => {
             if (!cancel) {
                 history.push(`/${value}/`)
+            } else {
+                props.onClose?.()
             }
         },
-        [value, history]
+        [value, history, props]
     )
 
     useEffect(() => {
@@ -45,7 +51,7 @@ const Modal: React.FC = () => {
             <div className="modal">
                 <div className="modal__backdrop" onClick={() => close(true)}></div>
                 <div className="modal__element">
-                    <header className="modal__header">Enter Your Team ID</header>
+                    <h3 className="modal__header">Enter Your Team ID</h3>
                     <div className="modal__body">
                         <div className="modal__input-wrapper">
                             <label htmlFor="query">Team ID</label>

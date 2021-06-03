@@ -6,7 +6,7 @@
 .spinner__item {
     width: 33%;
     height: 33%;
-    background-color: #fff;
+    background-color: var(--spinner-color);
     float: left;
     animation: spinner 1.3s infinite ease-in-out;
 

@@ -31,13 +31,15 @@ const OverallRankWidget: React.FC = () => {
         max,
     }))
 
+    const fill = '#3a4556' || '#fff'
+
     return (
         <Widget title={TITLE}>
             <div className="chart chart--reversed">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
                         <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="1" />
-                        <Area type="monotone" dataKey="value" stroke="#177B47" fill="#ffffff" fillOpacity="1" />
+                        <Area type="monotone" dataKey="value" stroke="#177B47" fill={fill} fillOpacity="1" />
                         <YAxis
                             reversed={true}
                             tickFormatter={value => thousandsShorthand(value)}

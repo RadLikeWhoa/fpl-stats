@@ -1,8 +1,5 @@
 @import "./variables";
 
-$widget-bar-start-color: #ebeb4c;
-$widget-bar-end-color: #eb814c;
-
 /* stylelint-disable */
 
 @function _mq($name) {
@@ -35,8 +32,8 @@ $widget-bar-end-color: #eb814c;
         left: 0.5rem;
         right: 0.5rem;
         height: 0.625rem;
-        background: rgba(#000, 0) linear-gradient(to right, $widget-bar-start-color, $widget-bar-end-color) repeat
-            scroll 0% 0%;
+        background: rgba(#000, 0) linear-gradient(to right, var(--widget-bar-start-color), var(--widget-bar-end-color))
+            repeat scroll 0% 0%;
         border-radius: 0 0 $border-radius $border-radius;
     }
 }

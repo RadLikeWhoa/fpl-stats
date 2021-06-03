@@ -36,7 +36,7 @@
         }
 
         &__scroller {
-            border-top: 1px solid $light-grey;
+            border-top: 1px solid var(--widget-separator-color);
             overflow: auto;
         }
 

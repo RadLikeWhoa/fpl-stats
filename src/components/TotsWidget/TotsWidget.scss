@@ -1,14 +1,18 @@
 @import "../../styles/mixins";
 
-$bench-color: #e5e5e5;
-
 .tots-widget {
-    background-color: $bench-color;
+    background-color: var(--tots-bench-background-color);
 }
 
 .tots {
     padding-top: 3rem;
-    background-image: repeating-radial-gradient(circle at 50% 100%, #00ae55, #00ae55 10%, #01ba5c 10%, #01ba5c 20%);
+    background-image: repeating-radial-gradient(
+        circle at 50% 100%,
+        var(--tots-backdrop-color-a),
+        var(--tots-backdrop-color-a) 10%,
+        var(--tots-backdrop-color-b) 10%,
+        var(--tots-backdrop-color-b) 20%
+    );
     border-radius: 0 0 $border-radius $border-radius;
     overflow: hidden;
 
@@ -21,7 +25,7 @@ $bench-color: #e5e5e5;
             padding: 1.5rem 0;
             margin-top: 3rem;
             margin-bottom: 0;
-            background-color: $bench-color;
+            background-color: var(--tots-bench-background-color);
             border-radius: 0 0 $border-radius $border-radius;
 
             @include up-to("M") {
