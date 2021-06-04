@@ -18,7 +18,7 @@ import {
     sort,
     getPointsLabel,
 } from '../../utilities'
-import { Modal } from '../Modal'
+import { TeamModal } from '../TeamModal'
 import { fetchDataWithId } from '../../reducers/settings'
 import { Button } from '../Button'
 import { HistoryWidget } from '../HistoryWidget'
@@ -44,7 +44,7 @@ import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
 import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
 import { finishLoading, startLoading } from '../../reducers/loading'
-import Settings from '../Settings/Settings'
+import { SettingsModal } from '../SettingsModal'
 import { useMeanValue } from '../../hooks'
 import './Dashboard.scss'
 
@@ -229,8 +229,8 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="app">
-            {isModalOpen && <Modal onClose={() => setIsModalOpen(false)} />}
-            {isSettingsOpen && <Settings onClose={() => setIsSettingsOpen(false)} />}
+            {isModalOpen && <TeamModal onClose={() => setIsModalOpen(false)} />}
+            {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} />}
             <div
                 className={classNames('app__loading', {
                     'app__loading--hidden': !isLoading,
