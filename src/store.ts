@@ -27,7 +27,11 @@ export default function configureAppStore() {
     })
 
     store.subscribe(() => {
-        localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+        try {
+            localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+        } catch (e) {
+            localStorage.removeItem('reduxState')
+        }
     })
 
     return store
