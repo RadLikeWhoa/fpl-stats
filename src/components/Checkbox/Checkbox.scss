@@ -38,4 +38,16 @@
             border-radius: $border-radius;
         }
     }
+
+    &--reversed {
+        .checkbox__label {
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+
+        .checkbox__visual {
+            margin-right: 0;
+            margin-left: 0.5rem;
+        }
+    }
 }

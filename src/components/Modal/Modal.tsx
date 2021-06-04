@@ -51,7 +51,10 @@ const Modal: React.FC<Props> = (props: Props) => {
             <div className="modal">
                 <div className="modal__backdrop" onClick={() => close(true)}></div>
                 <div className="modal__element">
-                    <h3 className="modal__header">Enter Your Team ID</h3>
+                    <h3 className="modal__header">
+                        Enter Your Team ID
+                        <Button label="X" onClick={() => close(true)} aria-label="Close" />
+                    </h3>
                     <div className="modal__body">
                         <div className="modal__input-wrapper">
                             <label htmlFor="query">Team ID</label>

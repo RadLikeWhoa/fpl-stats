@@ -1,14 +1,19 @@
 @import "../../styles/variables";
 
 .segmented-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     label {
         display: inline-block;
-        margin-bottom: 0.25rem;
+        flex-shrink: 0;
+        margin-right: 0.5rem;
     }
 
     &__options {
         display: flex;
-        width: 100%;
+        width: auto;
     }
 
     &__option {
@@ -23,7 +28,7 @@
         .button {
             text-align: center;
             border-radius: 0;
-            opacity: 0.5;
+            opacity: 0.3;
         }
 
         &--selected {

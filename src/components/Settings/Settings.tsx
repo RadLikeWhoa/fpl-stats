@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button } from '../Button'
 import { Checkbox } from '../Checkbox'
@@ -35,22 +35,26 @@ const Settings: React.FC<Props> = (props: Props) => {
         return () => document.removeEventListener('keyup', listener)
     }, [props])
 
-    const close = useCallback(() => {
+    useEffect(() => {
         if ((checked && settings.theme === 'light') || (!checked && settings.theme === 'dark')) {
             dispatch(setTheme(checked ? 'dark' : 'light'))
         }
+    }, [checked, dispatch, settings.theme])
 
+    useEffect(() => {
         if (strategy !== settings.meanStrategy) {
             dispatch(setMeanStrategy(strategy))
         }
-        props.onClose?.()
-    }, [dispatch, checked, props, settings, strategy])
+    }, [dispatch, settings.meanStrategy, strategy])
 
     return (
         <div className="modal modal--settings">
-            <div className="modal__backdrop" onClick={() => close()}></div>
+            <div className="modal__backdrop" onClick={() => props.onClose?.()}></div>
             <div className="modal__element">
-                <h3 className="modal__header">Settings</h3>
+                <h3 className="modal__header">
+                    Settings{' '}
+                    {props.onClose && <Button label="X" onClick={() => props.onClose?.()} aria-label="Close" />}
+                </h3>
                 <div className="modal__body">
                     <SegmentedControl
                         label="Display values as"
@@ -58,11 +62,13 @@ const Settings: React.FC<Props> = (props: Props) => {
                         selected={strategy}
                         setSelected={value => setStrategy(value)}
                     />
-                    <Checkbox label="Use dark mode" checked={checked} onChange={e => setChecked(e.target.checked)} />
+                    <Checkbox
+                        label="Use dark mode"
+                        checked={checked}
+                        onChange={e => setChecked(e.target.checked)}
+                        reversed
+                    />
                 </div>
-                <footer className="modal__footer">
-                    <Button label="Save Settings" type="button" onClick={() => close()} />
-                </footer>
             </div>
         </div>
     )

@@ -32,12 +32,19 @@
     }
 
     &__header {
+        display: flex;
+        justify-content: space-between;
         padding: 0.5rem 1rem;
         margin: 0;
         color: var(--modal-header-color);
         font-weight: 700;
         background-color: var(--modal-header-background-color);
         border-radius: $border-radius $border-radius 0 0;
+
+        .modal & .button {
+            align-self: center;
+            width: auto;
+        }
     }
 
     &__body {
