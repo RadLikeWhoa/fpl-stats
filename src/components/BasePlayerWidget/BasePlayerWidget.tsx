@@ -5,6 +5,7 @@ import { normaliseDiacritics } from '../../utilities'
 import { Button } from '../Button'
 import { Widget } from '../Widget'
 import './BasePlayerWidget.scss'
+import { ModalInput } from '../ModalInput'
 
 type Props = {
     title: string
@@ -81,18 +82,14 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
                 <div className="modal modal--players">
                     <div className="modal__backdrop" onClick={() => close()}></div>
                     <Widget title={props.title} onClose={() => close()}>
-                        <div className="modal__input-wrapper">
-                            <label htmlFor="query">Name</label>
-                            <input
-                                className="modal__input"
-                                type="text"
-                                placeholder="Filter by name"
-                                value={value}
-                                onChange={e => setValue(e.target.value)}
-                                id="query"
-                                ref={callbackRef}
-                            />
-                        </div>
+                        <ModalInput
+                            label="Name"
+                            placeholder="Filter by name"
+                            id="query"
+                            value={value}
+                            onChange={value => setValue(value)}
+                            ref={callbackRef}
+                        />
                         <div className="widget__scroller">
                             {filteredPlayers.length > 0 ? (
                                 renderList(filteredPlayers, props.renderItem)

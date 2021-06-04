@@ -5,6 +5,7 @@ import { Button } from '../Button'
 import { validateTeamId } from '../../utilities'
 import { RootState } from '../../reducers'
 import { Modal } from '../Modal'
+import { ModalInput } from '../ModalInput'
 
 type Props = {
     onClose?: () => void
@@ -62,17 +63,13 @@ const TeamModal: React.FC<Props> = (props: Props) => {
                     />
                 }
             >
-                <div className="modal__input-wrapper">
-                    <label htmlFor="query">Team ID</label>
-                    <input
-                        className="modal__input"
-                        type="text"
-                        placeholder="Enter your team id"
-                        value={value}
-                        onChange={e => setValue(e.target.value)}
-                        ref={callbackRef}
-                    />
-                </div>
+                <ModalInput
+                    label="Team ID"
+                    placeholder="Enter your team ID"
+                    value={value}
+                    onChange={value => setValue(value)}
+                    ref={callbackRef}
+                />
             </Modal>
         </form>
     )
