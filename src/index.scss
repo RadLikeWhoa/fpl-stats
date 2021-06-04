@@ -6,23 +6,17 @@
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        @each $key, $value in map-get($themes, "dark") {
-            --#{$key}: #{$value};
-        }
-    }
-}
-
 [data-theme="dark"] {
     @each $key, $value in map-get($themes, "dark") {
         --#{$key}: #{$value};
     }
 }
 
-[data-theme="light"] {
-    @each $key, $value in map-get($themes, "light") {
-        --#{$key}: #{$value};
+@media (prefers-color-scheme: dark) {
+    :root {
+        @each $key, $value in map-get($themes, "dark") {
+            --#{$key}: #{$value};
+        }
     }
 }
 

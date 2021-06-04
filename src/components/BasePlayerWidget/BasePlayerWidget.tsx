@@ -4,8 +4,8 @@ import { StatData } from '../../types'
 import { normaliseDiacritics } from '../../utilities'
 import { Button } from '../Button'
 import { Widget } from '../Widget'
-import './BasePlayerWidget.scss'
 import { ModalInput } from '../ModalInput'
+import './BasePlayerWidget.scss'
 
 type Props = {
     title: string
