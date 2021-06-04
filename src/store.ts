@@ -18,7 +18,19 @@ const isStale = () => {
 
 export default function configureAppStore() {
     const storage = localStorage.getItem('reduxState')
-    const preloadedState = storage !== null && !isStale() ? JSON.parse(storage) : {}
+    const parsedStorage = storage ? JSON.parse(storage) : null
+
+    const preloadedState =
+        parsedStorage !== null
+            ? !isStale()
+                ? parsedStorage
+                : {
+                      settings: {
+                          ...parsedStorage.settings,
+                          id: undefined,
+                      },
+                  }
+            : {}
 
     const store = configureStore({
         reducer: rootReducer,
@@ -30,11 +42,25 @@ export default function configureAppStore() {
     })
 
     store.subscribe(() => {
+        const state = store.getState()
+
         try {
-            localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+            localStorage.setItem('reduxState', JSON.stringify(state))
             localStorage.setItem('storageVersion', STORAGE_VERSION)
         } catch (e) {
-            localStorage.removeItem('reduxState')
+            try {
+                localStorage.setItem(
+                    'reduxState',
+                    JSON.stringify({
+                        settings: {
+                            ...state.settings,
+                            id: undefined,
+                        },
+                    })
+                )
+            } catch (e) {
+                localStorage.removeItem('reduxState')
+            }
         }
     })
 

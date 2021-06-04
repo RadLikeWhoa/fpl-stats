@@ -13,10 +13,6 @@
         height: 5rem;
         margin-bottom: 0.5rem;
 
-        [data-theme="dark"] & {
-            filter: brightness(0.8) contrast(1.1);
-        }
-
         @include up-to("M") {
             height: 3rem;
         }
