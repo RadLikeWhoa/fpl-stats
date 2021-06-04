@@ -1,5 +1,15 @@
-import { ElementStats, StatData, Stats, StatDataGameweek, Streak } from '../types'
-import { StatAggregateTotals } from '../types/stat-aggregate-totals'
+import {
+    ElementStats,
+    StatData,
+    Stats,
+    StatDataGameweek,
+    Streak,
+    Picks,
+    LiveEvent,
+    Bootstrap,
+    Range,
+    StatAggregateTotals,
+} from '../types'
 import { head, reduce, sort } from './arrays'
 import { sumNumbers } from './numbers'
 
@@ -78,15 +88,14 @@ const getStreak = (
         return null
     }
 
-    const start =
-        statData.data[sumNumbers(streaks.slice(0, streaks.indexOf(max)).map(streak => (streak > 0 ? streak : 1)))].event
-    const end = statData.data[start.id - 2 + max].event
+    const start = sumNumbers(streaks.slice(0, streaks.indexOf(max)).map(streak => (streak > 0 ? streak : 1)))
+    const end = start - 1 + max
 
-    const points = statData.data.slice(start.id - 1, start.id - 1 + max).map(event => event.points || 0)
+    const points = statData.data.slice(start, end).map(event => event.points || 0)
 
     return {
-        start,
-        end,
+        start: statData.data[start].event,
+        end: statData.data[end].event,
         length: max,
         points,
         totalPoints: sumNumbers(points),
@@ -140,5 +149,169 @@ export const getTeamOfTheSeason = (stats: Stats): { xi: StatData[]; bench: StatD
     return {
         xi,
         bench,
+    }
+}
+
+const emptyAggregates = {
+    totals: {
+        redCards: 0,
+        yellowCards: 0,
+        goals: 0,
+        assists: 0,
+        cleanSheets: 0,
+        goalsConceded: 0,
+        ownGoals: 0,
+        saves: 0,
+        minutes: 0,
+        penaltiesMissed: 0,
+        penaltiesSaved: 0,
+        timesInDreamteam: 0,
+        bps: 0,
+        bonus: 0,
+        captaincies: 0,
+        points: 0,
+        rawPoints: 0,
+        benchPoints: 0,
+        selections: 0,
+        starts: 0,
+        benched: 0,
+    },
+    streaks: {
+        selection: null,
+        start: null,
+        bench: null,
+        nonBlank: null,
+    },
+}
+
+export const filterStatData = async (
+    rawStats: {
+        pick: Picks
+        live: LiveEvent
+    }[],
+    bootstrap: Bootstrap,
+    range: Range
+): Promise<{
+    data: Stats
+    chips: {
+        [key: number]: string
+    }
+    tots: {
+        xi: StatData[]
+        bench: StatData[]
+    }
+}> => {
+    const stats: { [key: number]: StatData } = {}
+    const chips: { [key: number]: string } = {}
+
+    rawStats.slice(range.start, range.end + 1).forEach(gw => {
+        if (gw.pick.active_chip) {
+            chips[gw.pick.entry_history.event] = gw.pick.active_chip
+        }
+
+        gw.pick.picks.forEach(item => {
+            if (!stats[item.element]) {
+                stats[item.element] = {
+                    element: bootstrap.elements.find(el => el.id === item.element)!,
+                    data: bootstrap.events.slice(range.start, gw.pick.entry_history.event - 1).map(event => ({
+                        event,
+                        multiplier: null,
+                        points: null,
+                        rawPoints: null,
+                        stats: null,
+                        position: null,
+                    })),
+                    aggregates: emptyAggregates,
+                }
+            }
+
+            const points = gw.live.elements.find(el => el.id === item.element)?.stats.total_points || null
+
+            stats[item.element] = {
+                ...stats[item.element],
+                data: [
+                    ...stats[item.element].data,
+                    {
+                        event: bootstrap.events.find(event => event.id === gw.pick.entry_history.event)!,
+                        multiplier: item.multiplier,
+                        points: points !== null ? points * item.multiplier : points,
+                        rawPoints: points,
+                        stats: gw.live.elements.find(el => el.id === item.element)?.stats || null,
+                        position: item.position,
+                    },
+                ],
+            }
+        })
+
+        Object.keys(stats).forEach(player => {
+            const index = Number(player)
+
+            if (stats[index].data.length < gw.pick.entry_history.event - range.start) {
+                stats[index] = {
+                    ...stats[index],
+                    data: [
+                        ...stats[index].data,
+                        {
+                            event: bootstrap.events.find(event => event.id === gw.pick.entry_history.event)!,
+                            multiplier: null,
+                            points: null,
+                            rawPoints: null,
+                            stats: null,
+                            position: null,
+                        },
+                    ],
+                }
+            }
+        })
+    })
+
+    Object.keys(stats).forEach(id => {
+        const player = stats[Number(id)]
+
+        stats[Number(id)].aggregates = {
+            totals: {
+                redCards: getPlayerAggregate(player, 'red_cards'),
+                yellowCards: getPlayerAggregate(player, 'yellow_cards'),
+                goals: getPlayerAggregate(player, 'goals_scored'),
+                assists: getPlayerAggregate(player, 'assists'),
+                cleanSheets: getPlayerAggregate(player, 'clean_sheets'),
+                goalsConceded: getPlayerAggregate(player, 'goals_conceded'),
+                ownGoals: getPlayerAggregate(player, 'own_goals'),
+                saves: getPlayerAggregate(player, 'saves'),
+                minutes: getPlayerAggregate(player, 'minutes'),
+                penaltiesMissed: getPlayerAggregate(player, 'penalties_missed'),
+                penaltiesSaved: getPlayerAggregate(player, 'penalties_saved'),
+                timesInDreamteam: getPlayerAggregate(player, 'in_dreamteam'),
+                bps: getPlayerAggregate(player, 'bps'),
+                bonus: getPlayerAggregate(player, 'bonus'),
+                captaincies: getTotalCaptaincies(player),
+                points: getTotalPoints(player),
+                rawPoints: getTotalRawPoints(player),
+                benchPoints: getTotalBenchPoints(player),
+                selections: getTotalSelections(player),
+                starts: getTotalStarts(player),
+                benched: getTotalBenched(player),
+            },
+            streaks: {
+                selection: getSelectionStreak(player),
+                start: getStartStreak(player),
+                bench: getBenchStreak(player),
+                nonBlank: getNonBlankStreak(player),
+            },
+        }
+    })
+
+    const data = Object.values(stats).reduce(
+        (acc: Stats, curr) => ({
+            ...acc,
+            [curr.element.element_type]: [...(acc[curr.element.element_type] || []), curr],
+        }),
+        {}
+    )
+
+    return {
+        data,
+        chips,
+        tots: getTeamOfTheSeason(data),
     }
 }

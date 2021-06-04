@@ -1,19 +1,22 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { getAllPlayers, getGWCountLabel, head, round, sort } from '../../utilities'
+import { FilteredData } from '../Dashboard/Dashboard'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
 const TITLE = 'Wrong Captains'
 
-const WrongCaptainWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const history = useSelector((state: RootState) => state.history.data)
+type Props = {
+    data: FilteredData | undefined
+}
 
-    if (!stats || !history) {
+const WrongCaptainWidget: React.FC<Props> = (props: Props) => {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
+
+    const stats = props.data.stats.data
+    const history = props.data.history
 
     const allPlayers = getAllPlayers(stats)
     const weeks = history.current.length

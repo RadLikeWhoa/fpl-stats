@@ -6,19 +6,25 @@ import { Widget } from '../Widget'
 import { getAllPlayers, getPointsLabel, round, sort, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 import { useMeanValue } from '../../hooks'
+import { FilteredData } from '../Dashboard/Dashboard'
 import './TeamsWidget.scss'
 
 const TITLE = 'Teams'
 
-const TeamsWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
+type Props = {
+    data: FilteredData | undefined
+}
+
+const TeamsWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     const meanValue = useMeanValue()
 
-    if (!stats || !bootstrap) {
+    if (!props.data || !bootstrap) {
         return <Widget title={TITLE} />
     }
+
+    const stats = props.data.stats.data
 
     const counts = Object.values(stats)
         .reduce((acc: number[], curr) => [...acc, ...curr.map(el => el.element.team)], [])

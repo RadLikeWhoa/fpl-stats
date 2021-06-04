@@ -4,16 +4,23 @@ import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tool
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, head, sort, thousandsSeparator, thousandsShorthand } from '../../utilities'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Overall Rank Evolution'
 
-const OverallRankWidget: React.FC = () => {
-    const history = useSelector((state: RootState) => state.history.data)
-    const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
+type Props = {
+    data: FilteredData | undefined
+}
 
-    if (!history || !bootstrap) {
+const OverallRankWidget: React.FC<Props> = (props: Props) => {
+    const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
+    const theme = useSelector((state: RootState) => state.settings.theme)
+
+    if (!props.data || !bootstrap) {
         return <Widget title={TITLE} />
     }
+
+    const history = props.data.history
 
     let data = history.current.map(entry => {
         const event = bootstrap.events.find(event => event.id === entry.event)
@@ -31,15 +38,19 @@ const OverallRankWidget: React.FC = () => {
         max,
     }))
 
-    const fill = '#3a4556' || '#fff'
-
     return (
         <Widget title={TITLE}>
             <div className="chart chart--reversed">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
                         <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="1" />
-                        <Area type="monotone" dataKey="value" stroke="#177B47" fill={fill} fillOpacity="1" />
+                        <Area
+                            type="monotone"
+                            dataKey="value"
+                            stroke="#177B47"
+                            fill={theme === 'dark' ? '#3a4556' : '#fff'}
+                            fillOpacity="1"
+                        />
                         <YAxis
                             reversed={true}
                             tickFormatter={value => thousandsShorthand(value)}

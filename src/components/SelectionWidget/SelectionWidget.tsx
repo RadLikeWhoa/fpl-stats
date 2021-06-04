@@ -1,24 +1,24 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getAllPlayers, getGWCountLabel, sort } from '../../utilities'
 import { Player } from '../Player'
 import { BasePlayerWidget } from '../BasePlayerWidget'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const MAX_ITEMS = 10
 
 type Props = {
     title: string
     metric: 'selections' | 'starts' | 'benched'
+    data: FilteredData | undefined
 }
 
 const SelectionWidget: React.FC<Props> = (props: Props) => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-
-    if (!stats) {
+    if (!props.data) {
         return <Widget title={props.title} />
     }
+
+    const stats = props.data.stats.data
 
     const elements = sort(getAllPlayers(stats), el => el.aggregates.totals[props.metric])
 

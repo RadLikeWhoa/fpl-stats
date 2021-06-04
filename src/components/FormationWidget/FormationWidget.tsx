@@ -1,10 +1,9 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Metric } from '../Metric'
 import { useMeanValue } from '../../hooks'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 type FormationInformation = {
     count: number
@@ -16,15 +15,19 @@ const TITLE = 'Formations'
 const formatFormation = (formation: string) =>
     sumNumbers(formation.split('-').map(position => Number(position))) > 10 ? 'Bench Boost' : formation
 
-const FormationWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const history = useSelector((state: RootState) => state.history.data)
+type Props = {
+    data: FilteredData | undefined
+}
 
+const FormationWidget: React.FC<Props> = (props: Props) => {
     const meanValue = useMeanValue()
 
-    if (!stats || !history) {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
+
+    const history = props.data.history
+    const stats = props.data.stats.data
 
     const weeks = history.current.length
 

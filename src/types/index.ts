@@ -1,3 +1,4 @@
+export * from './Range'
 export * from './automatic-sub'
 export * from './bootstrap'
 export * from './chip-play'

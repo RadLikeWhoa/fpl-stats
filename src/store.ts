@@ -1,67 +1,43 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import rootReducer from './reducers'
 
-const STORAGE_VERSION = '1'
+const STORAGE_VERSION = '2'
 
-const isStale = () => {
-    const latestFetch = localStorage.getItem('latestFetch')
-    const storageVersion = localStorage.getItem('storageVersion')
-
-    if (!latestFetch) {
-        return false
-    }
-
-    const parsed = Number(latestFetch)
-
-    return parsed + 86400000 < Date.now() || storageVersion !== STORAGE_VERSION
-}
+const isStale = () => localStorage.getItem('storageVersion') !== STORAGE_VERSION
 
 export default function configureAppStore() {
-    const storage = localStorage.getItem('reduxState')
-    const parsedStorage = storage ? JSON.parse(storage) : null
+    const storage = localStorage.getItem('applicationSettings')
 
-    const preloadedState =
-        parsedStorage !== null
-            ? !isStale()
-                ? parsedStorage
-                : {
-                      settings: {
-                          ...parsedStorage.settings,
-                          id: undefined,
-                      },
-                  }
-            : {}
+    const preloadedState = storage !== null && !isStale() ? JSON.parse(storage) : {}
 
     const store = configureStore({
         reducer: rootReducer,
         middleware: [...getDefaultMiddleware()],
         preloadedState: {
-            ...preloadedState,
-            loading: 0,
+            settings: {
+                theme: 'light',
+                meanStrategy: 'average',
+                id: undefined,
+                range: {
+                    start: 0,
+                    end: 38,
+                },
+                ...preloadedState,
+            },
         },
     })
 
     store.subscribe(() => {
-        const state = store.getState()
+        const state = store.getState().settings
 
-        try {
-            localStorage.setItem('reduxState', JSON.stringify(state))
-            localStorage.setItem('storageVersion', STORAGE_VERSION)
-        } catch (e) {
-            try {
-                localStorage.setItem(
-                    'reduxState',
-                    JSON.stringify({
-                        settings: {
-                            ...state.settings,
-                            id: undefined,
-                        },
-                    })
-                )
-            } catch (e) {
-                localStorage.removeItem('reduxState')
-            }
-        }
+        localStorage.setItem('storageVersion', STORAGE_VERSION)
+        localStorage.setItem(
+            'applicationSettings',
+            JSON.stringify({
+                theme: state.theme,
+                meanStrategy: state.meanStrategy,
+            })
+        )
     })
 
     return store

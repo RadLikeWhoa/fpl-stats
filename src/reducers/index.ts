@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { Bootstrap, Stats, History, Entry, StatData } from '../types'
+import { Bootstrap, History, Entry, Picks, LiveEvent } from '../types'
 import bootstrap from './bootstrap'
 import stats from './stats'
 import settings from './settings'
@@ -13,17 +13,11 @@ export type RootState = {
         data: Bootstrap | undefined
     }
     stats: {
-        data: Stats | undefined
-        chips:
+        data:
             | {
-                  [key: number]: string
-              }
-            | undefined
-        tots:
-            | {
-                  xi: StatData[]
-                  bench: StatData[]
-              }
+                  pick: Picks
+                  live: LiveEvent
+              }[]
             | undefined
     }
     settings: {

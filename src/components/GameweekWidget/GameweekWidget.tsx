@@ -5,19 +5,25 @@ import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { head, last, round, sort, thousandsSeparator, getPointsLabel } from '../../utilities'
 import { SiteLink } from '../SiteLink'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Gameweeks'
 
-const GameweekWidget: React.FC = () => {
-    const history = useSelector((state: RootState) => state.history.data)
+type Props = {
+    data: FilteredData | undefined
+}
+
+const GameweekWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     const meanLabel = useMeanLabel()
     const meanValue = useMeanValue()
 
-    if (!history || !bootstrap) {
+    if (!props.data || !bootstrap) {
         return <Widget title={TITLE} />
     }
+
+    const history = props.data.history
 
     const differences = history.current.map((week, index) => week.points - bootstrap.events[index].average_entry_score)
     const sortedRanks = sort(history.current, el => el.rank, 'asc')

@@ -4,16 +4,22 @@ import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tool
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, initialCaps } from '../../utilities'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Team Value Evolution'
 
-const ValueWidget: React.FC = () => {
-    const history = useSelector((state: RootState) => state.history.data)
+type Props = {
+    data: FilteredData | undefined
+}
+
+const ValueWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
-    if (!history || !bootstrap) {
+    if (!props.data || !bootstrap) {
         return <Widget title={TITLE} />
     }
+
+    const history = props.data.history
 
     const data = history.current.map(entry => {
         const event = bootstrap.events.find(event => event.id === entry.event)

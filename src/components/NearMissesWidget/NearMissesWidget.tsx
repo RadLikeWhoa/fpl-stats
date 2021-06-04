@@ -1,25 +1,25 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { getAllPlayers, getPointsLabel, sort, thousandsSeparator } from '../../utilities'
 import { BasePlayerWidget } from '../BasePlayerWidget'
+import { FilteredData } from '../Dashboard/Dashboard'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
 const MAX_ITEMS = 15
 const TITLE = 'Other Players'
 
-const NearMissesWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const tots = useSelector((state: RootState) => state.stats.tots)
+type Props = {
+    data: FilteredData | undefined
+}
 
-    if (!stats || !tots) {
+const NearMissesWidget: React.FC<Props> = (props: Props) => {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
 
-    const totsIds = tots.xi.concat(tots.bench).map(player => player.element.id)
+    const totsIds = props.data.stats.tots.xi.concat(props.data.stats.tots.bench).map(player => player.element.id)
     const players = sort(
-        getAllPlayers(stats).filter(player => !totsIds.includes(player.element.id)),
+        getAllPlayers(props.data.stats.data).filter(player => !totsIds.includes(player.element.id)),
         el => el.aggregates.totals.points
     )
 

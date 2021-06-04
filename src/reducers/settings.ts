@@ -1,6 +1,10 @@
-import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit'
-import { Bootstrap } from '../types'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { fetchBootstrap } from './bootstrap'
+
+export const fetchDataWithId = createAsyncThunk('settings/fetch', async (id: number, thunkAPI) => {
+    thunkAPI.dispatch(setId(id))
+    thunkAPI.dispatch(fetchBootstrap(id))
+})
 
 const settings = createSlice({
     name: 'settings',
@@ -23,12 +27,5 @@ const settings = createSlice({
 })
 
 export const { setId, setMeanStrategy, setTheme } = settings.actions
-
-export const fetchDataWithId =
-    (id: number): ThunkAction<void, Bootstrap, unknown, Action<string>> =>
-    async dispatch => {
-        dispatch(setId(id))
-        dispatch(fetchBootstrap(id))
-    }
 
 export default settings.reducer

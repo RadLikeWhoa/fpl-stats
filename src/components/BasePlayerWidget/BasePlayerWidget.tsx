@@ -88,7 +88,7 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
                             id="query"
                             value={value}
                             onChange={value => setValue(value)}
-                            ref={callbackRef}
+                            innerRef={callbackRef}
                         />
                         <div className="widget__scroller">
                             {filteredPlayers.length > 0 ? (

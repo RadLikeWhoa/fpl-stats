@@ -3,20 +3,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
 import Select, { ValueType } from 'react-select'
 import { useParams, useHistory } from 'react-router-dom'
-import { Bootstrap, StatData, Stats } from '../../types'
+import debounce from 'lodash/debounce'
+import ReactSlider from 'react-slider'
+import { Bootstrap, StatData, Stats, History, Range } from '../../types'
 import { RootState } from '../../reducers'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Spinner } from '../Spinner'
 import {
-    getPastEvents,
     getChipAbbreviation,
     thousandsSeparator,
-    getShortName,
     validateTeamId,
     round,
     sort,
     getPointsLabel,
+    last,
+    filterStatData,
+    filterHistoryData,
+    head,
+    getPastEvents,
 } from '../../utilities'
 import { TeamModal } from '../TeamModal'
 import { fetchDataWithId } from '../../reducers/settings'
@@ -43,7 +48,6 @@ import { ContributionWidget } from '../ContributionWidget'
 import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
 import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
-import { finishLoading, startLoading } from '../../reducers/loading'
 import { SettingsModal } from '../SettingsModal'
 import { useMeanValue } from '../../hooks'
 import './Dashboard.scss'
@@ -55,6 +59,20 @@ type OptionType = {
 
 type DashboardParams = {
     team?: string
+}
+
+export type FilteredData = {
+    history: History
+    stats: {
+        data: Stats
+        chips: {
+            [key: number]: string
+        }
+        tots: {
+            xi: StatData[]
+            bench: StatData[]
+        }
+    }
 }
 
 const sortings: { [key: string]: (statData: StatData) => number } = {
@@ -169,21 +187,24 @@ const renderPlayerList = (
 const Dashboard: React.FC = () => {
     const [sort, setSort] = useState<ValueType<OptionType>>(sortOptions[0])
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false)
+    const [range, setRange] = useState<Range>({ start: 0, end: 37 })
+    const [filteredData, setFilteredData] = useState<FilteredData | undefined>(undefined)
 
     const isLoading = useSelector((state: RootState) => state.loading > 0)
 
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const chips = useSelector((state: RootState) => state.stats.chips)
+    const rawStatsData = useSelector((state: RootState) => state.stats.data)
 
     const id = useSelector((state: RootState) => state.settings.id)
     const theme = useSelector((state: RootState) => state.settings.theme)
 
     const entry = useSelector((state: RootState) => state.entry.data)
 
+    const rawHistory = useSelector((state: RootState) => state.history.data)
+
     const { team } = useParams<DashboardParams>()
-    const history = useHistory()
+    const browserHistory = useHistory()
 
     const [isModalOpen, setIsModalOpen] = useState(!team)
 
@@ -198,22 +219,17 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         if (id && !team) {
-            history.push(`/${id}/`)
+            browserHistory.push(`/${id}/`)
         } else if (team && validateTeamId(team)) {
             setIsModalOpen(false)
 
             if (Number(team) !== id) {
-                dispatch(startLoading())
-
-                setTimeout(() => {
-                    dispatch(fetchDataWithId(Number(team)))
-                    dispatch(finishLoading())
-                }, 1)
+                dispatch(fetchDataWithId(Number(team)))
             }
         } else {
-            history.push('/')
+            browserHistory.push('/')
         }
-    }, [team, history, dispatch, id])
+    }, [team, browserHistory, dispatch, id])
 
     useEffect(() => {
         setTimeout(() => {
@@ -221,11 +237,39 @@ const Dashboard: React.FC = () => {
                 dashboardRef.current.scrollTo(dashboardRef.current.scrollWidth, 0)
             }
         }, 1)
-    }, [stats])
+    }, [rawStatsData])
 
     useEffect(() => {
         setIsModalOpen(!team)
     }, [team])
+
+    const debouncedFiltering = useRef(
+        debounce(async (rawStatsData, rawHistory, bootstrap, range) => {
+            const [filteredStatData, filteredHistoryData] = await Promise.all([
+                filterStatData(rawStatsData, bootstrap, range),
+                filterHistoryData(rawHistory, range),
+            ])
+
+            setFilteredData({
+                stats: filteredStatData,
+                history: filteredHistoryData,
+            })
+        }, 300)
+    ).current
+
+    useEffect(() => {
+        if (!rawStatsData || !bootstrap || !rawHistory) {
+            return
+        }
+
+        debouncedFiltering(rawStatsData, rawHistory, bootstrap, range)
+    }, [rawStatsData, bootstrap, rawHistory, range, debouncedFiltering])
+
+    const totalPoints = filteredData
+        ? (last(filteredData.history.current)?.total_points || 0) -
+          (rawHistory?.current.find(event => event.event === (head(filteredData.history.current)?.event || 1) - 1)
+              ?.total_points || 0)
+        : 0
 
     return (
         <div className="app">
@@ -245,48 +289,34 @@ const Dashboard: React.FC = () => {
                             <h1 className="dashboard__title">
                                 <SiteLink label={entry.name} />
                                 <div className="small muted">
-                                    {getPointsLabel(thousandsSeparator(entry.summary_overall_points))} — Rank{' '}
+                                    {getPointsLabel(thousandsSeparator(totalPoints))} — Rank{' '}
                                     {thousandsSeparator(entry.summary_overall_rank)}
                                 </div>
                             </h1>
                             <div>
                                 <Button onClick={() => setIsSettingsOpen(true)} label="Settings" />
                                 {id !== undefined && (
-                                    <>
-                                        <Button
-                                            onClick={() => {
-                                                dispatch(startLoading())
-
-                                                setTimeout(() => {
-                                                    dispatch(fetchDataWithId(id))
-                                                    dispatch(finishLoading())
-                                                }, 1)
-                                            }}
-                                            disabled={isLoading}
-                                            label="Refresh Data"
-                                        />
-                                        <Button
-                                            onClick={() => setIsModalOpen(true)}
-                                            label="Change Team"
-                                            disabled={isLoading}
-                                        />
-                                    </>
+                                    <Button
+                                        onClick={() => setIsModalOpen(true)}
+                                        label="Change Team"
+                                        disabled={isLoading}
+                                    />
                                 )}
                             </div>
                         </Widget>
                     </header>
                 )}
                 <div className="dashboard__widgets dashboard__widgets--split">
-                    <TotsWidget />
-                    <NearMissesWidget />
+                    <TotsWidget data={filteredData} />
+                    <NearMissesWidget data={filteredData} />
                 </div>
                 <div className="dashboard__widgets dashboard__widgets-duo">
-                    <PlayerStatsWidget />
-                    <SeasonWidget />
-                    <HistoryWidget />
-                    <GameweekWidget />
-                    <PositionsWidget />
-                    <FormationWidget />
+                    <PlayerStatsWidget data={filteredData} />
+                    <SeasonWidget data={filteredData} />
+                    <HistoryWidget data={filteredData} />
+                    <GameweekWidget data={filteredData} />
+                    <PositionsWidget data={filteredData} />
+                    <FormationWidget data={filteredData} />
                 </div>
                 <h2>
                     <span>Players</span>
@@ -329,17 +359,14 @@ const Dashboard: React.FC = () => {
                     <div className="dashboard__container" ref={dashboardRef}>
                         <header className="dashboard__header">
                             <span className="dashboard__heading">Player</span>
-                            {bootstrap?.events &&
-                                getPastEvents(bootstrap.events)
-                                    .filter(event => event.top_element_info.points > 0)
-                                    .map(event => (
-                                        <span className="dashboard__stat" key={event.id}>
-                                            {getShortName(event)}
-                                            {chips && chips[event.id] && (
-                                                <div>{getChipAbbreviation(chips[event.id])}</div>
-                                            )}
-                                        </span>
-                                    ))}
+                            {filteredData?.history.current.map(event => (
+                                <span className="dashboard__stat" key={event.event}>
+                                    GW {event.event}
+                                    {filteredData?.stats.chips[event.event] && (
+                                        <div>{getChipAbbreviation(filteredData.stats.chips[event.event])}</div>
+                                    )}
+                                </span>
+                            ))}
                             <div className="dashboard__totals">
                                 <span className="dashboard__stat">Selected</span>
                                 <span className="dashboard__stat">Starting</span>
@@ -348,55 +375,75 @@ const Dashboard: React.FC = () => {
                             </div>
                         </header>
                         <ul className="dashboard__list">
-                            {stats && bootstrap && renderPlayerList(stats, bootstrap, sort as OptionType, meanValue)}
+                            {filteredData &&
+                                bootstrap &&
+                                renderPlayerList(filteredData.stats.data, bootstrap, sort as OptionType, meanValue)}
                         </ul>
                     </div>
                 </div>
                 <div className="dashboard__widgets">
-                    <SelectionWidget title="Top Selections" metric="selections" />
-                    <SelectionWidget title="Top Starters" metric="starts" />
-                    <SelectionWidget title="Top Bench Players" metric="benched" />
-                    <DifferenceWidget title="Most Consistent Starters" top />
-                    <DifferenceWidget title="Most Consistent Bench Players" />
+                    <SelectionWidget title="Top Selections" metric="selections" data={filteredData} />
+                    <SelectionWidget title="Top Starters" metric="starts" data={filteredData} />
+                    <SelectionWidget title="Top Bench Players" metric="benched" data={filteredData} />
+                    <DifferenceWidget title="Most Consistent Starters" top data={filteredData} />
+                    <DifferenceWidget title="Most Consistent Bench Players" data={filteredData} />
                 </div>
                 <h2>
                     <span>Teams</span>
                 </h2>
                 <div className="dashboard__widgets dashboard__widgets--single">
-                    <TeamsWidget />
+                    <TeamsWidget data={filteredData} />
                 </div>
                 <h2>
                     <span>Captains</span>
                 </h2>
                 <div className="dashboard__widgets">
-                    <CaptainWidget />
-                    <CaptainOpportunityWidget />
-                    <WrongCaptainWidget />
+                    <CaptainWidget data={filteredData} />
+                    <CaptainOpportunityWidget data={filteredData} />
+                    <WrongCaptainWidget data={filteredData} />
                 </div>
                 <h2>
                     <span>Streaks</span>
                 </h2>
                 <div className="dashboard__widgets">
-                    <StreakWidget title="Highest Non-Blank Streaks" metric="nonBlank" showDetailedStats />
-                    <StreakWidget title="Highest Selection Streaks" metric="selection" showDetailedStats />
-                    <StreakWidget title="Highest Start Streaks" metric="start" showDetailedStats />
-                    <StreakWidget title="Highest Bench Appearance Streaks" metric="bench" />
+                    <StreakWidget
+                        title="Highest Non-Blank Streaks"
+                        metric="nonBlank"
+                        showDetailedStats
+                        data={filteredData}
+                    />
+                    <StreakWidget
+                        title="Highest Selection Streaks"
+                        metric="selection"
+                        showDetailedStats
+                        data={filteredData}
+                    />
+                    <StreakWidget title="Highest Start Streaks" metric="start" showDetailedStats data={filteredData} />
+                    <StreakWidget title="Highest Bench Appearance Streaks" metric="bench" data={filteredData} />
                 </div>
                 <h2>
                     <span>Contributions</span>
                 </h2>
                 <div className="dashboard__widgets">
-                    <ContributionWidget />
-                    <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
-                    <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />
+                    <ContributionWidget data={filteredData} />
+                    {range.end - range.start === rawHistory?.current.length && (
+                        <>
+                            <MissedPointsShareWidget
+                                title="Most Points Scored Outside of Team"
+                                top
+                                data={filteredData}
+                            />
+                            <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" data={filteredData} />
+                        </>
+                    )}
                 </div>
                 <h2>
                     <span>Graphs</span>
                 </h2>
                 <div className="dashboard__graphs">
-                    <OverallRankWidget />
-                    <PointsWidget />
-                    <ValueWidget />
+                    <OverallRankWidget data={filteredData} />
+                    <PointsWidget data={filteredData} />
+                    <ValueWidget data={filteredData} />
                 </div>
                 <div className="app__legal">
                     <p>
@@ -404,6 +451,19 @@ const Dashboard: React.FC = () => {
                         with the Premier League.
                     </p>
                 </div>
+                {bootstrap && getPastEvents(bootstrap.events).length > 0 && (
+                    <div className="dashboard__slider-wrapper">
+                        <ReactSlider
+                            className="dashboard__slider"
+                            value={[range.start, range.end]}
+                            min={(head(getPastEvents(bootstrap.events))?.id || 1) - 1}
+                            max={(last(getPastEvents(bootstrap.events))?.id || 38) - 1}
+                            onChange={([start, end]) => setRange({ start, end })}
+                            renderThumb={(props, state) => <div {...props}>GW {state.valueNow + 1}</div>}
+                            pearling
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

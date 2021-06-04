@@ -1,6 +1,19 @@
-import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit'
-import { History } from '../types'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { finishLoading, startLoading } from './loading'
+
+export const fetchEntry = createAsyncThunk('entry/fetch', async (id: number, thunkAPI) => {
+    thunkAPI.dispatch(fetchEntryStart())
+    thunkAPI.dispatch(startLoading())
+
+    const response = await fetch(
+        `https://jsonp.afeld.me/?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${id}/`)}`
+    )
+
+    const data = await response.json()
+
+    thunkAPI.dispatch(fetchEntrySuccess(data))
+    thunkAPI.dispatch(finishLoading())
+})
 
 const entry = createSlice({
     name: 'entry',
@@ -18,21 +31,5 @@ const entry = createSlice({
 })
 
 export const { fetchEntryStart, fetchEntrySuccess } = entry.actions
-
-export const fetchEntry =
-    (id: number): ThunkAction<void, History, unknown, Action<string>> =>
-    async dispatch => {
-        dispatch(fetchEntryStart())
-        dispatch(startLoading())
-
-        const response = await fetch(
-            `https://jsonp.afeld.me/?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${id}/`)}`
-        )
-
-        const data = await response.json()
-
-        dispatch(fetchEntrySuccess(data))
-        dispatch(finishLoading())
-    }
 
 export default entry.reducer

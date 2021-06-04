@@ -1,22 +1,25 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric'
 import { useMeanValue } from '../../hooks'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Captains'
 
-const CaptainWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
+type Props = {
+    data: FilteredData | undefined
+}
 
+const CaptainWidget: React.FC<Props> = (props: Props) => {
     const meanValue = useMeanValue()
 
-    if (!stats) {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
+
+    const stats = props.data.stats.data
 
     const captains = sort(
         Object.values(stats)

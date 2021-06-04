@@ -1,24 +1,24 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getAllPlayers, getGWCountLabel, round } from '../../utilities'
 import { Player } from '../Player'
 import { BasePlayerWidget } from '../BasePlayerWidget'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 type Props = {
     title: string
+    data: FilteredData | undefined
     top?: boolean
 }
 
 const MAX_ITEMS = 10
 
 const DifferenceWidget: React.FC<Props> = (props: Props) => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-
-    if (!stats) {
+    if (!props.data) {
         return <Widget title={props.title} />
     }
+
+    const stats = props.data.stats.data
 
     const elements = getAllPlayers(stats).map(element => {
         const selections = element.aggregates.totals.selections

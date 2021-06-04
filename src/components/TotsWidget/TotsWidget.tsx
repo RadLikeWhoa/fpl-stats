@@ -1,16 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
+import { FilteredData } from '../Dashboard/Dashboard'
 import { TotsPlayer } from '../TotsPlayer'
 import { Widget } from '../Widget'
 import './TotsWidget.scss'
 
 const TITLE = 'Team of the Season'
 
-const TotsWidget: React.FC = () => {
-    const tots = useSelector((state: RootState) => state.stats.tots)
+type Props = {
+    data: FilteredData | undefined
+}
 
-    if (!tots) {
+const TotsWidget: React.FC<Props> = (props: Props) => {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
 
@@ -18,7 +19,7 @@ const TotsWidget: React.FC = () => {
         <Widget title={TITLE} cssClasses="tots-widget">
             <div className="tots">
                 <div className="tots__row">
-                    {tots.xi
+                    {props.data.stats.tots.xi
                         .filter(el => el.element.element_type === 1)
                         .map(player => (
                             <TotsPlayer
@@ -29,7 +30,7 @@ const TotsWidget: React.FC = () => {
                         ))}
                 </div>
                 <div className="tots__row">
-                    {tots.xi
+                    {props.data.stats.tots.xi
                         .filter(el => el.element.element_type === 2)
                         .map(player => (
                             <TotsPlayer
@@ -40,7 +41,7 @@ const TotsWidget: React.FC = () => {
                         ))}
                 </div>
                 <div className="tots__row">
-                    {tots.xi
+                    {props.data.stats.tots.xi
                         .filter(el => el.element.element_type === 3)
                         .map(player => (
                             <TotsPlayer
@@ -51,7 +52,7 @@ const TotsWidget: React.FC = () => {
                         ))}
                 </div>
                 <div className="tots__row">
-                    {tots.xi
+                    {props.data.stats.tots.xi
                         .filter(el => el.element.element_type === 4)
                         .map(player => (
                             <TotsPlayer
@@ -62,7 +63,7 @@ const TotsWidget: React.FC = () => {
                         ))}
                 </div>
                 <div className="tots__row tots__row--bench">
-                    {tots.bench.map(player => (
+                    {props.data.stats.tots.bench.map(player => (
                         <TotsPlayer
                             key={player.element.id}
                             id={player.element.id}

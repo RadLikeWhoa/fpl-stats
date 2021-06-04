@@ -7,7 +7,7 @@ type Props = {
     onChange: (value: string) => void
     placeholder?: string
     id?: string
-    ref?: (element: any) => any
+    innerRef?: (element: any) => any
 }
 
 const ModalInput: React.FC<Props> = (props: Props) => {
@@ -21,7 +21,7 @@ const ModalInput: React.FC<Props> = (props: Props) => {
                 placeholder={props.placeholder}
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
-                ref={props.ref}
+                ref={props.innerRef}
             />
         </div>
     )

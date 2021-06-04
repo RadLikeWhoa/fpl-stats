@@ -1,21 +1,24 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { head, last, round, sort, thousandsSeparator } from '../../utilities'
 import { Widget } from '../Widget'
 import { useMeanValue, useMeanLabel } from '../../hooks'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Historical Data'
 
-const HistoryWidget: React.FC = () => {
-    const history = useSelector((state: RootState) => state.history.data)
+type Props = {
+    data: FilteredData | undefined
+}
 
+const HistoryWidget: React.FC<Props> = (props: Props) => {
     const meanLabel = useMeanLabel()
     const meanValue = useMeanValue()
 
-    if (!history) {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
+
+    const history = props.data.history
 
     const pastSeasonsByRank = sort(history.past, el => el.rank, 'asc')
     const pastSeasonsByPoints = sort(history.past, el => el.total_points)

@@ -1,6 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { StatData } from '../../types'
 import {
     getAllPlayers,
@@ -16,6 +14,7 @@ import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 import { useMeanValue } from '../../hooks'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Player Stats'
 
@@ -45,17 +44,18 @@ const renderTopBenchGWReturner = (returner: StatData): JSX.Element | null => {
     )
 }
 
-const PlayerStatsWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const history = useSelector((state: RootState) => state.history.data)
+type Props = {
+    data: FilteredData | undefined
+}
 
+const PlayerStatsWidget: React.FC<Props> = (props: Props) => {
     const meanValue = useMeanValue()
 
-    if (!history || !stats) {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
 
-    const allPlayers = getAllPlayers(stats)
+    const allPlayers = getAllPlayers(props.data.stats.data)
 
     const reds = getTopStatAggregate(allPlayers, 'redCards')
     const yellows = getTopStatAggregate(allPlayers, 'yellowCards')
@@ -102,7 +102,7 @@ const PlayerStatsWidget: React.FC = () => {
     const topSeasonReturner = head(sort(allPlayers, el => el.aggregates.totals.points))
     const topBenchReturner = head(sort(allPlayers, el => el.aggregates.totals.benchPoints))
 
-    const weeks = history.current.length
+    const weeks = props.data.history.current.length
 
     const idealCaptain = head(
         sort(

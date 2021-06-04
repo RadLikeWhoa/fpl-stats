@@ -1,23 +1,25 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
 import { getAllPlayers, getPointsLabel, head, sort } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { SwapIcon } from '../SwapIcon'
 import { SiteLink } from '../SiteLink'
+import { FilteredData } from '../Dashboard/Dashboard'
 import './CaptainOpportunityWidget.scss'
 
 const TITLE = 'Missed Captaincies'
 
-const CaptainOpportunityWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
+type Props = {
+    data: FilteredData | undefined
+}
 
-    const history = useSelector((state: RootState) => state.history.data)
-
-    if (!stats || !history) {
+const CaptainOpportunityWidget: React.FC<Props> = (props: Props) => {
+    if (!props.data) {
         return <Widget title={TITLE} />
     }
+
+    const stats = props.data.stats.data
+    const history = props.data.history
 
     const allPlayers = getAllPlayers(stats)
     const weeks = history.current.length

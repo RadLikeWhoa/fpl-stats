@@ -5,18 +5,24 @@ import { RootState } from '../../reducers'
 import { thousandsSeparator, sumNumbers, round, reduce, getPointsLabel, pluralise } from '../../utilities'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Positions'
 
-const PositionsWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
+type Props = {
+    data: FilteredData | undefined
+}
+
+const PositionsWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     const meanValue = useMeanValue()
 
-    if (!stats || !bootstrap) {
+    if (!props.data || !bootstrap) {
         return <Widget title={TITLE} />
     }
+
+    const stats = props.data.stats.data
 
     const positions: Record<string, number> = Object.entries(stats).reduce(
         (acc, [elementType, elements]) => ({

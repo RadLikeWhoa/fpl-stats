@@ -2,29 +2,41 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getAllPlayers, head, thousandsSeparator, sumNumbers, reduce, round, getPointsLabel } from '../../utilities'
+import {
+    getAllPlayers,
+    head,
+    thousandsSeparator,
+    sumNumbers,
+    reduce,
+    round,
+    getPointsLabel,
+    last,
+} from '../../utilities'
 import { SiteLink } from '../SiteLink'
 import { StatData } from '../../types'
 import { StatAggregateTotals } from '../../types'
+import { FilteredData } from '../Dashboard/Dashboard'
 
 const TITLE = 'Season'
 
 const getAggregateValues = (players: StatData[], key: keyof StatAggregateTotals): number =>
     sumNumbers(players.map(player => player.aggregates.totals[key]))
 
-const SeasonWidget: React.FC = () => {
-    const stats = useSelector((state: RootState) => state.stats.data)
-    const chips = useSelector((state: RootState) => state.stats.chips)
+type Props = {
+    data: FilteredData | undefined
+}
 
-    const history = useSelector((state: RootState) => state.history.data)
-
+const SeasonWidget: React.FC<Props> = (props: Props) => {
+    const rawHistory = useSelector((state: RootState) => state.history.data)
     const entry = useSelector((state: RootState) => state.entry.data)
 
-    if (!stats || !history || !chips || !entry) {
+    if (!props.data || !entry) {
         return <Widget title={TITLE} />
     }
 
-    const allPlayers = getAllPlayers(stats)
+    const history = props.data.history
+
+    const allPlayers = getAllPlayers(props.data.stats.data)
 
     const reds = getAggregateValues(allPlayers, 'redCards')
     const yellows = getAggregateValues(allPlayers, 'yellowCards')
@@ -46,27 +58,32 @@ const SeasonWidget: React.FC = () => {
     const totalBenched = reduce(history.current, el => el.points_on_bench)
 
     const tc = allPlayers
-        .find(player => player.data.findIndex(data => data.multiplier === 3) !== -1)
+        .find(player => [...player.data].findIndex(data => data.multiplier === 3) !== -1)
         ?.data.find(data => data.multiplier === 3)
 
-    const bbWeek = head(Object.entries(chips).find(([gw, chip]) => chip === 'bboost') || [])
+    const bbWeek = head(Object.entries(props.data.stats.chips).find(([gw, chip]) => chip === 'bboost') || [])
 
     const bbPoints = bbWeek
         ? sumNumbers(
               allPlayers
-                  .filter(player => (player.data[Number(bbWeek) - 1].position || 0) > 11)
-                  .map(player => player.data[Number(bbWeek) - 1].points || 0)
+                  .filter(player => ([...player.data][Number(bbWeek) - 1]?.position || 0) > 11)
+                  .map(player => [...player.data][Number(bbWeek) - 1]?.points || 0)
           )
         : null
 
     const doubleDigitHauls = reduce(
-        allPlayers.map(player => player.data.filter(data => (data.rawPoints || 0) > 9).length),
+        allPlayers.map(player => [...player.data].filter(data => (data.rawPoints || 0) > 9).length),
         el => el
     )
+
     const totalPlays = reduce(
         allPlayers.map(player => player.data.filter(data => data.multiplier !== null).length),
         el => el
     )
+
+    const totalPoints =
+        (last(history.current)?.total_points || 0) -
+        (rawHistory?.current.find(event => event.event === (head(history.current)?.event || 1) - 1)?.total_points || 0)
 
     return (
         <Widget title={TITLE}>
@@ -81,15 +98,13 @@ const SeasonWidget: React.FC = () => {
                     <span>Total Hits Taken</span>
                     <span>
                         <b>{totalHits}</b> ({getPointsLabel(totalHits * -4)},{' '}
-                        {entry.summary_overall_points > 0
-                            ? round(((totalHits * 4) / entry.summary_overall_points) * 100)
-                            : 0}
+                        {entry.summary_overall_points > 0 ? round(((totalHits * 4) / totalPoints) * 100) : 0}
                         %)
                     </span>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points</span>
-                    <b>{getPointsLabel(thousandsSeparator(entry.summary_overall_points))}</b>
+                    <b>{getPointsLabel(thousandsSeparator(totalPoints))}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points on Bench</span>

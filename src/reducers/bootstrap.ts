@@ -1,8 +1,28 @@
-import { createSlice, ThunkAction, Action } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchEntry } from './entry'
 import { fetchHistory } from './history'
 import { finishLoading, startLoading } from './loading'
-import { buildData } from './stats'
+import { fetchStatData } from './stats'
+
+export const fetchBootstrap = createAsyncThunk('bootstrap/fetch', async (id: number, thunkAPI) => {
+    thunkAPI.dispatch(fetchBootstrapStart())
+    thunkAPI.dispatch(startLoading())
+
+    const response = await fetch(
+        `https://jsonp.afeld.me/?url=${encodeURIComponent('https://fantasy.premierleague.com/api/bootstrap-static/')}`
+    )
+
+    const data = await response.json()
+
+    await Promise.all([
+        thunkAPI.dispatch(fetchStatData({ bootstrap: data, entry: id })),
+        thunkAPI.dispatch(fetchHistory(id)),
+        thunkAPI.dispatch(fetchEntry(id)),
+    ])
+
+    thunkAPI.dispatch(finishLoading())
+    thunkAPI.dispatch(fetchBootstrapSuccess(data))
+})
 
 const bootstrap = createSlice({
     name: 'bootstrap',
@@ -22,28 +42,5 @@ const bootstrap = createSlice({
 })
 
 export const { fetchBootstrapStart, fetchBootstrapSuccess } = bootstrap.actions
-
-export const fetchBootstrap =
-    (id: number): ThunkAction<void, any, unknown, Action<string>> =>
-    async dispatch => {
-        dispatch(fetchBootstrapStart())
-        dispatch(startLoading())
-
-        const response = await fetch(
-            `https://jsonp.afeld.me/?url=${encodeURIComponent(
-                'https://fantasy.premierleague.com/api/bootstrap-static/'
-            )}`
-        )
-
-        const data = await response.json()
-
-        dispatch(finishLoading())
-
-        dispatch(buildData(data, id))
-        dispatch(fetchHistory(id))
-        dispatch(fetchEntry(id))
-
-        dispatch(fetchBootstrapSuccess(data))
-    }
 
 export default bootstrap.reducer
