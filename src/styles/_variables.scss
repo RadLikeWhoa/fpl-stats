@@ -64,9 +64,12 @@ $themes: (
         widget-bar-start-color: #ebeb4c,
         widget-bar-end-color: #eb814c,
         input-border-color: #61605c,
+        input-color: #2f2f2f,
         input-background-color: #fff,
         input-placeholder-color: hsl(48, 3%, 67%),
         graph-tick-color: #2f2f2f,
+        graph-tooltip-color: #2f2f2f,
+        autocomplete-color: #2f2f2f,
     ),
     dark: (
         link-color: #1b9198,
@@ -115,10 +118,13 @@ $themes: (
         dashboard-legal-color: #fff,
         widget-bar-start-color: #b2b21f,
         widget-bar-end-color: #c35822,
+        input-color: #fff,
         input-border-color: #ebe0e0,
         input-background-color: #3a4556,
         input-placeholder-color: hsl(0, 22%, 95%),
         graph-tick-color: #dfebf1,
+        graph-tooltip-color: #2f2f2f,
+        autocomplete-color: #2f2f2f,
     ),
 );
 

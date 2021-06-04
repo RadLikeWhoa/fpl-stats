@@ -91,3 +91,7 @@ h3 {
 .recharts-cartesian-axis-tick-value {
     fill: var(--graph-tick-color);
 }
+
+.recharts-tooltip-wrapper {
+    color: var(--graph-tooltip-color);
+}
