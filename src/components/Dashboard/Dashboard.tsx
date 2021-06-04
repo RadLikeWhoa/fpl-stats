@@ -45,6 +45,7 @@ import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
 import { finishLoading, startLoading } from '../../reducers/loading'
 import Settings from '../Settings/Settings'
+import { useMeanValue } from '../../hooks'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -74,7 +75,12 @@ const sortOptions = [
     { value: 'alphabet', label: 'Alphabetically' },
 ]
 
-const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionType): JSX.Element[] =>
+const renderPlayerList = (
+    stats: Stats,
+    bootstrap: Bootstrap,
+    sorting: OptionType,
+    meanValue: (series: (number | null)[]) => number
+): JSX.Element[] =>
     Object.entries(stats).map(([elementType, statData]) => (
         <div key={elementType}>
             <li className="dashboard__category">
@@ -143,9 +149,13 @@ const renderPlayerList = (stats: Stats, bootstrap: Bootstrap, sorting: OptionTyp
                                 <b>{element.aggregates.totals.points}</b>{' '}
                                 <span className="muted">
                                     (
-                                    {element.aggregates.totals.starts > 0
-                                        ? round(element.aggregates.totals.points / element.aggregates.totals.starts)
-                                        : 0}{' '}
+                                    {round(
+                                        meanValue(
+                                            element.data
+                                                .filter(data => (data.multiplier || 0) > 0)
+                                                .map(data => data.points)
+                                        )
+                                    )}{' '}
                                     <Metric metric="ppg" />)
                                 </span>
                             </div>
@@ -180,6 +190,7 @@ const Dashboard: React.FC = () => {
     const dashboardRef = useRef<HTMLDivElement>(null)
 
     const dispatch = useDispatch()
+    const meanValue = useMeanValue()
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme)
@@ -337,7 +348,7 @@ const Dashboard: React.FC = () => {
                             </div>
                         </header>
                         <ul className="dashboard__list">
-                            {stats && bootstrap && renderPlayerList(stats, bootstrap, sort as OptionType)}
+                            {stats && bootstrap && renderPlayerList(stats, bootstrap, sort as OptionType, meanValue)}
                         </ul>
                     </div>
                 </div>

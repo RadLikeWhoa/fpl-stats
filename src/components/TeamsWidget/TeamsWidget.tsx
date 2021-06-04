@@ -5,6 +5,7 @@ import { Team } from '../Team'
 import { Widget } from '../Widget'
 import { getAllPlayers, getPointsLabel, round, sort, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
+import { useMeanValue } from '../../hooks'
 import './TeamsWidget.scss'
 
 const TITLE = 'Teams'
@@ -12,6 +13,8 @@ const TITLE = 'Teams'
 const TeamsWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
+
+    const meanValue = useMeanValue()
 
     if (!stats || !bootstrap) {
         return <Widget title={TITLE} />
@@ -31,7 +34,7 @@ const TeamsWidget: React.FC = () => {
                 <ul className="widget__list">
                     {teams.map(team => {
                         const players = allPlayers.filter(player => player.element.team === team.id)
-                        const points = sumNumbers(players.map(player => player.aggregates.totals.points))
+                        const points = players.map(player => player.aggregates.totals.points)
 
                         return (
                             <li className="teams-widget__item" key={team.id}>
@@ -42,9 +45,8 @@ const TeamsWidget: React.FC = () => {
                                             <b>{counts[team.id] || 0}</b>
                                         </div>
                                         <div className="muted">
-                                            {getPointsLabel(points)},{' '}
-                                            {players.length > 0 ? round(points / players.length) : 0}{' '}
-                                            <Metric metric="ppp" />
+                                            {getPointsLabel(sumNumbers(points))},{' '}
+                                            {players.length > 0 ? round(meanValue(points)) : 0} <Metric metric="ppp" />
                                         </div>
                                     </div>
                                 </div>

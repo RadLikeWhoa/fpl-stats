@@ -1,8 +1,11 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import rootReducer from './reducers'
 
+const STORAGE_VERSION = '1'
+
 const isStale = () => {
     const latestFetch = localStorage.getItem('latestFetch')
+    const storageVersion = localStorage.getItem('storageVersion')
 
     if (!latestFetch) {
         return false
@@ -10,7 +13,7 @@ const isStale = () => {
 
     const parsed = Number(latestFetch)
 
-    return parsed + 86400000 < Date.now()
+    return parsed + 86400000 < Date.now() || storageVersion !== STORAGE_VERSION
 }
 
 export default function configureAppStore() {
@@ -29,6 +32,7 @@ export default function configureAppStore() {
     store.subscribe(() => {
         try {
             localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+            localStorage.setItem('storageVersion', STORAGE_VERSION)
         } catch (e) {
             localStorage.removeItem('reduxState')
         }

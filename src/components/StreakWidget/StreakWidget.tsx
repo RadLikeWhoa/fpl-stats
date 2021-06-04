@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
 import { StatAggregateStreaks } from '../../types'
 import { getAllPlayers, getGWCountLabel, getPointsLabel, round } from '../../utilities'
@@ -20,6 +21,8 @@ type Props = {
 const StreakWidget: React.FC<Props> = (props: Props) => {
     const stats = useSelector((state: RootState) => state.stats.data)
 
+    const meanValue = useMeanValue()
+
     if (!stats) {
         return <Widget title={props.title} />
     }
@@ -33,7 +36,7 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
             const bStreakLength = b.aggregates.streaks[props.metric]?.length || 0
 
             if (bStreakLength - aStreakLength === 0) {
-                return (bStreak?.points || 0) - (aStreak?.points || 0)
+                return (bStreak?.totalPoints || 0) - (aStreak?.totalPoints || 0)
             }
 
             return bStreakLength - aStreakLength
@@ -62,8 +65,8 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
                             <div className="muted">
                                 {props.showDetailedStats ? (
                                     <>
-                                        {getGWCountLabel(streak.length)}, {getPointsLabel(streak.points || 0)},{' '}
-                                        {round((streak.points || 0) / streak.length)} <Metric metric="ppg" />
+                                        {getGWCountLabel(streak.length)}, {getPointsLabel(streak.totalPoints || 0)},{' '}
+                                        {round(meanValue(streak.points || []))} <Metric metric="ppg" />
                                     </>
                                 ) : (
                                     <div className="muted">{getGWCountLabel(streak.length)}</div>

@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../reducers'
 import { average, median } from '../utilities'
 
-const useMeanValue: () => (series: number[]) => number = () => {
+const useMeanValue: () => (series: (number | null)[]) => number = () => {
     const strategy = useSelector((state: RootState) => state.settings.meanStrategy)
 
-    return (series: number[]) => {
+    return (series: (number | null)[]) => {
         if (strategy === 'average') {
             return average(series)
         }

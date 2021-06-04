@@ -5,11 +5,14 @@ import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCount
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric'
+import { useMeanValue } from '../../hooks'
 
 const TITLE = 'Captains'
 
 const CaptainWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
+
+    const meanValue = useMeanValue()
 
     if (!stats) {
         return <Widget title={TITLE} />
@@ -34,7 +37,7 @@ const CaptainWidget: React.FC = () => {
             {captains.length > 0 && (
                 <ul className="widget__list">
                     {captains.map(captain => {
-                        const sum = sumNumbers(captain.data.map(data => data.points || 0))
+                        const points = captain.data.map(data => data.points)
 
                         return (
                             <li className="widget__list__item" key={captain.player.element.id}>
@@ -44,8 +47,8 @@ const CaptainWidget: React.FC = () => {
                                         <b>{getGWCountLabel(captain.data.length)}</b>
                                     </div>
                                     <div className="muted">
-                                        {getPointsLabel(thousandsSeparator(sum))}, {round(sum / captain.data.length)}{' '}
-                                        <Metric metric="ppg" />
+                                        {getPointsLabel(thousandsSeparator(sumNumbers(points)))},{' '}
+                                        {round(meanValue(points))} <Metric metric="ppg" />
                                     </div>
                                 </div>
                             </li>

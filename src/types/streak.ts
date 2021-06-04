@@ -4,5 +4,6 @@ export type Streak = {
     start: Event
     end: Event
     length: number
-    points?: number
+    points: number[]
+    totalPoints: number
 }

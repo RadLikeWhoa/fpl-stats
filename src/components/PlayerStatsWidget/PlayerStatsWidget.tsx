@@ -15,6 +15,7 @@ import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
+import { useMeanValue } from '../../hooks'
 
 const TITLE = 'Player Stats'
 
@@ -47,6 +48,8 @@ const renderTopBenchGWReturner = (returner: StatData): JSX.Element | null => {
 const PlayerStatsWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
     const history = useSelector((state: RootState) => state.history.data)
+
+    const meanValue = useMeanValue()
 
     if (!history || !stats) {
         return <Widget title={TITLE} />
@@ -160,8 +163,11 @@ const PlayerStatsWidget: React.FC = () => {
                                         {' '}
                                         ({getPointsLabel(topSeasonReturner.aggregates.totals.points)},{' '}
                                         {round(
-                                            topSeasonReturner.aggregates.totals.points /
-                                                topSeasonReturner.aggregates.totals.starts
+                                            meanValue(
+                                                topSeasonReturner.data
+                                                    .filter(data => (data.multiplier || 0) > 0)
+                                                    .map(data => data.points)
+                                            )
                                         )}{' '}
                                         <Metric metric="ppg" />)
                                     </>
@@ -183,8 +189,11 @@ const PlayerStatsWidget: React.FC = () => {
                                         {' '}
                                         ({getPointsLabel(topBenchReturner.aggregates.totals.benchPoints)},{' '}
                                         {round(
-                                            topBenchReturner.aggregates.totals.benchPoints /
-                                                topBenchReturner.aggregates.totals.benched
+                                            meanValue(
+                                                topBenchReturner.data
+                                                    .filter(data => data.multiplier === 0)
+                                                    .map(data => data.rawPoints)
+                                            )
                                         )}{' '}
                                         <Metric metric="ppg" />)
                                     </>

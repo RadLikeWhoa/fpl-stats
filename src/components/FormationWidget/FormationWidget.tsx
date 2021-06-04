@@ -4,10 +4,11 @@ import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Metric } from '../Metric'
+import { useMeanValue } from '../../hooks'
 
 type FormationInformation = {
     count: number
-    points: number
+    points: (number | null)[]
 }
 
 const TITLE = 'Formations'
@@ -17,8 +18,9 @@ const formatFormation = (formation: string) =>
 
 const FormationWidget: React.FC = () => {
     const stats = useSelector((state: RootState) => state.stats.data)
-
     const history = useSelector((state: RootState) => state.history.data)
+
+    const meanValue = useMeanValue()
 
     if (!stats || !history) {
         return <Widget title={TITLE} />
@@ -43,7 +45,10 @@ const FormationWidget: React.FC = () => {
                 ...acc,
                 [formation]: {
                     count: (acc[formation] ? acc[formation].count : 0) + 1,
-                    points: (acc[formation] ? acc[formation].points : 0) + history.current[index].points,
+                    points: [
+                        ...(acc[formation] ? acc[formation].points : ([] as number[])),
+                        history.current[index].points,
+                    ],
                 },
             }),
             {} as Record<string, FormationInformation>
@@ -62,8 +67,8 @@ const FormationWidget: React.FC = () => {
                                         <b>{getGWCountLabel(information.count)}</b>
                                     </div>
                                     <div className="muted">
-                                        {getPointsLabel(thousandsSeparator(information.points))},{' '}
-                                        {round(information.points / information.count)} <Metric metric="ppg" />
+                                        {getPointsLabel(thousandsSeparator(sumNumbers(information.points)))},{' '}
+                                        {round(meanValue(information.points))} <Metric metric="ppg" />
                                     </div>
                                 </div>
                             </li>
