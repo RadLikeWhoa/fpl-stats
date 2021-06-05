@@ -35,9 +35,11 @@
         "recharts": "^1.8.5",
         "redux": "^4.0.5",
         "redux-thunk": "^2.3.0",
+        "source-map-explorer": "^2.5.2",
         "typescript": "~3.7.2"
     },
     "scripts": {
+        "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
