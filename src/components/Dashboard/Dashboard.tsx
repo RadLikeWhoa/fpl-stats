@@ -50,6 +50,7 @@ import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
 import { SettingsModal } from '../SettingsModal'
 import { useMeanValue } from '../../hooks'
+import { finishLoading, startLoading } from '../../reducers/loading'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -254,6 +255,8 @@ const Dashboard: React.FC = () => {
                 stats: filteredStatData,
                 history: filteredHistoryData,
             })
+
+            dispatch(finishLoading())
         }, 300)
     ).current
 
@@ -262,8 +265,9 @@ const Dashboard: React.FC = () => {
             return
         }
 
+        dispatch(startLoading())
         debouncedFiltering(rawStatsData, rawHistory, bootstrap, range)
-    }, [rawStatsData, bootstrap, rawHistory, range, debouncedFiltering])
+    }, [rawStatsData, bootstrap, rawHistory, range, debouncedFiltering, dispatch])
 
     const totalPoints = filteredData
         ? (last(filteredData.history.current)?.total_points || 0) -
