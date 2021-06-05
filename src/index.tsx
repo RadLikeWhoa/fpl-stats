@@ -5,6 +5,7 @@ import { HashRouter, Route, Switch } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
 import { Dashboard } from './components/Dashboard'
 import configureAppStore from './store'
+import reportWebVitals from './reportWebVitals'
 import './index.scss'
 
 ReactDOM.render(
@@ -26,3 +27,5 @@ ReactDOM.render(
 )
 
 serviceWorker.unregister()
+
+reportWebVitals()

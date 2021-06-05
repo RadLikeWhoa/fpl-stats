@@ -24,11 +24,11 @@ const TeamModal: React.FC<Props> = (props: Props) => {
         (cancel: boolean) => {
             if (!cancel) {
                 history.push(`/${value}/`)
-            } else {
+            } else if (id) {
                 props.onClose?.()
             }
         },
-        [value, history, props]
+        [value, history, props, id]
     )
 
     useEffect(() => {
