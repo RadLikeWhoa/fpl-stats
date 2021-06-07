@@ -11,7 +11,7 @@ import './index.scss'
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={configureAppStore()}>
-            <HashRouter basename={process.env.PUBLIC_URL}>
+            <HashRouter>
                 <Switch>
                     <Route path="/:team/">
                         <Dashboard />
