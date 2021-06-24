@@ -27,7 +27,7 @@ const ContributionWidget: React.FC<Props> = (props: Props) => {
 
     const totalPoints =
         (last(history.current)?.total_points || 0) -
-        (rawHistory?.current.find(event => event.event === (head(history.current)?.event || 1))?.total_points || 0)
+        (rawHistory?.current?.find(event => event.event === (head(history.current)?.event || 1))?.total_points || 0)
 
     const contributions = sort(getAllPlayers(stats), el => el.aggregates.totals.points)
 

@@ -11,57 +11,30 @@ type Props = {
 }
 
 const TotsWidget: React.FC<Props> = (props: Props) => {
-    if (!props.data) {
+    if (!props.data || !props.data.stats.tots.xi.length) {
         return <Widget title={TITLE} />
     }
 
     return (
         <Widget title={TITLE} cssClasses="tots-widget">
             <div className="tots">
-                <div className="tots__row">
-                    {props.data.stats.tots.xi
-                        .filter(el => el.element.element_type === 1)
-                        .map(player => (
-                            <TotsPlayer
-                                key={player.element.id}
-                                id={player.element.id}
-                                points={player.aggregates.totals.points}
-                            />
-                        ))}
-                </div>
-                <div className="tots__row">
-                    {props.data.stats.tots.xi
-                        .filter(el => el.element.element_type === 2)
-                        .map(player => (
-                            <TotsPlayer
-                                key={player.element.id}
-                                id={player.element.id}
-                                points={player.aggregates.totals.points}
-                            />
-                        ))}
-                </div>
-                <div className="tots__row">
-                    {props.data.stats.tots.xi
-                        .filter(el => el.element.element_type === 3)
-                        .map(player => (
-                            <TotsPlayer
-                                key={player.element.id}
-                                id={player.element.id}
-                                points={player.aggregates.totals.points}
-                            />
-                        ))}
-                </div>
-                <div className="tots__row">
-                    {props.data.stats.tots.xi
-                        .filter(el => el.element.element_type === 4)
-                        .map(player => (
-                            <TotsPlayer
-                                key={player.element.id}
-                                id={player.element.id}
-                                points={player.aggregates.totals.points}
-                            />
-                        ))}
-                </div>
+                {Array(4).map((el, index) => (
+                    <>
+                        {props.data && (
+                            <div className="tots__row">
+                                {props.data.stats.tots.xi
+                                    .filter(el => el.element.element_type === index + 1)
+                                    .map(player => (
+                                        <TotsPlayer
+                                            key={player.element.id}
+                                            id={player.element.id}
+                                            points={player.aggregates.totals.points}
+                                        />
+                                    ))}
+                            </div>
+                        )}
+                    </>
+                ))}
                 <div className="tots__row tots__row--bench">
                     {props.data.stats.tots.bench.map(player => (
                         <TotsPlayer

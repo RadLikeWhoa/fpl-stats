@@ -243,6 +243,10 @@ const Dashboard: React.FC = () => {
         setIsModalOpen(!team)
     }, [team])
 
+    useEffect(() => {
+        setIsModalOpen(!entry?.name)
+    }, [entry])
+
     const debouncedFiltering = useRef(
         debounce(async (rawStatsData, rawHistory, bootstrap, range) => {
             const [filteredStatData, filteredHistoryData] = await Promise.all([
@@ -267,7 +271,7 @@ const Dashboard: React.FC = () => {
 
     const totalPoints = filteredData
         ? (last(filteredData.history.current)?.total_points || 0) -
-          (rawHistory?.current.find(event => event.event === (head(filteredData.history.current)?.event || 1) - 1)
+          (rawHistory?.current?.find(event => event.event === (head(filteredData.history.current)?.event || 1) - 1)
               ?.total_points || 0)
         : 0
 
@@ -289,8 +293,14 @@ const Dashboard: React.FC = () => {
                             <h1 className="dashboard__title">
                                 <SiteLink label={entry.name} />
                                 <div className="small muted">
-                                    {getPointsLabel(thousandsSeparator(totalPoints))} — Rank{' '}
-                                    {thousandsSeparator(entry.summary_overall_rank)}
+                                    {getPointsLabel(thousandsSeparator(totalPoints))}
+                                    {entry.summary_overall_rank && (
+                                        <>
+                                            — Rank{' '}
+                                            {entry.summary_overall_rank &&
+                                                thousandsSeparator(entry.summary_overall_rank)}
+                                        </>
+                                    )}
                                 </div>
                             </h1>
                             <div>
@@ -359,7 +369,7 @@ const Dashboard: React.FC = () => {
                     <div className="dashboard__container" ref={dashboardRef}>
                         <header className="dashboard__header">
                             <span className="dashboard__heading">Player</span>
-                            {filteredData?.history.current.map(event => (
+                            {filteredData?.history.current?.map(event => (
                                 <span className="dashboard__stat" key={event.event}>
                                     GW {event.event}
                                     {filteredData?.stats.chips[event.event] && (
@@ -426,7 +436,7 @@ const Dashboard: React.FC = () => {
                 </h2>
                 <div className="dashboard__widgets">
                     <ContributionWidget data={filteredData} />
-                    {range.end - range.start + 1 === rawHistory?.current.length && (
+                    {range.end - range.start + 1 === rawHistory?.current?.length && (
                         <>
                             <MissedPointsShareWidget
                                 title="Most Points Scored Outside of Team"

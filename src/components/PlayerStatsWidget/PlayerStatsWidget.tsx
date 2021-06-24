@@ -57,6 +57,10 @@ const PlayerStatsWidget: React.FC<Props> = (props: Props) => {
 
     const allPlayers = getAllPlayers(props.data.stats.data)
 
+    if (!allPlayers.length) {
+        return <Widget title={TITLE} />
+    }
+
     const reds = getTopStatAggregate(allPlayers, 'redCards')
     const yellows = getTopStatAggregate(allPlayers, 'yellowCards')
     const goals = getTopStatAggregate(allPlayers, 'goals')

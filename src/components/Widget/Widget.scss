@@ -97,7 +97,7 @@
     }
 
     &__empty {
-        padding: 1rem 0.5rem;
+        padding: 0.5rem;
         color: var(--muted-color);
 
         @include up-to("M") {

@@ -15,7 +15,7 @@ type Props = {
 const OverallRankWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
-    if (!props.data || !bootstrap) {
+    if (!props.data || !bootstrap || !props.data.history.current.length) {
         return <Widget title={TITLE} />
     }
 
