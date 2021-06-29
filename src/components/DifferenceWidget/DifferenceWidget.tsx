@@ -1,24 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Widget } from '../Widget'
 import { getAllPlayers, getGWCountLabel, round } from '../../utilities'
 import { Player } from '../Player'
 import { BasePlayerWidget } from '../BasePlayerWidget'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 type Props = {
     title: string
-    data: FilteredData | undefined
     top?: boolean
 }
 
 const MAX_ITEMS = 10
 
 const DifferenceWidget: React.FC<Props> = (props: Props) => {
-    if (!props.data) {
+    const data = useContext(FilteredDataContext)
+
+    if (!data) {
         return <Widget title={props.title} />
     }
 
-    const stats = props.data.stats.data
+    const stats = data.stats.data
 
     const elements = getAllPlayers(stats).map(element => {
         const selections = element.aggregates.totals.selections

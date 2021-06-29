@@ -1,17 +1,15 @@
-import React from 'react'
-import { FilteredData } from '../Dashboard/Dashboard'
+import React, { useContext } from 'react'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { TotsPlayer } from '../TotsPlayer'
 import { Widget } from '../Widget'
 import './TotsWidget.scss'
 
 const TITLE = 'Team of the Season'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const TotsWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const TotsWidget: React.FC<Props> = (props: Props) => {
-    if (!props.data || !props.data.stats.tots.xi.length) {
+    if (!data || !data.stats.tots.xi.length) {
         return <Widget title={TITLE} />
     }
 
@@ -20,9 +18,9 @@ const TotsWidget: React.FC<Props> = (props: Props) => {
             <div className="tots">
                 {Array(4).map((el, index) => (
                     <>
-                        {props.data && (
+                        {data && (
                             <div className="tots__row">
-                                {props.data.stats.tots.xi
+                                {data.stats.tots.xi
                                     .filter(el => el.element.element_type === index + 1)
                                     .map(player => (
                                         <TotsPlayer
@@ -36,7 +34,7 @@ const TotsWidget: React.FC<Props> = (props: Props) => {
                     </>
                 ))}
                 <div className="tots__row tots__row--bench">
-                    {props.data.stats.tots.bench.map(player => (
+                    {data.stats.tots.bench.map(player => (
                         <TotsPlayer
                             key={player.element.id}
                             id={player.element.id}

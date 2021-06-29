@@ -1,25 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { getAllPlayers, getPointsLabel, head, sort } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { SwapIcon } from '../SwapIcon'
 import { SiteLink } from '../SiteLink'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 import './CaptainOpportunityWidget.scss'
 
 const TITLE = 'Missed Captaincies'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const CaptainOpportunityWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const CaptainOpportunityWidget: React.FC<Props> = (props: Props) => {
-    if (!props.data) {
+    if (!data) {
         return <Widget title={TITLE} />
     }
 
-    const stats = props.data.stats.data
-    const history = props.data.history
+    const stats = data.stats.data
+    const history = data.history
 
     const allPlayers = getAllPlayers(stats)
     const weeks = history.current.length

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
@@ -15,28 +15,26 @@ import {
 import { SiteLink } from '../SiteLink'
 import { StatData } from '../../types'
 import { StatAggregateTotals } from '../../types'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Season'
 
 const getAggregateValues = (players: StatData[], key: keyof StatAggregateTotals): number =>
     sumNumbers(players.map(player => player.aggregates.totals[key]))
 
-type Props = {
-    data: FilteredData | undefined
-}
+const SeasonWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const SeasonWidget: React.FC<Props> = (props: Props) => {
     const rawHistory = useSelector((state: RootState) => state.history.data)
     const entry = useSelector((state: RootState) => state.entry.data)
 
-    if (!props.data || !entry) {
+    if (!data || !entry) {
         return <Widget title={TITLE} />
     }
 
-    const history = props.data.history
+    const history = data.history
 
-    const allPlayers = getAllPlayers(props.data.stats.data)
+    const allPlayers = getAllPlayers(data.stats.data)
 
     const reds = getAggregateValues(allPlayers, 'redCards')
     const yellows = getAggregateValues(allPlayers, 'yellowCards')
@@ -61,7 +59,7 @@ const SeasonWidget: React.FC<Props> = (props: Props) => {
         .find(player => [...player.data].findIndex(data => data.multiplier === 3) !== -1)
         ?.data.find(data => data.multiplier === 3)
 
-    const bbWeek = head(Object.entries(props.data.stats.chips).find(([gw, chip]) => chip === 'bboost') || [])
+    const bbWeek = head(Object.entries(data.stats.chips).find(([gw, chip]) => chip === 'bboost') || [])
 
     const bbPoints = bbWeek
         ? sumNumbers(

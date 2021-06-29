@@ -184,6 +184,8 @@ const renderPlayerList = (
         </div>
     ))
 
+export const FilteredDataContext = React.createContext<FilteredData | undefined>(undefined)
+
 const Dashboard: React.FC = () => {
     const [sort, setSort] = useState<ValueType<OptionType>>(sortOptions[0])
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false)
@@ -276,206 +278,194 @@ const Dashboard: React.FC = () => {
         : 0
 
     return (
-        <div className="app">
-            {isModalOpen && <TeamModal onClose={() => setIsModalOpen(false)} />}
-            {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} />}
-            <div
-                className={classNames('app__loading', {
-                    'app__loading--hidden': !isLoading,
-                })}
-            >
-                <Spinner />
-            </div>
-            <div className="app__content">
-                {entry && (
-                    <header className="dashboard__entry">
-                        <Widget>
-                            <h1 className="dashboard__title">
-                                <SiteLink label={entry.name} />
-                                <div className="small muted">
-                                    {getPointsLabel(thousandsSeparator(totalPoints))}
-                                    {entry.summary_overall_rank && (
-                                        <>
-                                            — Rank{' '}
-                                            {entry.summary_overall_rank &&
-                                                thousandsSeparator(entry.summary_overall_rank)}
-                                        </>
-                                    )}
-                                </div>
-                            </h1>
-                            <div>
-                                <Button onClick={() => setIsSettingsOpen(true)} label="Settings" />
-                                {id !== undefined && (
-                                    <Button
-                                        onClick={() => setIsModalOpen(true)}
-                                        label="Change Team"
-                                        disabled={isLoading}
-                                    />
-                                )}
-                            </div>
-                        </Widget>
-                    </header>
-                )}
-                <div className="dashboard__widgets dashboard__widgets--split">
-                    <TotsWidget data={filteredData} />
-                    <NearMissesWidget data={filteredData} />
-                </div>
-                <div className="dashboard__widgets dashboard__widgets-duo">
-                    <PlayerStatsWidget data={filteredData} />
-                    <SeasonWidget data={filteredData} />
-                    <HistoryWidget data={filteredData} />
-                    <GameweekWidget data={filteredData} />
-                    <PositionsWidget data={filteredData} />
-                    <FormationWidget data={filteredData} />
-                </div>
-                <h2>
-                    <span>Players</span>
-                </h2>
-                <div className="app__meta">
-                    <label className="app__meta__label">Sort by</label>
-                    <Select
-                        options={sortOptions}
-                        value={sort}
-                        onChange={option => setSort(option)}
-                        styles={{
-                            container: provided => ({ ...provided, width: '100%' }),
-                            menu: provided => ({ ...provided, zIndex: 20 }),
-                        }}
-                    />
-                    <div className="app__legend">
-                        <div className="app__color">
-                            <div className="app__color__indicator app__color__indicator--started"></div>
-                            Started
-                        </div>
-                        <div className="app__color">
-                            <div className="app__color__indicator app__color__indicator--benched"></div>
-                            Benched
-                        </div>
-                        <div className="app__color">
-                            <div className="app__color__indicator app__color__indicator--triple"></div>
-                            TC
-                        </div>
-                        <div className="app__color">
-                            <div className="app__color__indicator"></div>
-                            Not Selected
-                        </div>
-                    </div>
-                </div>
+        <FilteredDataContext.Provider value={filteredData}>
+            <div className="app">
+                {isModalOpen && <TeamModal onClose={() => setIsModalOpen(false)} />}
+                {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} />}
                 <div
-                    className={classNames('dashboard', {
-                        'dashboard--cloaked': !id,
+                    className={classNames('app__loading', {
+                        'app__loading--hidden': !isLoading,
                     })}
                 >
-                    <div className="dashboard__container" ref={dashboardRef}>
-                        <header className="dashboard__header">
-                            <span className="dashboard__heading">Player</span>
-                            {filteredData?.history.current?.map(event => (
-                                <span className="dashboard__stat" key={event.event}>
-                                    GW {event.event}
-                                    {filteredData?.stats.chips[event.event] && (
-                                        <div>{getChipAbbreviation(filteredData.stats.chips[event.event])}</div>
+                    <Spinner />
+                </div>
+                <div className="app__content">
+                    {entry && (
+                        <header className="dashboard__entry">
+                            <Widget>
+                                <h1 className="dashboard__title">
+                                    <SiteLink label={entry.name} />
+                                    <div className="small muted">
+                                        {getPointsLabel(thousandsSeparator(totalPoints))}
+                                        {entry.summary_overall_rank && (
+                                            <>
+                                                — Rank{' '}
+                                                {entry.summary_overall_rank &&
+                                                    thousandsSeparator(entry.summary_overall_rank)}
+                                            </>
+                                        )}
+                                    </div>
+                                </h1>
+                                <div>
+                                    <Button onClick={() => setIsSettingsOpen(true)} label="Settings" />
+                                    {id !== undefined && (
+                                        <Button
+                                            onClick={() => setIsModalOpen(true)}
+                                            label="Change Team"
+                                            disabled={isLoading}
+                                        />
                                     )}
-                                </span>
-                            ))}
-                            <div className="dashboard__totals">
-                                <span className="dashboard__stat">Selected</span>
-                                <span className="dashboard__stat">Starting</span>
-                                <span className="dashboard__stat">Benched</span>
-                                <span className="dashboard__stat">Points</span>
-                            </div>
+                                </div>
+                            </Widget>
                         </header>
-                        <ul className="dashboard__list">
-                            {filteredData &&
-                                bootstrap &&
-                                renderPlayerList(filteredData.stats.data, bootstrap, sort as OptionType, meanValue)}
-                        </ul>
+                    )}
+                    <div className="dashboard__widgets dashboard__widgets--split">
+                        <TotsWidget />
+                        <NearMissesWidget />
                     </div>
-                </div>
-                <div className="dashboard__widgets">
-                    <SelectionWidget title="Top Selections" metric="selections" data={filteredData} />
-                    <SelectionWidget title="Top Starters" metric="starts" data={filteredData} />
-                    <SelectionWidget title="Top Bench Players" metric="benched" data={filteredData} />
-                    <DifferenceWidget title="Most Consistent Starters" top data={filteredData} />
-                    <DifferenceWidget title="Most Consistent Bench Players" data={filteredData} />
-                </div>
-                <h2>
-                    <span>Teams</span>
-                </h2>
-                <div className="dashboard__widgets dashboard__widgets--single">
-                    <TeamsWidget data={filteredData} />
-                </div>
-                <h2>
-                    <span>Captains</span>
-                </h2>
-                <div className="dashboard__widgets">
-                    <CaptainWidget data={filteredData} />
-                    <CaptainOpportunityWidget data={filteredData} />
-                    <WrongCaptainWidget data={filteredData} />
-                </div>
-                <h2>
-                    <span>Streaks</span>
-                </h2>
-                <div className="dashboard__widgets">
-                    <StreakWidget
-                        title="Highest Non-Blank Streaks"
-                        metric="nonBlank"
-                        showDetailedStats
-                        data={filteredData}
-                    />
-                    <StreakWidget
-                        title="Highest Selection Streaks"
-                        metric="selection"
-                        showDetailedStats
-                        data={filteredData}
-                    />
-                    <StreakWidget title="Highest Start Streaks" metric="start" showDetailedStats data={filteredData} />
-                    <StreakWidget title="Highest Bench Appearance Streaks" metric="bench" data={filteredData} />
-                </div>
-                <h2>
-                    <span>Contributions</span>
-                </h2>
-                <div className="dashboard__widgets">
-                    <ContributionWidget data={filteredData} />
-                    {range.end - range.start + 1 === rawHistory?.current?.length && (
-                        <>
-                            <MissedPointsShareWidget
-                                title="Most Points Scored Outside of Team"
-                                top
-                                data={filteredData}
+                    <div className="dashboard__widgets dashboard__widgets-duo">
+                        <PlayerStatsWidget />
+                        <SeasonWidget />
+                        <HistoryWidget />
+                        <GameweekWidget />
+                        <PositionsWidget />
+                        <FormationWidget />
+                    </div>
+                    <h2>
+                        <span>Players</span>
+                    </h2>
+                    <div className="app__meta">
+                        <label className="app__meta__label">Sort by</label>
+                        <Select
+                            options={sortOptions}
+                            value={sort}
+                            onChange={option => setSort(option)}
+                            styles={{
+                                container: provided => ({ ...provided, width: '100%' }),
+                                menu: provided => ({ ...provided, zIndex: 20 }),
+                            }}
+                        />
+                        <div className="app__legend">
+                            <div className="app__color">
+                                <div className="app__color__indicator app__color__indicator--started"></div>
+                                Started
+                            </div>
+                            <div className="app__color">
+                                <div className="app__color__indicator app__color__indicator--benched"></div>
+                                Benched
+                            </div>
+                            <div className="app__color">
+                                <div className="app__color__indicator app__color__indicator--triple"></div>
+                                TC
+                            </div>
+                            <div className="app__color">
+                                <div className="app__color__indicator"></div>
+                                Not Selected
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        className={classNames('dashboard', {
+                            'dashboard--cloaked': !id,
+                        })}
+                    >
+                        <div className="dashboard__container" ref={dashboardRef}>
+                            <header className="dashboard__header">
+                                <span className="dashboard__heading">Player</span>
+                                {filteredData?.history.current?.map(event => (
+                                    <span className="dashboard__stat" key={event.event}>
+                                        GW {event.event}
+                                        {filteredData?.stats.chips[event.event] && (
+                                            <div>{getChipAbbreviation(filteredData.stats.chips[event.event])}</div>
+                                        )}
+                                    </span>
+                                ))}
+                                <div className="dashboard__totals">
+                                    <span className="dashboard__stat">Selected</span>
+                                    <span className="dashboard__stat">Starting</span>
+                                    <span className="dashboard__stat">Benched</span>
+                                    <span className="dashboard__stat">Points</span>
+                                </div>
+                            </header>
+                            <ul className="dashboard__list">
+                                {filteredData &&
+                                    bootstrap &&
+                                    renderPlayerList(filteredData.stats.data, bootstrap, sort as OptionType, meanValue)}
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="dashboard__widgets">
+                        <SelectionWidget title="Top Selections" metric="selections" />
+                        <SelectionWidget title="Top Starters" metric="starts" />
+                        <SelectionWidget title="Top Bench Players" metric="benched" />
+                        <DifferenceWidget title="Most Consistent Starters" top />
+                        <DifferenceWidget title="Most Consistent Bench Players" />
+                    </div>
+                    <h2>
+                        <span>Teams</span>
+                    </h2>
+                    <div className="dashboard__widgets dashboard__widgets--single">
+                        <TeamsWidget />
+                    </div>
+                    <h2>
+                        <span>Captains</span>
+                    </h2>
+                    <div className="dashboard__widgets">
+                        <CaptainWidget />
+                        <CaptainOpportunityWidget />
+                        <WrongCaptainWidget />
+                    </div>
+                    <h2>
+                        <span>Streaks</span>
+                    </h2>
+                    <div className="dashboard__widgets">
+                        <StreakWidget title="Highest Non-Blank Streaks" metric="nonBlank" showDetailedStats />
+                        <StreakWidget title="Highest Selection Streaks" metric="selection" showDetailedStats />
+                        <StreakWidget title="Highest Start Streaks" metric="start" showDetailedStats />
+                        <StreakWidget title="Highest Bench Appearance Streaks" metric="bench" />
+                    </div>
+                    <h2>
+                        <span>Contributions</span>
+                    </h2>
+                    <div className="dashboard__widgets">
+                        <ContributionWidget />
+                        {range.end - range.start + 1 === rawHistory?.current?.length && (
+                            <>
+                                <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
+                                <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />
+                            </>
+                        )}
+                    </div>
+                    <h2>
+                        <span>Graphs</span>
+                    </h2>
+                    <div className="dashboard__graphs">
+                        <OverallRankWidget />
+                        <PointsWidget />
+                        <ValueWidget />
+                    </div>
+                    <div className="app__legal">
+                        <p>
+                            FPL Stats uses data from the official Premier League Fantasy API. This site is not
+                            affiliated with the Premier League.
+                        </p>
+                    </div>
+                    {bootstrap && getPastEvents(bootstrap.events).length > 0 && (
+                        <div className="dashboard__slider-wrapper">
+                            <ReactSlider
+                                className="dashboard__slider"
+                                value={[range.start, range.end]}
+                                min={(head(getPastEvents(bootstrap.events))?.id || 1) - 1}
+                                max={(last(getPastEvents(bootstrap.events))?.id || 38) - 1}
+                                onChange={([start, end]) => setRange({ start, end })}
+                                renderThumb={(props, state) => <div {...props}>GW {state.valueNow + 1}</div>}
+                                pearling
                             />
-                            <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" data={filteredData} />
-                        </>
+                        </div>
                     )}
                 </div>
-                <h2>
-                    <span>Graphs</span>
-                </h2>
-                <div className="dashboard__graphs">
-                    <OverallRankWidget data={filteredData} />
-                    <PointsWidget data={filteredData} />
-                    <ValueWidget data={filteredData} />
-                </div>
-                <div className="app__legal">
-                    <p>
-                        FPL Stats uses data from the official Premier League Fantasy API. This site is not affiliated
-                        with the Premier League.
-                    </p>
-                </div>
-                {bootstrap && getPastEvents(bootstrap.events).length > 0 && (
-                    <div className="dashboard__slider-wrapper">
-                        <ReactSlider
-                            className="dashboard__slider"
-                            value={[range.start, range.end]}
-                            min={(head(getPastEvents(bootstrap.events))?.id || 1) - 1}
-                            max={(last(getPastEvents(bootstrap.events))?.id || 38) - 1}
-                            onChange={([start, end]) => setRange({ start, end })}
-                            renderThumb={(props, state) => <div {...props}>GW {state.valueNow + 1}</div>}
-                            pearling
-                        />
-                    </div>
-                )}
             </div>
-        </div>
+        </FilteredDataContext.Provider>
     )
 }
 

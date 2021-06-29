@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StatData } from '../../types'
 import {
     getAllPlayers,
@@ -14,7 +14,7 @@ import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 import { useMeanValue } from '../../hooks'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Player Stats'
 
@@ -44,18 +44,15 @@ const renderTopBenchGWReturner = (returner: StatData): JSX.Element | null => {
     )
 }
 
-type Props = {
-    data: FilteredData | undefined
-}
-
-const PlayerStatsWidget: React.FC<Props> = (props: Props) => {
+const PlayerStatsWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
     const meanValue = useMeanValue()
 
-    if (!props.data) {
+    if (!data) {
         return <Widget title={TITLE} />
     }
 
-    const allPlayers = getAllPlayers(props.data.stats.data)
+    const allPlayers = getAllPlayers(data.stats.data)
 
     if (!allPlayers.length) {
         return <Widget title={TITLE} />
@@ -106,7 +103,7 @@ const PlayerStatsWidget: React.FC<Props> = (props: Props) => {
     const topSeasonReturner = head(sort(allPlayers, el => el.aggregates.totals.points))
     const topBenchReturner = head(sort(allPlayers, el => el.aggregates.totals.benchPoints))
 
-    const weeks = props.data.history.current.length
+    const weeks = data.history.current.length
 
     const idealCaptain = head(
         sort(

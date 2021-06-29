@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { Team } from '../Team'
@@ -6,25 +6,23 @@ import { Widget } from '../Widget'
 import { getAllPlayers, getPointsLabel, round, sort, sumNumbers } from '../../utilities'
 import { Metric } from '../Metric'
 import { useMeanValue } from '../../hooks'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 import './TeamsWidget.scss'
 
 const TITLE = 'Teams'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const TeamsWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const TeamsWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     const meanValue = useMeanValue()
 
-    if (!props.data || !bootstrap) {
+    if (!data || !bootstrap) {
         return <Widget title={TITLE} />
     }
 
-    const stats = props.data.stats.data
+    const stats = data.stats.data
 
     const counts = Object.values(stats)
         .reduce((acc: number[], curr) => [...acc, ...curr.map(el => el.element.team)], [])

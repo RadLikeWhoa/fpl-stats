@@ -1,22 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { getAllPlayers, getGWCountLabel, head, round, sort } from '../../utilities'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
 const TITLE = 'Wrong Captains'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const WrongCaptainWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const WrongCaptainWidget: React.FC<Props> = (props: Props) => {
-    if (!props.data) {
+    if (!data) {
         return <Widget title={TITLE} />
     }
 
-    const stats = props.data.stats.data
-    const history = props.data.history
+    const stats = data.stats.data
+    const history = data.history
 
     const allPlayers = getAllPlayers(stats)
     const weeks = history.current.length

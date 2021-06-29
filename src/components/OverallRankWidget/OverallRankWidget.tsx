@@ -1,28 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, head, sort, thousandsSeparator, thousandsShorthand } from '../../utilities'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Overall Rank Evolution'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const OverallRankWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const OverallRankWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
     const theme = useSelector((state: RootState) => state.settings.theme)
 
-    if (!props.data || !bootstrap || !props.data.history.current.length) {
+    if (!data || !bootstrap || !data.history.current.length) {
         return <Widget title={TITLE} />
     }
 
-    const history = props.data.history
+    const history = data.history
 
-    let data = history.current.map(entry => {
+    let rankData = history.current.map(entry => {
         const event = bootstrap.events.find(event => event.id === entry.event)
 
         return {
@@ -31,9 +29,9 @@ const OverallRankWidget: React.FC<Props> = (props: Props) => {
         }
     })
 
-    const max = (head(sort([...data], el => el.value))?.value || 0) * 1.05
+    const max = (head(sort([...rankData], el => el.value))?.value || 0) * 1.05
 
-    data = [...data].map(element => ({
+    rankData = [...rankData].map(element => ({
         ...element,
         max,
     }))
@@ -42,7 +40,7 @@ const OverallRankWidget: React.FC<Props> = (props: Props) => {
         <Widget title={TITLE}>
             <div className="chart chart--reversed">
                 <ResponsiveContainer height={300} width="100%">
-                    <AreaChart data={data} margin={{ bottom: 45, left: 15, right: 15 }}>
+                    <AreaChart data={rankData} margin={{ bottom: 45, left: 15, right: 15 }}>
                         <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="1" />
                         <Area
                             type="monotone"

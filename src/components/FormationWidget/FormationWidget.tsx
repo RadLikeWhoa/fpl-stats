@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Widget } from '../Widget'
 import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Metric } from '../Metric'
 import { useMeanValue } from '../../hooks'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 type FormationInformation = {
     count: number
@@ -15,19 +15,17 @@ const TITLE = 'Formations'
 const formatFormation = (formation: string) =>
     sumNumbers(formation.split('-').map(position => Number(position))) > 10 ? 'Bench Boost' : formation
 
-type Props = {
-    data: FilteredData | undefined
-}
+const FormationWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const FormationWidget: React.FC<Props> = (props: Props) => {
     const meanValue = useMeanValue()
 
-    if (!props.data) {
+    if (!data) {
         return <Widget title={TITLE} />
     }
 
-    const history = props.data.history
-    const stats = props.data.stats.data
+    const history = data.history
+    const stats = data.stats.data
 
     const weeks = history.current.length
 
@@ -41,7 +39,7 @@ const FormationWidget: React.FC<Props> = (props: Props) => {
         })
         .slice(1)
 
-    const data = Array.from(Array(weeks).keys())
+    const formationData = Array.from(Array(weeks).keys())
         .map((el, index) => formations.map(entries => entries[index]).join('-'))
         .reduce(
             (acc, formation, index) => ({
@@ -59,9 +57,9 @@ const FormationWidget: React.FC<Props> = (props: Props) => {
 
     return (
         <Widget title={TITLE}>
-            {Object.entries(data).length > 0 && (
+            {Object.entries(formationData).length > 0 && (
                 <ul className="widget__list">
-                    {sort(Object.entries(data), el => el[1].count).map(([formation, information]) => {
+                    {sort(Object.entries(formationData), el => el[1].count).map(([formation, information]) => {
                         return (
                             <li className="widget__list__item" key={formation}>
                                 <span>{formatFormation(formation)}</span>

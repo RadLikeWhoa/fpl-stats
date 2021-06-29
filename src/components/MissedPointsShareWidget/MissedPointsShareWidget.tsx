@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Widget } from '../Widget'
 import { getAllPlayers, getPointsLabel, round, sort } from '../../utilities'
 import { Player } from '../Player'
 import { getGWCountLabel } from '../../utilities/strings'
 import { StatData } from '../../types'
 import { BasePlayerWidget } from '../BasePlayerWidget'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 type Props = {
     title: string
-    data: FilteredData | undefined
     top?: boolean
 }
 
@@ -19,12 +18,14 @@ const getPointsShare = (player: StatData): number =>
     100 - (player.aggregates.totals.rawPoints / player.element.total_points) * 100
 
 const MissedPointsShareWidget: React.FC<Props> = (props: Props) => {
-    if (!props.data) {
+    const data = useContext(FilteredDataContext)
+
+    if (!data) {
         return <Widget title={props.title} />
     }
 
-    const stats = props.data.stats.data
-    const history = props.data.history
+    const stats = data.stats.data
+    const history = data.history
 
     const elements = sort(
         getAllPlayers(stats).filter(player => player.aggregates.totals.points > 0),

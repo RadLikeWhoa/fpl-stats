@@ -1,28 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { useMeanValue } from '../../hooks'
 import { RootState } from '../../reducers'
 import { thousandsSeparator, sumNumbers, round, reduce, getPointsLabel, pluralise } from '../../utilities'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Positions'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const PositionsWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const PositionsWidget: React.FC<Props> = (props: Props) => {
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
     const meanValue = useMeanValue()
 
-    if (!props.data || !bootstrap) {
+    if (!data || !bootstrap) {
         return <Widget title={TITLE} />
     }
 
-    const stats = props.data.stats.data
+    const stats = data.stats.data
 
     const positions: Record<string, number> = Object.entries(stats).reduce(
         (acc, [elementType, elements]) => ({

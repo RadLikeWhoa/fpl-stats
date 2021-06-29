@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useMeanValue } from '../../hooks'
 import { StatAggregateStreaks } from '../../types'
 import { getAllPlayers, getGWCountLabel, getPointsLabel, round } from '../../utilities'
 import { BasePlayerWidget } from '../BasePlayerWidget'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
@@ -14,18 +14,19 @@ const MAX_ITEMS = 10
 type Props = {
     title: string
     metric: keyof StatAggregateStreaks
-    data: FilteredData | undefined
     showDetailedStats?: boolean
 }
 
 const StreakWidget: React.FC<Props> = (props: Props) => {
+    const data = useContext(FilteredDataContext)
+
     const meanValue = useMeanValue()
 
-    if (!props.data) {
+    if (!data) {
         return <Widget title={props.title} />
     }
 
-    const stats = props.data.stats.data
+    const stats = data.stats.data
 
     const streakers = getAllPlayers(stats)
         .sort((a, b) => {

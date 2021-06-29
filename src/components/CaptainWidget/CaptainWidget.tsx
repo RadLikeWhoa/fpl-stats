@@ -1,25 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { thousandsSeparator, sumNumbers, round, sort, getPointsLabel, getGWCountLabel } from '../../utilities'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 import { Metric } from '../Metric'
 import { useMeanValue } from '../../hooks'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Captains'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const CaptainWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const CaptainWidget: React.FC<Props> = (props: Props) => {
     const meanValue = useMeanValue()
 
-    if (!props.data) {
+    if (!data) {
         return <Widget title={TITLE} />
     }
 
-    const stats = props.data.stats.data
+    const stats = data.stats.data
 
     const captains = sort(
         Object.values(stats)

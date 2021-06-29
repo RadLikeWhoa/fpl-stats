@@ -1,29 +1,27 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../reducers'
 import { getAllPlayers, getPointsLabel, head, last, round, sort } from '../../utilities'
 import { BasePlayerWidget } from '../BasePlayerWidget'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
 const MAX_ITEMS = 10
 const TITLE = 'Total Points Contribution'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const ContributionWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const ContributionWidget: React.FC<Props> = (props: Props) => {
     const entry = useSelector((state: RootState) => state.entry.data)
     const rawHistory = useSelector((state: RootState) => state.history.data)
 
-    if (!entry || !props.data || !rawHistory) {
+    if (!entry || !data || !rawHistory) {
         return <Widget title={TITLE} />
     }
 
-    const history = props.data.history
-    const stats = props.data.stats.data
+    const history = data.history
+    const stats = data.stats.data
 
     const totalPoints =
         (last(history.current)?.total_points || 0) -

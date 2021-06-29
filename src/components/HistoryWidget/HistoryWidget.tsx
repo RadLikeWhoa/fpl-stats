@@ -1,24 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { head, last, round, sort, thousandsSeparator } from '../../utilities'
 import { Widget } from '../Widget'
 import { useMeanValue, useMeanLabel } from '../../hooks'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Historical Data'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const HistoryWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const HistoryWidget: React.FC<Props> = (props: Props) => {
     const meanLabel = useMeanLabel()
     const meanValue = useMeanValue()
 
-    if (!props.data) {
+    if (!data) {
         return <Widget title={TITLE} />
     }
 
-    const history = props.data.history
+    const history = data.history
 
     const pastSeasonsByRank = sort(history.past, el => el.rank, 'asc')
     const pastSeasonsByPoints = sort(history.past, el => el.total_points)

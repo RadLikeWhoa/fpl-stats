@@ -1,25 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { getAllPlayers, getPointsLabel, sort, thousandsSeparator } from '../../utilities'
 import { BasePlayerWidget } from '../BasePlayerWidget'
-import { FilteredData } from '../Dashboard/Dashboard'
+import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
 const MAX_ITEMS = 15
 const TITLE = 'Other Players'
 
-type Props = {
-    data: FilteredData | undefined
-}
+const NearMissesWidget: React.FC = () => {
+    const data = useContext(FilteredDataContext)
 
-const NearMissesWidget: React.FC<Props> = (props: Props) => {
-    if (!props.data) {
+    if (!data) {
         return <Widget title={TITLE} />
     }
 
-    const totsIds = props.data.stats.tots.xi.concat(props.data.stats.tots.bench).map(player => player.element.id)
+    const totsIds = data.stats.tots.xi.concat(data.stats.tots.bench).map(player => player.element.id)
     const players = sort(
-        getAllPlayers(props.data.stats.data).filter(player => !totsIds.includes(player.element.id)),
+        getAllPlayers(data.stats.data).filter(player => !totsIds.includes(player.element.id)),
         el => el.aggregates.totals.points
     )
 
