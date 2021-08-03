@@ -50,6 +50,7 @@ import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
 import { SettingsModal } from '../SettingsModal'
 import { useMeanValue } from '../../hooks'
+import { MilestonesWidget } from '../MilestonesWidget'
 import './Dashboard.scss'
 
 type OptionType = {
@@ -328,6 +329,7 @@ const Dashboard: React.FC = () => {
                         <SeasonWidget />
                         <HistoryWidget />
                         <GameweekWidget />
+                        <MilestonesWidget />
                         <PositionsWidget />
                         <FormationWidget />
                     </div>

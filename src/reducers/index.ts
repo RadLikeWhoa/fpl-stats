@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux'
-import { Bootstrap, History, Entry, Picks, LiveEvent } from '../types'
+import { Bootstrap, History, Entry, Picks, LiveEvent, StandingsPlayer } from '../types'
 import bootstrap from './bootstrap'
 import stats from './stats'
 import settings from './settings'
 import entry from './entry'
 import history from './history'
 import loading from './loading'
+import milestones from './milestones'
 
 export type RootState = {
     loading: number
@@ -31,6 +32,9 @@ export type RootState = {
     entry: {
         data: Entry | undefined
     }
+    milestones: {
+        data: StandingsPlayer[] | undefined
+    }
 }
 
 export default combineReducers({
@@ -40,4 +44,5 @@ export default combineReducers({
     settings,
     history,
     entry,
+    milestones,
 })
