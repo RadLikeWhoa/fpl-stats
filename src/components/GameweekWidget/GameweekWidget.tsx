@@ -17,7 +17,7 @@ const GameweekWidget: React.FC = () => {
     const meanLabel = useMeanLabel()
     const meanValue = useMeanValue()
 
-    if (!data || !bootstrap) {
+    if (!data || !bootstrap || !data.history.current.length) {
         return <Widget title={TITLE} />
     }
 

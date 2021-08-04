@@ -28,7 +28,7 @@ const SeasonWidget: React.FC = () => {
     const rawHistory = useSelector((state: RootState) => state.history.data)
     const entry = useSelector((state: RootState) => state.entry.data)
 
-    if (!data || !entry) {
+    if (!data || !entry || !data.history.current.length) {
         return <Widget title={TITLE} />
     }
 

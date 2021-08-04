@@ -1,0 +1,290 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.player-overview {
+    position: relative;
+    max-width: 100rem;
+    min-height: 20rem;
+    margin: 0 auto 2.125rem;
+    background-color: var(--widget-background-color);
+    border-radius: $border-radius;
+
+    &--cloaked::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--widget-background-color);
+        z-index: 5;
+    }
+
+    &__container {
+        @include widget-bar();
+
+        border-radius: $border-radius;
+        overflow: auto;
+    }
+
+    &__header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        border-bottom: 1px solid var(--widget-separator-color);
+
+        .player-overview__stat {
+            font-weight: 700;
+
+            @include up-to("L") {
+                display: none;
+            }
+        }
+
+        .player-overview__totals .player-overview__stat {
+            width: 8rem;
+            cursor: pointer;
+        }
+
+        @include at-least("L") {
+            width: max-content;
+            min-width: 100%;
+        }
+    }
+
+    &__list {
+        width: max-content;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+
+        @include up-to("L") {
+            width: 100%;
+        }
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        width: max-content;
+        min-width: 100%;
+        border-bottom: 1px solid var(--widget-separator-color);
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        @include up-to("L") {
+            flex-wrap: wrap;
+            width: 100%;
+
+            .player-overview__player,
+            .player {
+                width: 100%;
+            }
+        }
+    }
+
+    &__stats {
+        display: flex;
+
+        @include at-least("L") {
+            flex-grow: 1;
+        }
+
+        @include up-to("L") {
+            width: 100%;
+        }
+    }
+
+    &__stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        flex-shrink: 0;
+        height: 4rem;
+        width: 4rem;
+        background-color: var(--dashboard-selected-color);
+        border-right: 1px solid var(--widget-separator-color);
+
+        &--benched {
+            background-color: var(--dashboard-benched-color);
+        }
+
+        &--started {
+            background-color: var(--dashboard-started-color);
+        }
+
+        &--triple {
+            background-color: var(--dashboard-triple-color);
+        }
+
+        &--wide {
+            width: 8rem;
+        }
+
+        &:last-child {
+            border-right: 0;
+        }
+
+        @include at-least("L") {
+            min-width: 4rem;
+        }
+
+        @include up-to("L") {
+            width: auto;
+        }
+
+        @include up-to("M") {
+            height: 2rem;
+        }
+    }
+
+    &__totals {
+        position: sticky;
+        right: 0;
+        display: flex;
+        margin-left: auto;
+
+        .player-overview__stat {
+            width: 8rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 100%;
+            width: 0.5rem;
+            background-image: linear-gradient(
+                to left,
+                var(--player-overview-total-shadow-start-color),
+                var(--player-overview-total-shadow-end-color)
+            );
+        }
+
+        @include up-to("L") {
+            flex-flow: wrap;
+            width: 100%;
+            border-top: 1px solid var(--widget-separator-color);
+
+            .player-overview__stat {
+                flex-direction: row;
+                flex: auto;
+                width: 50%;
+                height: 2rem;
+                font-size: 0.75rem;
+
+                &::before {
+                    margin-right: 0.25rem;
+                }
+
+                &:nth-child(-n + 2) {
+                    border-bottom: 1px solid var(--widget-separator-color);
+                }
+
+                &:nth-child(1)::before {
+                    content: "Selected: ";
+                }
+
+                &:nth-child(2)::before {
+                    content: "Started: ";
+                }
+
+                &:nth-child(3)::before {
+                    content: "Benched: ";
+                }
+
+                &:nth-child(4)::before {
+                    content: "Points: ";
+                }
+            }
+        }
+    }
+
+    &__heading {
+        position: sticky;
+        left: 0;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        width: 12rem;
+        padding: 0.5rem;
+        font-weight: 700;
+        color: var(--widget-color);
+        background-color: var(--widget-background-color);
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 100%;
+            width: 0.5rem;
+            background-image: linear-gradient(
+                to right,
+                var(--player-overview-total-shadow-start-color),
+                var(--player-overview-total-shadow-end-color)
+            );
+        }
+
+        @include up-to("L") {
+            width: 100%;
+            height: 4rem;
+
+            &::after {
+                content: none;
+            }
+        }
+    }
+
+    &__category {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        // Sass does not recognise the native CSS min function, thus requiring
+        // this hack.
+        width: m#{i}n(100rem, calc(100vw - 3rem));
+        padding: 0.5rem;
+        color: var(--player-overview-category-color);
+        font-weight: 700;
+        background-color: var(--player-overview-category-background-color);
+    }
+
+    &__player {
+        position: sticky;
+        left: 0;
+
+        @include at-least("M") {
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 100%;
+                width: 0.5rem;
+                background-image: linear-gradient(
+                    to right,
+                    var(--player-overview-total-shadow-start-color),
+                    var(--player-overview-total-shadow-end-color)
+                );
+            }
+        }
+    }
+
+    &__empty {
+        padding: 0.5rem;
+        color: var(--muted-color);
+
+        @include up-to("M") {
+            text-align: center;
+        }
+    }
+}
