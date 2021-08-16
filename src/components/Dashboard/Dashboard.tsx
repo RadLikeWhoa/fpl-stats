@@ -18,6 +18,7 @@ import {
     filterHistoryData,
     head,
     getPastEvents,
+    round,
 } from '../../utilities'
 import { TeamModal } from '../TeamModal'
 import { fetchDataWithId } from '../../reducers/settings'
@@ -191,12 +192,11 @@ const Dashboard: React.FC = () => {
                                     <SiteLink label={entry.name} />
                                     <div className="small muted">
                                         {getPointsLabel(thousandsSeparator(totalPoints))}
-                                        {entry.summary_overall_rank && (
+                                        {entry.summary_overall_rank && bootstrap && (
                                             <>
                                                 {' '}
-                                                — Rank{' '}
-                                                {entry.summary_overall_rank &&
-                                                    thousandsSeparator(entry.summary_overall_rank)}
+                                                — Rank {thousandsSeparator(entry.summary_overall_rank)} (Top{' '}
+                                                {round((entry.summary_overall_rank / bootstrap.total_players) * 100)}%)
                                             </>
                                         )}
                                     </div>
