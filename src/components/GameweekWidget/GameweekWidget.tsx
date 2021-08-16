@@ -6,6 +6,7 @@ import { Widget } from '../Widget'
 import { head, last, round, sort, thousandsSeparator, getPointsLabel } from '../../utilities'
 import { SiteLink } from '../SiteLink'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
+import { ChangeBadge } from '../ChangeBadge'
 
 const TITLE = 'Gameweeks'
 
@@ -39,7 +40,7 @@ const GameweekWidget: React.FC = () => {
             <ul className="widget__list">
                 <li className="widget__list__item">
                     <span>{meanLabel('Difference to GW Average')}</span>
-                    <b>{getPointsLabel(round(meanValue(differences)))}</b>
+                    <ChangeBadge value={meanValue(differences)} />
                 </li>
                 <li className="widget__list__item">
                     <span>Times Above GW Average</span>

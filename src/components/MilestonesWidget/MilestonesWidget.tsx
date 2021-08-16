@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { getPointsLabel, thousandsSeparator } from '../../utilities'
 import { Widget } from '../Widget'
 import { RootState } from '../../reducers'
+import { ChangeBadge } from '../ChangeBadge'
 
 const TITLE = 'Milestones'
 
@@ -18,25 +18,25 @@ const MilestonesWidget: React.FC = () => {
         <Widget title={TITLE}>
             <ul className="widget__list">
                 <li className="widget__list__item">
-                    <span>1st</span>
-                    <b>{getPointsLabel(thousandsSeparator(entry.summary_overall_points - milestones[0].total))}</b>
+                    <span>First Place</span>
+                    <ChangeBadge value={entry.summary_overall_points - milestones[0].total} />
                 </li>
                 {milestones.length >= 2 && (
                     <li className="widget__list__item">
-                        <span>10K</span>
-                        <b>{getPointsLabel(thousandsSeparator(entry.summary_overall_points - milestones[1].total))}</b>
+                        <span>Top 10K</span>
+                        <ChangeBadge value={entry.summary_overall_points - milestones[1].total} />
                     </li>
                 )}
                 {milestones.length >= 3 && (
                     <li className="widget__list__item">
-                        <span>100K</span>
-                        <b>{getPointsLabel(thousandsSeparator(entry.summary_overall_points - milestones[2].total))}</b>
+                        <span>Top 100K</span>
+                        <ChangeBadge value={entry.summary_overall_points - milestones[2].total} />
                     </li>
                 )}
                 {milestones.length === 4 && (
                     <li className="widget__list__item">
-                        <span>1M</span>
-                        <b>{getPointsLabel(thousandsSeparator(entry.summary_overall_points - milestones[3].total))}</b>
+                        <span>Top 1M</span>
+                        <ChangeBadge value={entry.summary_overall_points - milestones[3].total} />
                     </li>
                 )}
             </ul>

@@ -1,6 +1,6 @@
 import { head, reduce, sort } from './arrays'
 
-export const thousandsSeparator = (value: number): string => {
+export const thousandsSeparator = (value: number | string): string => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 

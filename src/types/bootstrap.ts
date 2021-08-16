@@ -11,6 +11,7 @@ export type Bootstrap = {
     element_types: ElementType[]
     elements: Element[]
     events: Event[]
+    total_players: number
     game_settings: GameSettings
     phases: Phase[]
     teams: Team[]

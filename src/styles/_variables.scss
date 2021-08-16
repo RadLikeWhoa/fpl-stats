@@ -66,6 +66,10 @@ $themes: (
         slider-thumb-color: hsl(0, 0, 100%),
         slider-thumb-background-color: hsl(12, 100%, 46%),
         slider-thumb-shadow-color: hsla(10, 0%, 10%, 0.2),
+        change-positive-color: hsl(0, 0%, 100%),
+        change-positive-background-color: hsl(120, 80%, 32.2%),
+        change-negative-color: hsl(0, 0%, 100%),
+        change-negative-background-color: hsl(0, 70%, 45%),
     ),
     dark: (
         link-color: hsl(183, 70%, 35%),
@@ -128,6 +132,10 @@ $themes: (
         slider-thumb-color: hsl(200, 34%, 95%),
         slider-thumb-background-color: hsl(183, 70%, 35%),
         slider-thumb-shadow-color: hsla(183, 50%, 15%, 0.8),
+        change-positive-color: hsl(0, 0%, 100%),
+        change-positive-background-color: hsl(120, 80%, 32.2%),
+        change-negative-color: hsl(0, 0%, 100%),
+        change-negative-background-color: hsl(0, 70%, 45%),
     ),
 );
 

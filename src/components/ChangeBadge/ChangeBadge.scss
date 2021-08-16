@@ -1,0 +1,14 @@
+@import "../../styles/variables";
+
+.change-badge {
+    padding: 0 0.5rem;
+    font-weight: 700;
+    color: var(--change-positive-color);
+    background-color: var(--change-positive-background-color);
+    border-radius: 0.25rem;
+
+    &--negative {
+        color: var(--change-negative-color);
+        background-color: var(--change-negative-background-color);
+    }
+}
