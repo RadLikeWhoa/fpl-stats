@@ -15,7 +15,7 @@ const fetchStanding = async (page: number): Promise<Standings> => {
     return await response.json()
 }
 
-export const fetchMilestones = createAsyncThunk('milestones/fetch', async (arg: unknown, thunkAPI) => {
+export const fetchMilestones = createAsyncThunk('milestones/fetch', async (arg: undefined, thunkAPI) => {
     thunkAPI.dispatch(fetchMilestonesStart())
     thunkAPI.dispatch(startLoading())
 

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchEntry } from './entry'
 import { fetchHistory } from './history'
 import { finishLoading, startLoading } from './loading'
+import { fetchMilestones } from './milestones'
 import { fetchStatData } from './stats'
 
 export const fetchBootstrap = createAsyncThunk('bootstrap/fetch', async (id: number, thunkAPI) => {
@@ -18,6 +19,7 @@ export const fetchBootstrap = createAsyncThunk('bootstrap/fetch', async (id: num
         thunkAPI.dispatch(fetchStatData({ bootstrap: data, entry: id })),
         thunkAPI.dispatch(fetchHistory(id)),
         thunkAPI.dispatch(fetchEntry(id)),
+        thunkAPI.dispatch(fetchMilestones()),
     ])
 
     thunkAPI.dispatch(finishLoading())
