@@ -16,8 +16,9 @@ const TotsWidget: React.FC = () => {
     return (
         <Widget title={TITLE} cssClasses="tots-widget">
             <div className="tots">
-                {Array(4).map((el, index) => (
+                {[...Array(4)].map((el, index) => (
                     <>
+                        {console.log(index)}
                         {data && (
                             <div className="tots__row">
                                 {data.stats.tots.xi
