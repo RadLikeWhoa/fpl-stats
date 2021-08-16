@@ -112,7 +112,7 @@ const SeasonWidget: React.FC = () => {
                     <span>Double Digit Hauls</span>
                     <span>
                         <b>{doubleDigitHauls}</b>
-                        {totalPlays > 0 && ` (${round(doubleDigitHauls / totalPlays)}%)`}
+                        {totalPlays > 0 && ` (${round((doubleDigitHauls / totalPlays) * 100)}%)`}
                     </span>
                 </li>
                 {tc !== undefined && (

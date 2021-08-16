@@ -91,8 +91,6 @@ const getStreak = (
     const start = sumNumbers(streaks.slice(0, streaks.indexOf(max)).map(streak => (streak > 0 ? streak : 1)))
     const end = start - 1 + max
 
-    console.log(start, end)
-
     const points = (start === end ? statData.data : statData.data.slice(start, end)).map(event => event.points || 0)
 
     return {
