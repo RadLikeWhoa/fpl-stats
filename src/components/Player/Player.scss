@@ -1,3 +1,5 @@
+@import "../../styles/mixins";
+
 .player {
     display: flex;
     align-items: center;
@@ -31,9 +33,11 @@
     &--reversed {
         flex-direction: row-reverse;
 
-        .player__detail {
-            margin-left: 0;
-            margin-right: 0.5em;
+        @include at-least("M") {
+            .player__detail {
+                margin-left: 0;
+                margin-right: 0.5em;
+            }
         }
     }
 

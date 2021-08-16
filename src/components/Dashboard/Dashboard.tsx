@@ -193,6 +193,7 @@ const Dashboard: React.FC = () => {
                                         {getPointsLabel(thousandsSeparator(totalPoints))}
                                         {entry.summary_overall_rank && (
                                             <>
+                                                {' '}
                                                 — Rank{' '}
                                                 {entry.summary_overall_rank &&
                                                     thousandsSeparator(entry.summary_overall_rank)}
@@ -302,21 +303,25 @@ const Dashboard: React.FC = () => {
                             </>
                         )}
                     </div>
-                    <h2>
-                        <span>Graphs</span>
-                    </h2>
-                    <div className="dashboard__graphs">
-                        <OverallRankWidget />
-                        <PointsWidget />
-                        <ValueWidget />
-                    </div>
+                    {bootstrap && getPastEvents(bootstrap.events).length > 1 && (
+                        <>
+                            <h2>
+                                <span>Graphs</span>
+                            </h2>
+                            <div className="dashboard__graphs">
+                                <OverallRankWidget />
+                                <PointsWidget />
+                                <ValueWidget />
+                            </div>
+                        </>
+                    )}
                     <div className="dashboard__legal">
                         <p>
                             FPL Stats uses data from the official Premier League Fantasy API. This site is not
                             affiliated with the Premier League.
                         </p>
                     </div>
-                    {bootstrap && getPastEvents(bootstrap.events).length > 0 && (
+                    {bootstrap && getPastEvents(bootstrap.events).length > 1 && (
                         <div className="dashboard__slider-wrapper">
                             <ReactSlider
                                 className="dashboard__slider"

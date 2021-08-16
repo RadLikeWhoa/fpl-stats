@@ -5,7 +5,7 @@ import { Player } from '../Player'
 import { BasePlayerWidget } from '../BasePlayerWidget'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
 
-const MAX_ITEMS = 10
+const MAX_ITEMS = 15
 
 type Props = {
     title: string
@@ -21,7 +21,10 @@ const SelectionWidget: React.FC<Props> = (props: Props) => {
 
     const stats = data.stats.data
 
-    const elements = sort(getAllPlayers(stats), el => el.aggregates.totals[props.metric])
+    const elements = sort(
+        getAllPlayers(stats).filter(el => el.aggregates.totals[props.metric] > 0),
+        el => el.aggregates.totals[props.metric]
+    )
 
     return (
         <BasePlayerWidget

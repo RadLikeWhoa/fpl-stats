@@ -57,7 +57,7 @@ const WrongCaptainWidget: React.FC = () => {
                             <div>
                                 <div>
                                     <b>
-                                        {count} out of {getGWCountLabel(timesUsed[Number(player)])}
+                                        {count} / {getGWCountLabel(timesUsed[Number(player)])}
                                     </b>
                                 </div>
                                 <div className="muted">{round((count / timesUsed[Number(player)]) * 100, 1)}%</div>

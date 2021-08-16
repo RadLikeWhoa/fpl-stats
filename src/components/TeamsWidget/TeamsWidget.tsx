@@ -28,7 +28,7 @@ const TeamsWidget: React.FC = () => {
         .reduce((acc: number[], curr) => [...acc, ...curr.map(el => el.element.team)], [])
         .reduce((acc: { [key: number]: number }, curr) => ({ ...acc, [curr]: (acc[Number(curr)] || 0) + 1 }), {})
 
-    const teams = sort(bootstrap.teams, el => counts[el.id] || 0)
+    const teams = sort(bootstrap.teams, el => counts[el.id] || 0).filter(el => counts[el.id] > 0)
 
     const allPlayers = getAllPlayers(stats)
 

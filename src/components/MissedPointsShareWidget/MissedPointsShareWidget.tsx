@@ -12,7 +12,7 @@ type Props = {
     top?: boolean
 }
 
-const MAX_ITEMS = 10
+const MAX_ITEMS = 15
 
 const getPointsShare = (player: StatData): number =>
     100 - (player.aggregates.totals.rawPoints / player.element.total_points) * 100

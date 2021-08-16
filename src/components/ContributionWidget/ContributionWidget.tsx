@@ -7,7 +7,7 @@ import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
-const MAX_ITEMS = 10
+const MAX_ITEMS = 15
 const TITLE = 'Total Points Contribution'
 
 const ContributionWidget: React.FC = () => {
@@ -23,9 +23,13 @@ const ContributionWidget: React.FC = () => {
     const history = data.history
     const stats = data.stats.data
 
+    const latestPoints = last(history.current)?.total_points || 0
     const totalPoints =
-        (last(history.current)?.total_points || 0) -
-        (rawHistory?.current?.find(event => event.event === (head(history.current)?.event || 1))?.total_points || 0)
+        history.current.length > 1
+            ? latestPoints -
+              (rawHistory?.current?.find(event => event.event === (head(history.current)?.event || 1))?.total_points ||
+                  0)
+            : latestPoints
 
     const contributions = sort(getAllPlayers(stats), el => el.aggregates.totals.points)
 

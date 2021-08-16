@@ -10,7 +10,7 @@ type Props = {
     top?: boolean
 }
 
-const MAX_ITEMS = 10
+const MAX_ITEMS = 15
 
 const DifferenceWidget: React.FC<Props> = (props: Props) => {
     const data = useContext(FilteredDataContext)
@@ -35,15 +35,19 @@ const DifferenceWidget: React.FC<Props> = (props: Props) => {
         }
     })
 
-    const starters = [...elements].sort((a, b) => {
-        const percentageDiff = b.startsPercentage - a.startsPercentage
-        return percentageDiff === 0 ? b.starts - a.starts : percentageDiff
-    })
+    const starters = [...elements]
+        .sort((a, b) => {
+            const percentageDiff = b.startsPercentage - a.startsPercentage
+            return percentageDiff === 0 ? b.starts - a.starts : percentageDiff
+        })
+        .filter(el => el.starts > 0)
 
-    const benchwarmers = [...elements].sort((a, b) => {
-        const percentageDiff = b.benchedPercentage - a.benchedPercentage
-        return percentageDiff === 0 ? b.benched - a.benched : percentageDiff
-    })
+    const benchwarmers = [...elements]
+        .sort((a, b) => {
+            const percentageDiff = b.benchedPercentage - a.benchedPercentage
+            return percentageDiff === 0 ? b.benched - a.benched : percentageDiff
+        })
+        .filter(el => el.benched > 0)
 
     return (
         <BasePlayerWidget

@@ -9,7 +9,7 @@ import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 
-const MAX_ITEMS = 10
+const MAX_ITEMS = 15
 
 type Props = {
     title: string
