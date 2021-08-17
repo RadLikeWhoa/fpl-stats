@@ -5,4 +5,5 @@ export type StatAggregateStreaks = {
     start: Streak | null
     bench: Streak | null
     nonBlank: Streak | null
+    doubleDigitHaul: Streak | null
 }

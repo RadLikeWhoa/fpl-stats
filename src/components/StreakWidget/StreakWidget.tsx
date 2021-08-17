@@ -61,7 +61,13 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
                         <Player id={streaker.element.id} />
                         <div>
                             <div className="duration">
-                                <SiteLink event={streak.start.id} /> – <SiteLink event={streak.end.id} />
+                                <SiteLink event={streak.start.id} />
+                                {streak.start.id !== streak.end.id && (
+                                    <>
+                                        {' '}
+                                        – <SiteLink event={streak.end.id} />
+                                    </>
+                                )}
                             </div>
                             <div className="muted">
                                 {props.showDetailedStats ? (

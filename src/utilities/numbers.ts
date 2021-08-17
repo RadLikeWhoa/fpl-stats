@@ -23,8 +23,12 @@ export const median = (series: (number | null)[]): number => {
     const sorted = sort(filtered, el => el)
     const mid = Math.ceil(filtered.length / 2)
 
+    if (sorted.length === 0) {
+        return 0
+    }
+
     if (sorted.length % 2 === 0) {
-        return (sorted[mid] + sorted[mid + 1]) / 2
+        return (sorted[mid - 1] + sorted[mid]) / 2
     }
 
     return sorted[mid - 1]

@@ -307,6 +307,11 @@ const Dashboard: React.FC = () => {
                     </h2>
                     <div className="dashboard__widgets">
                         <StreakWidget title="Highest Non-Blank Streaks" metric="nonBlank" showDetailedStats />
+                        <StreakWidget
+                            title="Highest Double-Digit Haul Streaks"
+                            metric="doubleDigitHaul"
+                            showDetailedStats
+                        />
                         <StreakWidget title="Highest Selection Streaks" metric="selection" showDetailedStats />
                         <StreakWidget title="Highest Start Streaks" metric="start" showDetailedStats />
                         <StreakWidget title="Highest Bench Appearance Streaks" metric="bench" />

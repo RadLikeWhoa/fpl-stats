@@ -114,6 +114,9 @@ export const getBenchStreak = (statData: StatData): Streak | null =>
 export const getNonBlankStreak = (statData: StatData): Streak | null =>
     getStreak(statData, gw => (gw.rawPoints || 0) > 2)
 
+export const getDoubleDigitHaulStreak = (statData: StatData): Streak | null =>
+    getStreak(statData, gw => (gw.rawPoints || 0) > 9)
+
 const MIN_GK = 1
 const MAX_GK = 2
 
@@ -181,6 +184,7 @@ const emptyAggregates = {
         start: null,
         bench: null,
         nonBlank: null,
+        doubleDigitHaul: null,
     },
 }
 
@@ -297,6 +301,7 @@ export const filterStatData = async (
                 start: getStartStreak(player),
                 bench: getBenchStreak(player),
                 nonBlank: getNonBlankStreak(player),
+                doubleDigitHaul: getDoubleDigitHaulStreak(player),
             },
         }
     })
