@@ -7,7 +7,7 @@ import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Player } from '../Player'
 import { Widget } from '../Widget'
 
-const MAX_ITEMS = 15
+const MAX_ITEMS = 5
 const TITLE = 'Total Points Contribution'
 
 const ContributionWidget: React.FC = () => {

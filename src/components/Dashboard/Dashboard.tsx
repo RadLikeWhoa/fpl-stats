@@ -47,6 +47,12 @@ import { StreakWidget } from '../StreakWidget'
 import { SettingsModal } from '../SettingsModal'
 import { MilestonesWidget } from '../MilestonesWidget'
 import { PlayerOverview } from '../PlayerOverview/PlayerOverview'
+import { FormWidget } from '../FormWidget'
+import { PriceChangeWidget } from '../PriceChangeWidget'
+import { InjuryWidget } from '../InjuryWidget'
+import { ExpectedPointsWidget } from '../ExpectedPointsWidget'
+import { PopularityWidget } from '../PopularityWidget'
+import { TransfersWidget } from '../TransfersWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -214,6 +220,20 @@ const Dashboard: React.FC = () => {
                             </Widget>
                         </header>
                     )}
+                    <div className="dashboard__widgets">
+                        <FormWidget />
+                        <ExpectedPointsWidget gw="current" />
+                        <ExpectedPointsWidget gw="next" />
+                        <InjuryWidget />
+                        <PriceChangeWidget type="gains" />
+                        <PriceChangeWidget type="drops" />
+                        <PopularityWidget />
+                        <TransfersWidget type="in" />
+                        <TransfersWidget type="out" />
+                    </div>
+                    <h2>
+                        <span>Season</span>
+                    </h2>
                     <div className="dashboard__widgets dashboard__widgets--split">
                         <TotsWidget />
                         <NearMissesWidget />

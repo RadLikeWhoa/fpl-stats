@@ -5,12 +5,16 @@ import './ChangeBadge.scss'
 
 type Props = {
     value: number
+    renderer?: (input: number) => string
 }
 
 const ChangeBadge: React.FC<Props> = (props: Props) => {
     return (
         <div className={classNames('change-badge', { 'change-badge--negative': props.value < 0 })}>
-            {props.value >= 0 ? '+' : '-'} {getPointsLabel(thousandsSeparator(round(Math.abs(props.value))))}
+            {props.value >= 0 ? '+' : '-'}{' '}
+            {props.renderer
+                ? props.renderer(props.value)
+                : getPointsLabel(thousandsSeparator(round(Math.abs(props.value))))}
         </div>
     )
 }

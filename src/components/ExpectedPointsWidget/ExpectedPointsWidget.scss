@@ -1,0 +1,13 @@
+.expected-points-widget {
+    &__data {
+        display: flex;
+
+        b {
+            margin-right: 0.25rem;
+        }
+
+        .change-badge {
+            margin-left: 0.5rem;
+        }
+    }
+}

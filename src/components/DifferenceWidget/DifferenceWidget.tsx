@@ -10,7 +10,7 @@ type Props = {
     top?: boolean
 }
 
-const MAX_ITEMS = 15
+const MAX_ITEMS = 5
 
 const DifferenceWidget: React.FC<Props> = (props: Props) => {
     const data = useContext(FilteredDataContext)
