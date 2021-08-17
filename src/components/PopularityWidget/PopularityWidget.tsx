@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { BaseLiveWidget } from '../BaseLiveWidget'
+import { BasePlayerWidget } from '../BasePlayerWidget'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { last, sort } from '../../utilities'
@@ -24,7 +24,7 @@ const PopularityWidget: React.FC = () => {
     )
 
     return (
-        <BaseLiveWidget
+        <BasePlayerWidget
             title={TITLE}
             players={elements}
             max={MAX_ITEMS}

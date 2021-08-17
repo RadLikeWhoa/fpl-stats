@@ -1,21 +1,27 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
-import { StatData } from '../../types'
+import { Element, StatData } from '../../types'
 import { normaliseDiacritics } from '../../utilities'
 import { Button } from '../Button'
 import { Widget } from '../Widget'
 import { ModalInput } from '../ModalInput'
 import './BasePlayerWidget.scss'
 
-type Props = {
+type PlayerLike = StatData | Element
+
+type Props<T extends PlayerLike> = {
     title: string
     max: number
-    players: StatData[]
-    renderItem: (player: StatData) => JSX.Element | null
+    players: T[]
+    renderItem: (player: T) => JSX.Element | null
     cssClasses?: string
 }
 
-const renderList = (players: StatData[], renderItem: (player: StatData) => JSX.Element | null): JSX.Element => (
+const isStatData = (element: PlayerLike): element is StatData => (element as StatData).element !== undefined
+
+const isElement = (element: PlayerLike): element is Element => (element as Element).id !== undefined
+
+const renderList = <T extends PlayerLike>(players: T[], renderItem: (player: T) => JSX.Element | null): JSX.Element => (
     <ul className="widget__list">
         {players.map(player => {
             const item = renderItem(player)
@@ -25,7 +31,10 @@ const renderList = (players: StatData[], renderItem: (player: StatData) => JSX.E
             }
 
             return (
-                <li className="widget__list__item" key={player.element.id}>
+                <li
+                    className="widget__list__item"
+                    key={isStatData(player) ? player.element.id : isElement(player) ? player.id : undefined}
+                >
                     {item}
                 </li>
             )
@@ -33,7 +42,7 @@ const renderList = (players: StatData[], renderItem: (player: StatData) => JSX.E
     </ul>
 )
 
-const BasePlayerWidget: React.FC<Props> = (props: Props) => {
+const BasePlayerWidget = <T extends PlayerLike>(props: Props<T>): React.ReactElement<Props<T>> | null => {
     const [value, setValue] = useState<string>('')
     const [showExtended, setShowExtended] = useState<boolean>(false)
 
@@ -58,7 +67,9 @@ const BasePlayerWidget: React.FC<Props> = (props: Props) => {
 
     const filteredPlayers = value
         ? props.players.filter(player =>
-              normaliseDiacritics(player.element.web_name)
+              normaliseDiacritics(
+                  isStatData(player) ? player.element.web_name : isElement(player) ? player.web_name : ''
+              )
                   .toLowerCase()
                   .includes(normaliseDiacritics(value).toLowerCase())
           )

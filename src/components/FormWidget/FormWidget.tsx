@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { BaseLiveWidget } from '../BaseLiveWidget'
+import { BasePlayerWidget } from '../BasePlayerWidget'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { last, sort } from '../../utilities'
+import { getPointsLabel, last, sort } from '../../utilities'
 import { Player } from '../Player'
 
 const TITLE = 'Form Breakdown'
@@ -24,7 +24,7 @@ const FormWidget: React.FC = () => {
     )
 
     return (
-        <BaseLiveWidget
+        <BasePlayerWidget
             title={TITLE}
             players={elements}
             max={MAX_ITEMS}
@@ -32,7 +32,7 @@ const FormWidget: React.FC = () => {
                 <>
                     <Player id={element.id} />
                     <div>
-                        <b>{element.form}</b>
+                        <b>{getPointsLabel(element.form)}</b>
                     </div>
                 </>
             )}

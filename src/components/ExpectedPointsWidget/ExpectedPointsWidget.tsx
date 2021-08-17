@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { BaseLiveWidget } from '../BaseLiveWidget'
+import { BasePlayerWidget } from '../BasePlayerWidget'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getPointsLabel, last, sort } from '../../utilities'
@@ -39,7 +39,7 @@ const ExpectedPointsWidget: React.FC<Props> = (props: Props) => {
     )
 
     return (
-        <BaseLiveWidget
+        <BasePlayerWidget
             title={props.gw === 'current' ? CURRENT_TITLE : NEXT_TITLE}
             players={elements}
             max={MAX_ITEMS}

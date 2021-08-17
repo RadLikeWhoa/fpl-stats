@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { BaseLiveWidget } from '../BaseLiveWidget'
+import { BasePlayerWidget } from '../BasePlayerWidget'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { last, sort } from '../../utilities'
@@ -36,7 +36,7 @@ const PriceChangeWidget: React.FC<Props> = (props: Props) => {
     )
 
     return (
-        <BaseLiveWidget
+        <BasePlayerWidget
             title={props.type === 'gains' ? GAINS_TITLE : DROPS_TITLE}
             players={elements}
             max={MAX_ITEMS}
