@@ -24,7 +24,9 @@ const GameweekWidget: React.FC = () => {
 
     const history = data.history
 
-    const differences = history.current.map((week, index) => week.points - bootstrap.events[index].average_entry_score)
+    const differences = history.current.map(
+        week => week.points - (bootstrap.events.find(el => el.id === week.event)?.average_entry_score || 0)
+    )
     const sortedRanks = sort(history.current, el => el.rank, 'asc')
 
     const gws = sort(history.current, el => el.points)
@@ -34,6 +36,8 @@ const GameweekWidget: React.FC = () => {
 
     const bestGWRank = head(sortedRanks)
     const worstGWRank = last(sortedRanks)
+
+    console.log(differences)
 
     return (
         <Widget title={TITLE}>
