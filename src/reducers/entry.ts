@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { Entry } from '../types'
 import { finishLoading, startLoading } from './loading'
 
 export const fetchEntry = createAsyncThunk('entry/fetch', async (id: number, thunkAPI) => {
@@ -26,6 +27,14 @@ const entry = createSlice({
         },
         fetchEntrySuccess(state, action) {
             state.data = action.payload
+
+            const recentTeams = JSON.parse(localStorage.getItem('recentTeams') || '[]') || []
+            const entry = action.payload as Entry
+
+            localStorage.setItem(
+                'recentTeams',
+                JSON.stringify(Array.from(new Set([`${entry.id} — ${entry.name}`, ...recentTeams])))
+            )
         },
     },
 })

@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import Select from 'react-select'
 import { Button } from '../Button'
 import { validateTeamId } from '../../utilities'
 import { RootState } from '../../reducers'
 import { Modal } from '../Modal'
 import { ModalInput } from '../ModalInput'
+import { OptionType } from '../Dashboard/Dashboard'
+import './TeamModal.scss'
 
 type Props = {
     onClose?: () => void
@@ -20,15 +23,17 @@ const TeamModal: React.FC<Props> = (props: Props) => {
 
     const history = useHistory()
 
+    const recentTeams: string[] = useMemo(() => JSON.parse(localStorage.getItem('recentTeams') || '[]') || [], [])
+
     const close = useCallback(
-        (cancel: boolean) => {
+        (cancel: boolean, team?: OptionType) => {
             if (!cancel) {
-                history.push(`/${value}/`)
+                history.push(`/${team?.value || value}/`)
             } else if (id) {
                 props.onClose?.()
             }
         },
-        [value, history, props, id]
+        [id, value, history, props]
     )
 
     useEffect(() => {
@@ -54,13 +59,20 @@ const TeamModal: React.FC<Props> = (props: Props) => {
         >
             <Modal
                 title="Select Team"
+                cssClasses="team-modal"
                 onClose={() => close(true)}
                 footer={
-                    <Button
-                        label="Show Stats"
-                        type="submit"
-                        disabled={!validateTeamId(value) || value === `${id}` || isLoading}
-                    />
+                    recentTeams.length > 0 ? (
+                        <Select
+                            className="team-modal__select"
+                            options={recentTeams.map(team => ({ value: team.split(' — ')[0], label: team }))}
+                            onChange={option => close(false, option as OptionType)}
+                            placeholder="Recent Team IDs…"
+                            styles={{
+                                menu: provided => ({ ...provided, zIndex: 20, width: 'calc(100% - 2rem)' }),
+                            }}
+                        />
+                    ) : null
                 }
             >
                 <ModalInput
@@ -69,6 +81,11 @@ const TeamModal: React.FC<Props> = (props: Props) => {
                     value={value}
                     onChange={value => setValue(value)}
                     innerRef={callbackRef}
+                />
+                <Button
+                    label="Show Stats"
+                    type="submit"
+                    disabled={!validateTeamId(value) || value === `${id}` || isLoading}
                 />
             </Modal>
         </form>

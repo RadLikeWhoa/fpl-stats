@@ -11,7 +11,7 @@ type Props = {
     cssClasses?: string
 }
 
-const TeamModal: React.FC<Props> = (props: Props) => {
+const Modal: React.FC<Props> = (props: Props) => {
     return (
         <div className={classNames('modal', props.cssClasses)}>
             <div className="modal__backdrop" onClick={() => props.onClose?.()}></div>
@@ -27,4 +27,4 @@ const TeamModal: React.FC<Props> = (props: Props) => {
     )
 }
 
-export default TeamModal
+export default Modal
