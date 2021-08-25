@@ -23,20 +23,26 @@ const MilestonesWidget: React.FC = () => {
                 </li>
                 {milestones.length >= 2 && (
                     <li className="widget__list__item">
-                        <span>Top 10K</span>
+                        <span>Top 1K</span>
                         <ChangeBadge value={entry.summary_overall_points - milestones[1].total} />
                     </li>
                 )}
                 {milestones.length >= 3 && (
                     <li className="widget__list__item">
-                        <span>Top 100K</span>
+                        <span>Top 10K</span>
                         <ChangeBadge value={entry.summary_overall_points - milestones[2].total} />
                     </li>
                 )}
-                {milestones.length === 4 && (
+                {milestones.length >= 4 && (
+                    <li className="widget__list__item">
+                        <span>Top 100K</span>
+                        <ChangeBadge value={entry.summary_overall_points - milestones[3].total} />
+                    </li>
+                )}
+                {milestones.length === 5 && (
                     <li className="widget__list__item">
                         <span>Top 1M</span>
-                        <ChangeBadge value={entry.summary_overall_points - milestones[3].total} />
+                        <ChangeBadge value={entry.summary_overall_points - milestones[4].total} />
                     </li>
                 )}
             </ul>

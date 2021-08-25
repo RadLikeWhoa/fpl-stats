@@ -45,8 +45,10 @@ const PriceChangeWidget: React.FC<Props> = (props: Props) => {
                     <Player id={element.id} />
                     <div>
                         <ChangeBadge
-                            value={props.type === 'gains' ? element.cost_change_event : element.cost_change_event_fall}
-                            renderer={input => `£ ${input / 10}`}
+                            value={
+                                props.type === 'gains' ? element.cost_change_event : element.cost_change_event_fall * -1
+                            }
+                            renderer={input => `£ ${Math.abs(input) / 10}`}
                         />
                     </div>
                 </>

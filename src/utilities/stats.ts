@@ -91,7 +91,7 @@ const getStreak = (
     const start = sumNumbers(streaks.slice(0, streaks.indexOf(max)).map(streak => (streak > 0 ? streak : 1)))
     const end = start - 1 + max
 
-    const points = (start === end ? statData.data : statData.data.slice(start, end)).map(event => event.points || 0)
+    const points = (start === end ? statData.data : statData.data.slice(start, end + 1)).map(event => event.points || 0)
 
     return {
         start: statData.data[start].event,
@@ -147,7 +147,7 @@ export const getTeamOfTheSeason = (stats: Stats): { xi: StatData[]; bench: StatD
     )
 
     const xi = sort(top.concat(rest.slice(0, 4)), el => el.element.element_type, 'asc')
-    const bench = sort(gk.slice(MIN_GK).concat(rest.slice(4)), el => el.element.element_type, 'asc')
+    const bench = gk.slice(MIN_GK).concat(sort(rest.slice(4), el => el.aggregates.totals.points, 'desc'))
 
     return {
         xi,

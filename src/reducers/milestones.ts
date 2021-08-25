@@ -19,7 +19,13 @@ export const fetchMilestones = createAsyncThunk('milestones/fetch', async (arg: 
     thunkAPI.dispatch(fetchMilestonesStart())
     thunkAPI.dispatch(startLoading())
 
-    const results = await Promise.all([fetchStanding(1), fetchStanding(20), fetchStanding(200), fetchStanding(20000)])
+    const results = await Promise.all([
+        fetchStanding(1),
+        fetchStanding(20),
+        fetchStanding(200),
+        fetchStanding(2000),
+        fetchStanding(20000),
+    ])
 
     const data = results.map((standings, index) =>
         index === 0 ? head(standings.standings.results) : last(standings.standings.results)

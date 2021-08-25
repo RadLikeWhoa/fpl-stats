@@ -33,7 +33,7 @@ const ExpectedPointsWidget: React.FC<Props> = (props: Props) => {
                 props.gw === 'next'
                     ? el.ep_next
                     : el.event_points !== null
-                    ? el.event_points - Number(el.ep_next)
+                    ? el.event_points - Number(el.ep_this)
                     : el.ep_this
             )
     )
