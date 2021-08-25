@@ -282,11 +282,11 @@ const Dashboard: React.FC = () => {
                     <div className="dashboard__widgets">
                         <PositionsWidget />
                         <FormationWidget />
-                        <SelectionWidget title="Top Selections" metric="selections" />
-                        <SelectionWidget title="Top Starters" metric="starts" />
-                        <SelectionWidget title="Top Bench Players" metric="benched" />
-                        <DifferenceWidget title="Most Consistent Starters" top />
-                        <DifferenceWidget title="Most Consistent Bench Players" />
+                        <SelectionWidget title="Frequent Selections" metric="selections" />
+                        <SelectionWidget title="Frequent Starters" metric="starts" />
+                        <SelectionWidget title="Frequent Bench Players" metric="benched" />
+                        <DifferenceWidget title="Consistent Starters" top />
+                        <DifferenceWidget title="Consistent Bench Players" />
                     </div>
                     <h2>
                         <span>Teams</span>
@@ -306,15 +306,11 @@ const Dashboard: React.FC = () => {
                         <span>Streaks</span>
                     </h2>
                     <div className="dashboard__widgets">
-                        <StreakWidget title="Highest Non-Blank Streaks" metric="nonBlank" showDetailedStats />
-                        <StreakWidget
-                            title="Highest Double-Digit Haul Streaks"
-                            metric="doubleDigitHaul"
-                            showDetailedStats
-                        />
-                        <StreakWidget title="Highest Selection Streaks" metric="selection" showDetailedStats />
-                        <StreakWidget title="Highest Start Streaks" metric="start" showDetailedStats />
-                        <StreakWidget title="Highest Bench Appearance Streaks" metric="bench" />
+                        <StreakWidget title="Non-Blank Streaks" metric="nonBlank" showDetailedStats />
+                        <StreakWidget title="Double-Digit Haul Streaks" metric="doubleDigitHaul" showDetailedStats />
+                        <StreakWidget title="Selection Streaks" metric="selection" showDetailedStats />
+                        <StreakWidget title="Start Streaks" metric="start" showDetailedStats />
+                        <StreakWidget title="Bench Appearance Streaks" metric="bench" />
                     </div>
                     <h2>
                         <span>Contributions</span>

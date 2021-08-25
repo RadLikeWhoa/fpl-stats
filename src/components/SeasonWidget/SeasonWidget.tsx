@@ -70,12 +70,12 @@ const SeasonWidget: React.FC = () => {
         : null
 
     const doubleDigitHauls = reduce(
-        allPlayers.map(player => [...player.data].filter(data => (data.rawPoints || 0) > 9).length),
+        allPlayers.map(player => [...player.data].filter(data => (data.points || 0) > 9).length),
         el => el
     )
 
     const totalPlays = reduce(
-        allPlayers.map(player => player.data.filter(data => data.multiplier !== null).length),
+        allPlayers.map(player => player.data.filter(data => data.multiplier !== null && data.multiplier > 0).length),
         el => el
     )
 
