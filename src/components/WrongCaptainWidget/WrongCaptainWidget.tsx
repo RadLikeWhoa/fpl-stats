@@ -24,17 +24,16 @@ const WrongCaptainWidget: React.FC = () => {
             top: head(sort(allPlayers, el => el.data[index].rawPoints || 0)),
             captain: allPlayers.find(player => (player.data[index].multiplier || 0) > 1),
         }))
-        .filter(
-            (element, index) =>
-                (element.top?.data[index].rawPoints || 0) > (element.captain?.data[index].rawPoints || 0)
-        )
         .reduce(
-            (acc, curr) =>
-                curr.captain
+            (acc, curr, index) =>
+                curr.captain && curr.top
                     ? {
                           ...acc,
                           [curr.captain.element.id]:
-                              (acc[curr.captain.element.id] ? acc[curr.captain.element.id] : 0) + 1,
+                              (acc[curr.captain.element.id] ? acc[curr.captain.element.id] : 0) +
+                              ((curr.captain.data[index].rawPoints || 0) < (curr.top.data[index].rawPoints || 0)
+                                  ? 1
+                                  : 0),
                       }
                     : acc,
             {} as Record<number, number>
@@ -51,19 +50,21 @@ const WrongCaptainWidget: React.FC = () => {
         <Widget title={TITLE}>
             {Object.entries(improvements).length > 0 && (
                 <ul className="widget__list">
-                    {sort(Object.entries(improvements), el => el[1]).map(([player, count]) => (
-                        <li className="widget__list__item" key={player}>
-                            <Player id={Number(player)} />
-                            <div>
+                    {sort(Object.entries(improvements), el => el[1] / timesUsed[Number(el[0])]).map(
+                        ([player, count]) => (
+                            <li className="widget__list__item" key={player}>
+                                <Player id={Number(player)} />
                                 <div>
-                                    <b>
-                                        {count} / {getGWCountLabel(timesUsed[Number(player)])}
-                                    </b>
+                                    <div>
+                                        <b>
+                                            {count} / {getGWCountLabel(timesUsed[Number(player)])}
+                                        </b>
+                                    </div>
+                                    <div className="muted">{round((count / timesUsed[Number(player)]) * 100, 1)}%</div>
                                 </div>
-                                <div className="muted">{round((count / timesUsed[Number(player)]) * 100, 1)}%</div>
-                            </div>
-                        </li>
-                    ))}
+                            </li>
+                        )
+                    )}
                 </ul>
             )}
         </Widget>

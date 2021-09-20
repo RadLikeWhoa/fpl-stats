@@ -37,8 +37,6 @@ const GameweekWidget: React.FC = () => {
     const bestGWRank = head(sortedRanks)
     const worstGWRank = last(sortedRanks)
 
-    console.log(differences)
-
     return (
         <Widget title={TITLE}>
             <ul className="widget__list">
