@@ -41,7 +41,7 @@ const OverallRankWidget: React.FC = () => {
             <div className="chart chart--reversed">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={rankData} margin={{ bottom: 45, left: 15, right: 15 }}>
-                        <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="1" />
+                        <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="0.75" />
                         <Area
                             type="monotone"
                             dataKey="value"

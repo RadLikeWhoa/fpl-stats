@@ -1,0 +1,63 @@
+@import "../../styles/mixins";
+
+.player-comparison-widget {
+    &__selection {
+        display: flex;
+
+        .player-comparison-widget__column {
+            padding: 1.5rem;
+
+            @include up-to("M") {
+                padding: 0.5rem;
+                border-bottom: 1px solid var(--widget-separator-color);
+
+                &:first-child {
+                    display: none;
+                }
+
+                &:last-child {
+                    border-bottom: 0;
+                }
+            }
+        }
+
+        @include up-to("M") {
+            flex-direction: column;
+        }
+    }
+
+    &__column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.5rem 1.5rem;
+        border-right: 1px solid var(--widget-separator-color);
+
+        &:first-child {
+            justify-content: flex-start;
+        }
+
+        &:last-child {
+            border-right: 0;
+        }
+    }
+
+    .comparison-list {
+        padding-left: 0;
+        margin-bottom: 3rem;
+        list-style: none;
+    }
+
+    .stat-comparison {
+        border-top: 1px solid var(--widget-separator-color);
+
+        &:last-child {
+            border-bottom: 1px solid var(--widget-separator-color);
+        }
+    }
+
+    &__chart {
+        padding-right: 1.5rem;
+    }
+}

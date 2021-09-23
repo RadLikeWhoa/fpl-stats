@@ -53,7 +53,7 @@ import { InjuryWidget } from '../InjuryWidget'
 import { ExpectedPointsWidget } from '../ExpectedPointsWidget'
 import { PopularityWidget } from '../PopularityWidget'
 import { TransfersWidget } from '../TransfersWidget'
-import { PotsWidget } from '../PotsWidget'
+import { PlayerComparisonWidget } from '../PlayerComparisonWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -239,9 +239,6 @@ const Dashboard: React.FC = () => {
                         <TotsWidget />
                         <NearMissesWidget />
                     </div>
-                    <div className="dashboard__widgets dashboard__widgets--single">
-                        <PotsWidget />
-                    </div>
                     <div className="dashboard__widgets">
                         <PlayerStatsWidget />
                         <SeasonWidget />
@@ -283,6 +280,9 @@ const Dashboard: React.FC = () => {
                         </div>
                     </div>
                     <PlayerOverview sort={sort} ref={playerOverviewRef} />
+                    <div className="dashboard__widgets dashboard__widgets--single">
+                        <PlayerComparisonWidget />
+                    </div>
                     <div className="dashboard__widgets">
                         <PositionsWidget />
                         <FormationWidget />

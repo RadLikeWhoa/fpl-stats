@@ -33,7 +33,7 @@ const ValueWidget: React.FC = () => {
             <div className="chart">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={valueData} margin={{ bottom: 45, left: 15, right: 15 }}>
-                        <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" fillOpacity="1" />
+                        <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" fillOpacity="0.75" />
                         <YAxis
                             tickFormatter={value => `£${value / 10}`}
                             domain={['auto', 'auto']}

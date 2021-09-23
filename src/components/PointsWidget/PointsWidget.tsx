@@ -34,8 +34,8 @@ const OverallRankWidget: React.FC = () => {
             <div className="chart">
                 <ResponsiveContainer height={300} width="100%">
                     <AreaChart data={pointsData} margin={{ bottom: 45, left: 15, right: 15 }}>
-                        <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" fillOpacity="1" />
-                        <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" fillOpacity="1" />
+                        <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" fillOpacity="0.75" />
+                        <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" fillOpacity="0.75" />
                         <YAxis interval="preserveStartEnd" />
                         <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
                         <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />

@@ -47,7 +47,15 @@ const ExpectedPointsWidget: React.FC<Props> = (props: Props) => {
                 <>
                     <Player id={element.id} />
                     <div className="expected-points-widget__data">
-                        <b>{getPointsLabel(props.gw === 'current' ? element.ep_this : element.ep_next)}</b>
+                        <b>
+                            {getPointsLabel(
+                                props.gw === 'current'
+                                    ? element.event_points !== null
+                                        ? element.event_points
+                                        : element.ep_this
+                                    : element.ep_next
+                            )}
+                        </b>
                         {props.gw === 'current' && element.event_points !== null && (
                             <>
                                 <ChangeBadge value={element.event_points - Number(element.ep_this)} />
