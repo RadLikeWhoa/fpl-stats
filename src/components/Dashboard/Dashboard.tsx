@@ -54,6 +54,7 @@ import { ExpectedPointsWidget } from '../ExpectedPointsWidget'
 import { PopularityWidget } from '../PopularityWidget'
 import { TransfersWidget } from '../TransfersWidget'
 import { PlayerComparisonWidget } from '../PlayerComparisonWidget'
+import { DoubleDigitHaulsWidget } from '../DoubleDigitHaulsWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -291,6 +292,12 @@ const Dashboard: React.FC = () => {
                         <SelectionWidget title="Frequent Bench Players" metric="benched" />
                         <DifferenceWidget title="Consistent Starters" top />
                         <DifferenceWidget title="Consistent Bench Players" />
+                    </div>
+                    <h2>
+                        <span>Returns</span>
+                    </h2>
+                    <div className="dashboard__widgets">
+                        <DoubleDigitHaulsWidget />
                     </div>
                     <h2>
                         <span>Teams</span>

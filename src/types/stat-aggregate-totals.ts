@@ -20,4 +20,5 @@ export type StatAggregateTotals = {
     selections: number
     starts: number
     benched: number
+    doubleDigitHauls: number
 }

@@ -41,6 +41,10 @@ export const getTotalBenchPoints = (statData: StatData): number => {
     return reduce(statData.data, el => (el.multiplier === 0 ? el.rawPoints || 0 : 0))
 }
 
+export const getTotalDoubleDigitHauls = (statData: StatData): number => {
+    return statData.data.filter(data => (data.rawPoints || 0) > 9).length
+}
+
 export const getAllPlayers = (stats: Stats): StatData[] => {
     return Object.values(stats).reduce((acc, curr) => acc.concat(curr), [])
 }
@@ -178,6 +182,7 @@ const emptyAggregates = {
         selections: 0,
         starts: 0,
         benched: 0,
+        doubleDigitHauls: 0,
     },
     streaks: {
         selection: null,
@@ -295,6 +300,7 @@ export const filterStatData = async (
                 selections: getTotalSelections(player),
                 starts: getTotalStarts(player),
                 benched: getTotalBenched(player),
+                doubleDigitHauls: getTotalDoubleDigitHauls(player),
             },
             streaks: {
                 selection: getSelectionStreak(player),
