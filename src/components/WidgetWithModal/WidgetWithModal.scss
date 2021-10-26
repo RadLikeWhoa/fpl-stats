@@ -1,6 +1,6 @@
 @import "../../styles/variables";
 
-.base-player-widget {
+.widget-with-modal {
     display: flex;
     flex-direction: column;
 
@@ -20,7 +20,7 @@
     }
 }
 
-.modal--players {
+.modal--list-widget {
     .widget {
         display: flex;
         flex-direction: column;

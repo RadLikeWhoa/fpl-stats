@@ -19,7 +19,12 @@ const InjuryWidget: React.FC = () => {
 
     const picks = last(stats)?.pick.picks.map(el => el.element)
     const elements = sort(
-        bootstrap.elements.filter(el => picks?.includes(el.id) && el.chance_of_playing_next_round !== null),
+        bootstrap.elements.filter(
+            el =>
+                picks?.includes(el.id) &&
+                el.chance_of_playing_next_round !== null &&
+                el.chance_of_playing_next_round !== 100
+        ),
         el => Number(el.chance_of_playing_next_round),
         'asc'
     )

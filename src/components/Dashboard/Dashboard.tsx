@@ -55,6 +55,8 @@ import { PopularityWidget } from '../PopularityWidget'
 import { TransfersWidget } from '../TransfersWidget'
 import { PlayerComparisonWidget } from '../PlayerComparisonWidget'
 import { DoubleDigitHaulsWidget } from '../DoubleDigitHaulsWidget'
+import { PlayerGWReturnWidget } from '../PlayerGWReturnWidget'
+import { TeamGWReturnWidget } from '../TeamGWReturnWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -271,6 +273,10 @@ const Dashboard: React.FC = () => {
                                 Benched
                             </div>
                             <div className="dashboard__color">
+                                <div className="dashboard__color__indicator dashboard__color__indicator--captain"></div>
+                                Captain
+                            </div>
+                            <div className="dashboard__color">
                                 <div className="dashboard__color__indicator dashboard__color__indicator--triple"></div>
                                 TC
                             </div>
@@ -297,7 +303,10 @@ const Dashboard: React.FC = () => {
                         <span>Returns</span>
                     </h2>
                     <div className="dashboard__widgets">
+                        <PlayerGWReturnWidget stat="points" />
+                        <PlayerGWReturnWidget stat="benchPoints" />
                         <DoubleDigitHaulsWidget />
+                        <TeamGWReturnWidget />
                     </div>
                     <h2>
                         <span>Teams</span>

@@ -144,7 +144,8 @@ const PlayerStatsWidget: React.FC = () => {
                                     return (
                                         <>
                                             {' '}
-                                            ({getPointsLabel(week.points || 0)}, <SiteLink event={week.event.id} />)
+                                            ({getPointsLabel(week.points || 0)}, <SiteLink event={week.event.id} />
+                                            {(week.multiplier || 0) > 1 ? ', C' : ''})
                                         </>
                                     )
                                 }}

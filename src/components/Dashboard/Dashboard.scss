@@ -94,6 +94,10 @@
             &--triple {
                 background-color: var(--dashboard-triple-color);
             }
+
+            &--captain {
+                background-color: var(--dashboard-captain-color);
+            }
         }
 
         + .dashboard__color {

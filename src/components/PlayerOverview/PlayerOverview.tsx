@@ -52,6 +52,7 @@ const renderPlayerList = (
                                 key={item.event.id}
                                 className={classNames('player-overview__stat', {
                                     'player-overview__stat--benched': item.multiplier === 0,
+                                    'player-overview__stat--captain': item.multiplier === 2,
                                     'player-overview__stat--triple': item.multiplier === 3,
                                     'player-overview__stat--started': item.multiplier,
                                 })}
