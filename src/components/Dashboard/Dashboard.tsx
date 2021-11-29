@@ -57,6 +57,7 @@ import { PlayerComparisonWidget } from '../PlayerComparisonWidget'
 import { DoubleDigitHaulsWidget } from '../DoubleDigitHaulsWidget'
 import { PlayerGWReturnWidget } from '../PlayerGWReturnWidget'
 import { TeamGWReturnWidget } from '../TeamGWReturnWidget'
+import { TeamContributionWidget } from '../TeamContributionWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -130,10 +131,7 @@ const Dashboard: React.FC = () => {
         } else if (team && validateTeamId(team)) {
             setIsModalOpen(false)
 
-            console.log(team, entry?.id, isLoading)
-
             if (Number(team) !== entry?.id && !isLoading) {
-                console.log('fetching')
                 dispatch(fetchDataWithId(Number(team)))
             }
         } else {
@@ -340,7 +338,9 @@ const Dashboard: React.FC = () => {
                     </h2>
                     <div className="dashboard__widgets">
                         <ContributionWidget />
-                        {range.end - range.start + 1 === rawHistory?.current?.length && (
+                        <TeamContributionWidget />
+                        {(range.end - range.start + 1 === rawHistory?.current?.length ||
+                            range.end - range.start === 37) && (
                             <>
                                 <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
                                 <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />

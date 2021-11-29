@@ -8,7 +8,7 @@ import { Player } from '../Player'
 import { Widget } from '../Widget'
 
 const MAX_ITEMS = 5
-const TITLE = 'Total Points Contribution'
+const TITLE = 'Total Points Contribution by Player'
 
 const ContributionWidget: React.FC = () => {
     const data = useContext(FilteredDataContext)
