@@ -5,6 +5,7 @@ import Select, { ValueType } from 'react-select'
 import { useParams, useHistory } from 'react-router-dom'
 import debounce from 'lodash/debounce'
 import ReactSlider from 'react-slider'
+import { Helmet } from 'react-helmet'
 import { StatData, Stats, History, Range } from '../../types'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
@@ -185,6 +186,12 @@ const Dashboard: React.FC = () => {
 
     return (
         <FilteredDataContext.Provider value={filteredData}>
+            <Helmet>
+                <meta
+                    name="theme-color"
+                    content={getComputedStyle(document.documentElement).getPropertyValue('--body-background-color')}
+                />
+            </Helmet>
             <div className="dashboard">
                 {isModalOpen && <TeamModal onClose={() => setIsModalOpen(false)} />}
                 {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} />}
