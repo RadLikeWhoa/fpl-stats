@@ -130,13 +130,16 @@ const Dashboard: React.FC = () => {
         } else if (team && validateTeamId(team)) {
             setIsModalOpen(false)
 
-            if (Number(team) !== id) {
+            console.log(team, entry?.id, isLoading)
+
+            if (Number(team) !== entry?.id && !isLoading) {
+                console.log('fetching')
                 dispatch(fetchDataWithId(Number(team)))
             }
         } else {
             browserHistory.push('/')
         }
-    }, [team, browserHistory, dispatch, id])
+    }, [team, browserHistory, dispatch, id, isLoading, entry])
 
     useEffect(() => {
         setTimeout(() => {

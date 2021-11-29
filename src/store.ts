@@ -7,7 +7,9 @@ const isStale = () => localStorage.getItem('storageVersion') !== STORAGE_VERSION
 
 export default function configureAppStore() {
     const storage = localStorage.getItem('applicationSettings')
+    const recentTeams = localStorage.getItem('recentTeams')
 
+    const mostRecentTeamId = recentTeams ? JSON.parse(recentTeams)?.[0].split(' — ')?.[0] : undefined
     const preloadedState = storage !== null && !isStale() ? JSON.parse(storage) : {}
 
     const store = configureStore({
@@ -17,7 +19,7 @@ export default function configureAppStore() {
             settings: {
                 theme: 'light',
                 meanStrategy: 'average',
-                id: undefined,
+                id: mostRecentTeamId ? Number(mostRecentTeamId) : undefined,
                 range: {
                     start: 0,
                     end: 38,
