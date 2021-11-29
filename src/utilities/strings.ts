@@ -6,7 +6,8 @@ export const pluralise = (value: number | string, singular: string, plural: stri
     return `${value} ${parsedValue === 1 ? singular : plural}`
 }
 
-export const getGWCountLabel = (value: number | string): string => pluralise(value, 'GW', 'GWs')
+export const getGWCountLabel = (value: number | string, verbose: boolean = false): string =>
+    verbose ? pluralise(value, 'Gameweek', 'Gameweeks') : pluralise(value, 'GW', 'GWs')
 
 export const getPointsLabel = (value: number | string): string => pluralise(value, 'pt', 'pts')
 

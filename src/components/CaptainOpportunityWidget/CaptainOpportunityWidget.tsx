@@ -5,6 +5,7 @@ import { Widget } from '../Widget'
 import { SwapIcon } from '../SwapIcon'
 import { SiteLink } from '../SiteLink'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
+import { getGWCountLabel } from '../../utilities/strings'
 import './CaptainOpportunityWidget.scss'
 
 const TITLE = 'Missed Captaincies'
@@ -20,48 +21,60 @@ const CaptainOpportunityWidget: React.FC = () => {
     const history = data.history
 
     const allPlayers = getAllPlayers(stats)
-    const weeks = history.current.length
 
-    const improvements = Array.from(Array(weeks).keys()).map((el, index) => ({
-        top: head(sort(allPlayers, el => el.data[index].rawPoints || 0)),
-        captain: allPlayers.find(player => (player.data[index].multiplier || 0) > 1),
-    }))
+    const improvements = history.current
+        .map((el, index) => ({
+            event: el.event,
+            top: head(sort(allPlayers, el => el.data[index].rawPoints || 0)),
+            captain: allPlayers.find(player => (player.data[index].multiplier || 0) > 1),
+        }))
+        .filter(
+            (improvement, index) =>
+                improvement.top &&
+                improvement.captain &&
+                improvement.captain.data[index].rawPoints !== improvement.top.data[index].rawPoints
+        )
+
+    const missedPoints = improvements.reduce((acc, improvement) => {
+        const captainData = improvement.captain?.data.find(el => el.event.id === improvement.event)
+        const topData = improvement.top?.data.find(el => el.event.id === improvement.event)
+
+        return acc + ((topData?.rawPoints || 0) - (captainData?.rawPoints || 0))
+    }, 0)
 
     return (
         <Widget title={TITLE} cssClasses="captain-opportunity-widget">
             {improvements.length > 0 && (
-                <ul className="widget__list">
-                    {improvements.map((improvement, index) => {
-                        if (!improvement.captain || !improvement.top) {
-                            return null
-                        }
+                <>
+                    <div className="widget__detail">
+                        Missed a total of <b>{getPointsLabel(missedPoints)}</b> accross{' '}
+                        <b>{getGWCountLabel(improvements.length, true)}</b>.
+                    </div>
+                    <ul className="widget__list">
+                        {improvements.map(improvement => {
+                            const captainData = improvement.captain?.data.find(el => el.event.id === improvement.event)
+                            const topData = improvement.top?.data.find(el => el.event.id === improvement.event)
 
-                        const captainData = improvement.captain.data[index]
-                        const topData = improvement.top.data[index]
-
-                        if (captainData.rawPoints === topData.rawPoints) {
-                            return null
-                        }
-
-                        return (
-                            <li className="widget__list__item" key={captainData.event.id}>
-                                <div className="captain-opportunity-widget__group">
-                                    <div className="captain-opportunity-widget__player">
-                                        <b>OUT:</b> <Player id={improvement.captain.element.id} />
+                            return (
+                                <li className="widget__list__item" key={captainData?.event.id}>
+                                    <div className="captain-opportunity-widget__group">
+                                        <div className="captain-opportunity-widget__player">
+                                            <b>OUT:</b> <Player id={improvement.captain?.element.id || 0} />
+                                        </div>
+                                        <div className="captain-opportunity-widget__player">
+                                            <b>IN:</b> <Player id={improvement.top?.element.id || 0} />
+                                        </div>
                                     </div>
-                                    <div className="captain-opportunity-widget__player">
-                                        <b>IN:</b> <Player id={improvement.top.element.id} />
+                                    <div className="captain-opportunity-widget__swap-info">
+                                        <b>{getPointsLabel((captainData?.rawPoints || 0) * 2)}</b> <SwapIcon />{' '}
+                                        <b>{getPointsLabel((topData?.rawPoints || 0) * 2)} </b> (
+                                        <SiteLink event={captainData?.event.id} />)
                                     </div>
-                                </div>
-                                <div className="captain-opportunity-widget__swap-info">
-                                    <b>{getPointsLabel((captainData.rawPoints || 0) * 2)}</b> <SwapIcon />{' '}
-                                    <b>{getPointsLabel((topData.rawPoints || 0) * 2)} </b> (
-                                    <SiteLink event={captainData.event.id} />)
-                                </div>
-                            </li>
-                        )
-                    })}
-                </ul>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </>
             )}
         </Widget>
     )

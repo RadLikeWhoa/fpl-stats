@@ -104,4 +104,9 @@
             text-align: center;
         }
     }
+
+    &__detail {
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--widget-separator-color);
+    }
 }

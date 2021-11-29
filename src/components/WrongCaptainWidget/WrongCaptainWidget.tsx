@@ -46,26 +46,35 @@ const WrongCaptainWidget: React.FC = () => {
         }
     }, {} as Record<number, number>)
 
+    const totalMisses = Object.values(improvements).reduce((acc, curr) => acc + curr, 0)
+
     return (
         <Widget title={TITLE}>
             {Object.entries(improvements).length > 0 && (
-                <ul className="widget__list">
-                    {sort(Object.entries(improvements), el => el[1] / timesUsed[Number(el[0])]).map(
-                        ([player, count]) => (
-                            <li className="widget__list__item" key={player}>
-                                <Player id={Number(player)} />
-                                <div>
+                <>
+                    <div className="widget__detail">
+                        Selected the wrong captain in <b>{getGWCountLabel(totalMisses, true)}</b>.
+                    </div>
+                    <ul className="widget__list">
+                        {sort(Object.entries(improvements), el => el[1] / timesUsed[Number(el[0])]).map(
+                            ([player, count]) => (
+                                <li className="widget__list__item" key={player}>
+                                    <Player id={Number(player)} />
                                     <div>
-                                        <b>
-                                            {count} / {getGWCountLabel(timesUsed[Number(player)])}
-                                        </b>
+                                        <div>
+                                            <b>
+                                                {count} / {getGWCountLabel(timesUsed[Number(player)])}
+                                            </b>
+                                        </div>
+                                        <div className="muted">
+                                            {round((count / timesUsed[Number(player)]) * 100, 1)}%
+                                        </div>
                                     </div>
-                                    <div className="muted">{round((count / timesUsed[Number(player)]) * 100, 1)}%</div>
-                                </div>
-                            </li>
-                        )
-                    )}
-                </ul>
+                                </li>
+                            )
+                        )}
+                    </ul>
+                </>
             )}
         </Widget>
     )
