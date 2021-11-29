@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/fpl-stats/static/css/main.16d38bb0.chunk.css",
-    "main.js": "/fpl-stats/static/js/main.e58233f6.chunk.js",
-    "main.js.map": "/fpl-stats/static/js/main.e58233f6.chunk.js.map",
+    "main.css": "/fpl-stats/static/css/main.67f669c1.chunk.css",
+    "main.js": "/fpl-stats/static/js/main.04312aae.chunk.js",
+    "main.js.map": "/fpl-stats/static/js/main.04312aae.chunk.js.map",
     "runtime-main.js": "/fpl-stats/static/js/runtime-main.679ff104.js",
     "runtime-main.js.map": "/fpl-stats/static/js/runtime-main.679ff104.js.map",
     "static/js/2.e04aa5e1.chunk.js": "/fpl-stats/static/js/2.e04aa5e1.chunk.js",
@@ -10,13 +10,13 @@
     "static/js/3.b078e0cc.chunk.js": "/fpl-stats/static/js/3.b078e0cc.chunk.js",
     "static/js/3.b078e0cc.chunk.js.map": "/fpl-stats/static/js/3.b078e0cc.chunk.js.map",
     "index.html": "/fpl-stats/index.html",
-    "static/css/main.16d38bb0.chunk.css.map": "/fpl-stats/static/css/main.16d38bb0.chunk.css.map",
+    "static/css/main.67f669c1.chunk.css.map": "/fpl-stats/static/css/main.67f669c1.chunk.css.map",
     "static/js/2.e04aa5e1.chunk.js.LICENSE.txt": "/fpl-stats/static/js/2.e04aa5e1.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.679ff104.js",
     "static/js/2.e04aa5e1.chunk.js",
-    "static/css/main.16d38bb0.chunk.css",
-    "static/js/main.e58233f6.chunk.js"
+    "static/css/main.67f669c1.chunk.css",
+    "static/js/main.04312aae.chunk.js"
   ]
 }
