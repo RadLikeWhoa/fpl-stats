@@ -59,6 +59,7 @@ import { DoubleDigitHaulsWidget } from '../DoubleDigitHaulsWidget'
 import { PlayerGWReturnWidget } from '../PlayerGWReturnWidget'
 import { TeamGWReturnWidget } from '../TeamGWReturnWidget'
 import { TeamContributionWidget } from '../TeamContributionWidget'
+import { PointsImprovementsWidget } from '../PointsImprovementsWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -256,6 +257,12 @@ const Dashboard: React.FC = () => {
                         <HistoryWidget />
                         <GameweekWidget />
                         <MilestonesWidget />
+                    </div>
+                    <h2>
+                        <span>Improvements</span>
+                    </h2>
+                    <div className="dashboard__widgets dashboard__widgets--single">
+                        <PointsImprovementsWidget />
                     </div>
                     <h2>
                         <span>Players</span>

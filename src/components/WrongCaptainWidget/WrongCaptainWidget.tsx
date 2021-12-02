@@ -56,23 +56,19 @@ const WrongCaptainWidget: React.FC = () => {
                         Selected the wrong captain in <b>{getGWCountLabel(totalMisses, true)}</b>.
                     </div>
                     <ul className="widget__list">
-                        {sort(Object.entries(improvements), el => el[1] / timesUsed[Number(el[0])]).map(
-                            ([player, count]) => (
-                                <li className="widget__list__item" key={player}>
-                                    <Player id={Number(player)} />
+                        {sort(Object.entries(improvements), el => el[1]).map(([player, count]) => (
+                            <li className="widget__list__item" key={player}>
+                                <Player id={Number(player)} />
+                                <div>
                                     <div>
-                                        <div>
-                                            <b>
-                                                {count} / {getGWCountLabel(timesUsed[Number(player)])}
-                                            </b>
-                                        </div>
-                                        <div className="muted">
-                                            {round((count / timesUsed[Number(player)]) * 100, 1)}%
-                                        </div>
+                                        <b>
+                                            {count} / {getGWCountLabel(timesUsed[Number(player)])}
+                                        </b>
                                     </div>
-                                </li>
-                            )
-                        )}
+                                    <div className="muted">{round((count / timesUsed[Number(player)]) * 100, 1)}%</div>
+                                </div>
+                            </li>
+                        ))}
                     </ul>
                 </>
             )}

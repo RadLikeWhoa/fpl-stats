@@ -11,4 +11,9 @@
         color: var(--change-negative-color);
         background-color: var(--change-negative-background-color);
     }
+
+    &--neutral {
+        color: var(--change-neutral-color);
+        background-color: var(--change-neutral-background-color);
+    }
 }

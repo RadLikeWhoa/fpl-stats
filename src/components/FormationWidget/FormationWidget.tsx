@@ -12,7 +12,7 @@ type FormationInformation = {
 
 const TITLE = 'Formations'
 
-const formatFormation = (formation: string) =>
+export const formatFormation = (formation: string) =>
     sumNumbers(formation.split('-').map(position => Number(position))) > 10 ? 'Bench Boost' : formation
 
 const FormationWidget: React.FC = () => {

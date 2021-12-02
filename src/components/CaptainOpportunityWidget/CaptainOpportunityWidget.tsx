@@ -58,15 +58,13 @@ const CaptainOpportunityWidget: React.FC = () => {
                             return (
                                 <li className="widget__list__item" key={captainData?.event.id}>
                                     <div className="captain-opportunity-widget__group">
-                                        <div className="captain-opportunity-widget__player">
-                                            <b>OUT:</b> <Player id={improvement.captain?.element.id || 0} />
-                                        </div>
-                                        <div className="captain-opportunity-widget__player">
-                                            <b>IN:</b> <Player id={improvement.top?.element.id || 0} />
-                                        </div>
+                                        <Player id={improvement.captain?.element.id || 0} />
+                                        <SwapIcon />
+                                        <Player id={improvement.top?.element.id || 0} />
                                     </div>
                                     <div className="captain-opportunity-widget__swap-info">
-                                        <b>{getPointsLabel((captainData?.rawPoints || 0) * 2)}</b> <SwapIcon />{' '}
+                                        <b>{getPointsLabel((captainData?.rawPoints || 0) * 2)}</b>
+                                        <SwapIcon />
                                         <b>{getPointsLabel((topData?.rawPoints || 0) * 2)} </b> (
                                         <SiteLink event={captainData?.event.id} />)
                                     </div>

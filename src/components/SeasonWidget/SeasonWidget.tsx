@@ -11,6 +11,7 @@ import {
     round,
     getPointsLabel,
     last,
+    sort,
 } from '../../utilities'
 import { SiteLink } from '../SiteLink'
 import { StatData } from '../../types'
@@ -53,6 +54,7 @@ const SeasonWidget: React.FC = () => {
 
     const totalTransfers = reduce(history.current, el => el.event_transfers)
     const totalHits = reduce(history.current, el => el.event_transfers_cost / 4)
+    const largestHit = head(sort(history.current, el => el.event_transfers_cost))
     const totalBenched = reduce(history.current, el => el.points_on_bench)
 
     const tc = allPlayers
@@ -99,6 +101,10 @@ const SeasonWidget: React.FC = () => {
                         {entry.summary_overall_points > 0 ? round(((totalHits * 4) / totalPoints) * 100) : 0}
                         %)
                     </span>
+                </li>
+                <li className="widget__list__item">
+                    <span>Largest Hit</span>
+                    <b>{getPointsLabel(largestHit?.event_transfers_cost || 0)}</b>
                 </li>
                 <li className="widget__list__item">
                     <span>Total Points</span>

@@ -5,7 +5,7 @@ import { Player } from '../Player'
 import { BasePlayerWidget } from '../BasePlayerWidget'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
 
-const MAX_ITEMS = 5
+const MAX_ITEMS = 10
 
 type Props = {
     title: string

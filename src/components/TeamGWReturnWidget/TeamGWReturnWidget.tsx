@@ -11,7 +11,7 @@ import { CurrentHistory, Team as TeamType } from '../../types'
 import { WidgetWithModal } from '../WidgetWithModal'
 
 const TITLE = 'Top GW Teams'
-const MAX_ITEMS = 15
+const MAX_ITEMS = 10
 
 type TeamData = {
     team: TeamType

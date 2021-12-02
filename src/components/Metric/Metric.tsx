@@ -4,10 +4,11 @@ import './Metric.scss'
 const explanations = {
     ppg: 'Points per Game',
     ppp: 'Points per Player',
+    ppw: 'Points per Week',
 }
 
 type Props = {
-    metric: 'ppg' | 'ppp'
+    metric: 'ppg' | 'ppp' | 'ppw'
 }
 
 const Metric: React.FC<Props> = (props: Props) => {

@@ -9,7 +9,7 @@ import { SiteLink } from '../SiteLink'
 
 const POINTS_TITLE = 'Top GW Points'
 const BENCH_TITLE = 'Top GW Bench Points'
-const MAX_ITEMS = 15
+const MAX_ITEMS = 10
 
 type Props = {
     stat: 'points' | 'benchPoints'

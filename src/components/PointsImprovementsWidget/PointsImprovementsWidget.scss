@@ -1,0 +1,101 @@
+@import "../../styles/mixins";
+
+.point-improvements-widget {
+    .widget__list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .widget__list__item {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 25%;
+        padding: 0.5rem;
+        border-right: 1px solid var(--widget-separator-color);
+        border-bottom: 1px solid var(--widget-separator-color);
+
+        .player {
+            margin: 0;
+
+            @include up-to("M") {
+                padding: 0.5rem 0;
+            }
+        }
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        @include up-to("L") {
+            width: 50%;
+        }
+
+        @include up-to("M") {
+            width: 100%;
+        }
+    }
+
+    &__detail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .change-badge {
+            margin-left: 0.5rem;
+        }
+    }
+
+    &__category {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        margin-top: 1.25rem;
+        text-align: center;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--widget-separator-color);
+        }
+
+        &::after {
+            content: attr(data-category);
+            position: absolute;
+            top: -0.5rem;
+            left: 50%;
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--muted-color);
+            background-color: var(--widget-background-color);
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    &__swap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .swap-icon {
+            margin: 0 0.5rem;
+        }
+
+        & + & {
+            margin-top: -0.5rem;
+        }
+    }
+
+    &__formation {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+}

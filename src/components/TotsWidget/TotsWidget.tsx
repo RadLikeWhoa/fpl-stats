@@ -17,7 +17,7 @@ const TotsWidget: React.FC = () => {
         <Widget title={TITLE} cssClasses="tots-widget">
             <div className="tots">
                 {[...Array(4)].map((el, index) => (
-                    <>
+                    <React.Fragment key={el}>
                         {data && (
                             <div className="tots__row">
                                 {data.stats.tots.xi
@@ -31,7 +31,7 @@ const TotsWidget: React.FC = () => {
                                     ))}
                             </div>
                         )}
-                    </>
+                    </React.Fragment>
                 ))}
                 <div className="tots__row tots__row--bench">
                     {data.stats.tots.bench.map(player => (

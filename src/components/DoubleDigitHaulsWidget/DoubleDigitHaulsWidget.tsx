@@ -6,7 +6,7 @@ import { BasePlayerWidget } from '../BasePlayerWidget'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Double Digit Hauls'
-const MAX_ITEMS = 15
+const MAX_ITEMS = 10
 
 const DoubleDigitHaulsWidget: React.FC = () => {
     const data = useContext(FilteredDataContext)
