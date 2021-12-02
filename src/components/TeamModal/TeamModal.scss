@@ -20,6 +20,7 @@
         width: calc(100% + 2rem);
         margin: -1rem;
         padding: 1rem;
+        color: var(--autocomplete-color);
         background-color: var(--body-background-color);
         border-radius: 0 0 $border-radius $border-radius;
     }
