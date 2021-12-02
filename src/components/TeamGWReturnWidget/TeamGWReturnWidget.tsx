@@ -25,9 +25,11 @@ const renderItem = (item: TeamData): JSX.Element => {
         <>
             <Team team={item.team} />
             <div>
-                <b>{getPointsLabel(item.points || 0)}</b> (
-                <SiteLink event={item.event.event} />, {round((item.points || 0) / item.players)}{' '}
-                <Metric metric="ppp" />)
+                <b>{getPointsLabel(item.points || 0)}</b>
+                <div>
+                    <SiteLink event={item.event.event} />, {round((item.points || 0) / item.players)}{' '}
+                    <Metric metric="ppp" />
+                </div>
             </div>
         </>
     )

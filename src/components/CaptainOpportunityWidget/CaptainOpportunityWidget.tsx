@@ -65,8 +65,10 @@ const CaptainOpportunityWidget: React.FC = () => {
                                     <div className="captain-opportunity-widget__swap-info">
                                         <b>{getPointsLabel((captainData?.rawPoints || 0) * 2)}</b>
                                         <SwapIcon />
-                                        <b>{getPointsLabel((topData?.rawPoints || 0) * 2)} </b> (
-                                        <SiteLink event={captainData?.event.id} />)
+                                        <b>{getPointsLabel((topData?.rawPoints || 0) * 2)} </b>
+                                        <div>
+                                            <SiteLink event={captainData?.event.id} />
+                                        </div>
                                     </div>
                                 </li>
                             )

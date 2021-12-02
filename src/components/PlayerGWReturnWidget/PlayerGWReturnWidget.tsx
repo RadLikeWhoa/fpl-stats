@@ -49,9 +49,11 @@ const PlayerGWReturnWidget: React.FC<Props> = (props: Props) => {
                 <>
                     <Player id={element.element.id} />
                     <div>
-                        <b>{getPointsLabel(element.data[0][props.stat] || 0)}</b> (
-                        <SiteLink event={element.data[0].event.id} />
-                        {(element.data[0].multiplier || 0) > 1 ? ', C' : ''})
+                        <b>{getPointsLabel(element.data[0][props.stat] || 0)}</b>
+                        <div>
+                            <SiteLink event={element.data[0].event.id} />
+                            {(element.data[0].multiplier || 0) > 1 ? ', C' : ''}
+                        </div>
                     </div>
                 </>
             )}
