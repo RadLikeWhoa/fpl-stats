@@ -134,6 +134,8 @@ const PointsImprovementsWidget: React.FC = () => {
 
             gk.data[0].multiplier = benchGk.data[0].multiplier
             benchGk.data[0].multiplier = originalMultiplier
+
+            subs = [{ in: gk, out: benchGk }, ...subs]
         }
 
         const rotatedPlayers = [gk, ...outfieldXi]
