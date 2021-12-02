@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import { useMeanValue } from '../../hooks'
-import { StatAggregateStreaks } from '../../types'
-import { getAllPlayers, getGWCountLabel, getPointsLabel, round } from '../../utilities'
-import { BasePlayerWidget } from '../BasePlayerWidget'
+import { StatAggregateStreaks, Streak, Element } from '../../types'
+import { getAllPlayers, getGWCountLabel, getPointsLabel, normaliseDiacritics, round, sort } from '../../utilities'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
+import { WidgetWithModal } from '../WidgetWithModal'
 
 const MAX_ITEMS = 5
 
@@ -16,6 +16,15 @@ type Props = {
     metric: keyof StatAggregateStreaks
     showDetailedStats?: boolean
 }
+
+type PlayerStreak = Streak & {
+    player: Element
+}
+
+const getItemKey = (streak: PlayerStreak) => `${streak.player.id}-${streak.start.id}`
+
+const matchesFilter = (streak: PlayerStreak, query: string) =>
+    streak.player.web_name.toLowerCase().includes(normaliseDiacritics(query).toLowerCase())
 
 const StreakWidget: React.FC<Props> = (props: Props) => {
     const data = useContext(FilteredDataContext)
@@ -28,37 +37,29 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
 
     const stats = data.stats.data
 
-    const streakers = getAllPlayers(stats)
-        .sort((a, b) => {
-            const aStreak = a.aggregates.streaks[props.metric]
-            const bStreak = b.aggregates.streaks[props.metric]
-
-            const aStreakLength = a.aggregates.streaks[props.metric]?.length || 0
-            const bStreakLength = b.aggregates.streaks[props.metric]?.length || 0
-
-            if (bStreakLength - aStreakLength === 0) {
-                return (bStreak?.totalPoints || 0) - (aStreak?.totalPoints || 0)
-            }
-
-            return bStreakLength - aStreakLength
-        })
-        .filter(streaker => streaker.aggregates.streaks[props.metric] !== null)
+    const streaks = sort(
+        getAllPlayers(stats).reduce(
+            (acc, player) => [
+                ...acc,
+                ...(player.aggregates.streaks[props.metric] || [])?.map(streak => ({
+                    ...streak,
+                    player: player.element,
+                })),
+            ],
+            [] as PlayerStreak[]
+        ),
+        el => el.length
+    )
 
     return (
-        <BasePlayerWidget
+        <WidgetWithModal
             title={props.title}
-            players={streakers}
             max={MAX_ITEMS}
-            renderItem={streaker => {
-                const streak = streaker.aggregates.streaks[props.metric]
-
-                if (!streak) {
-                    return null
-                }
-
+            data={streaks}
+            renderItem={streak => {
                 return (
                     <>
-                        <Player id={streaker.element.id} />
+                        <Player id={streak.player.id} />
                         <div>
                             <div className="duration">
                                 <SiteLink event={streak.start.id} />
@@ -83,6 +84,8 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
                     </>
                 )
             }}
+            getItemKey={getItemKey}
+            matchesFilter={matchesFilter}
         />
     )
 }

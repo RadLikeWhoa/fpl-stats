@@ -69,7 +69,7 @@ const getStreak = (
     statData: StatData,
     comparison: (gw: StatDataGameweek) => boolean,
     ignoreBlanks: boolean = false
-): Streak | null => {
+): Streak[] | null => {
     const streaks = statData.data.reduce((acc, curr) => {
         if (comparison(curr)) {
             if (ignoreBlanks) {
@@ -92,33 +92,43 @@ const getStreak = (
         return null
     }
 
-    const start = sumNumbers(streaks.slice(0, streaks.indexOf(max)).map(streak => (streak > 0 ? streak : 1)))
-    const end = start - 1 + max
+    return streaks
+        .map((length, index) => {
+            if (length < 2) {
+                return null
+            }
 
-    const points = (start === end ? statData.data : statData.data.slice(start, end + 1)).map(event => event.points || 0)
+            const start = sumNumbers(streaks.slice(0, index).map(streak => (streak > 0 ? streak : 1)))
+            const end = start - 1 + length
 
-    return {
-        start: statData.data[start].event,
-        end: statData.data[end].event,
-        length: max,
-        points,
-        totalPoints: sumNumbers(points),
-    }
+            const points = (start === end ? statData.data : statData.data.slice(start, end + 1)).map(
+                event => event.points || 0
+            )
+
+            return {
+                start: statData.data[start].event,
+                end: statData.data[end].event,
+                length,
+                points,
+                totalPoints: sumNumbers(points),
+            }
+        })
+        .filter(el => el !== null) as Streak[]
 }
 
-export const getSelectionStreak = (statData: StatData): Streak | null =>
+export const getSelectionStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => gw.multiplier !== null, true)
 
-export const getStartStreak = (statData: StatData): Streak | null =>
+export const getStartStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => (gw.multiplier || 0) > 0, true)
 
-export const getBenchStreak = (statData: StatData): Streak | null =>
+export const getBenchStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => gw.multiplier === 0, true)
 
-export const getNonBlankStreak = (statData: StatData): Streak | null =>
+export const getNonBlankStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => (gw.rawPoints || 0) > 2)
 
-export const getDoubleDigitHaulStreak = (statData: StatData): Streak | null =>
+export const getDoubleDigitHaulStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => (gw.rawPoints || 0) > 9)
 
 const MIN_GK = 1
