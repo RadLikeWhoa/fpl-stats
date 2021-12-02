@@ -13,7 +13,6 @@ import './PlayerOverview.scss'
 
 type Props = {
     sort: ValueType<OptionType>
-    ref: React.RefObject<HTMLDivElement>
 }
 
 const sortings: { [key: string]: (statData: StatData) => number } = {
@@ -131,7 +130,7 @@ export const PlayerOverview: React.FC<Props> = (props: Props) => {
                 'player-overview--cloaked': !id,
             })}
         >
-            <div className="player-overview__container" ref={props.ref}>
+            <div className="player-overview__container">
                 {data && bootstrap && Object.keys(data.stats.data).length > 0 ? (
                     <>
                         <header className="player-overview__header">

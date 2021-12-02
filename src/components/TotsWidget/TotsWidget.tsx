@@ -17,7 +17,7 @@ const TotsWidget: React.FC = () => {
         <Widget title={TITLE} cssClasses="tots-widget">
             <div className="tots">
                 {[...Array(4)].map((el, index) => (
-                    <React.Fragment key={el}>
+                    <React.Fragment key={index}>
                         {data && (
                             <div className="tots__row">
                                 {data.stats.tots.xi

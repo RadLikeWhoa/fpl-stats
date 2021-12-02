@@ -119,8 +119,6 @@ const Dashboard: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(!team)
 
-    const playerOverviewRef = useRef<HTMLDivElement>(null)
-
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -140,14 +138,6 @@ const Dashboard: React.FC = () => {
             browserHistory.push('/')
         }
     }, [team, browserHistory, dispatch, id, isLoading, entry])
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (playerOverviewRef && playerOverviewRef.current) {
-                playerOverviewRef.current.scrollTo(playerOverviewRef.current.scrollWidth, 0)
-            }
-        }, 1)
-    }, [rawStatsData])
 
     useEffect(() => {
         setIsModalOpen(!team)
@@ -301,7 +291,7 @@ const Dashboard: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <PlayerOverview sort={sort} ref={playerOverviewRef} />
+                    <PlayerOverview sort={sort} />
                     <div className="dashboard__widgets dashboard__widgets--single">
                         <PlayerComparisonWidget />
                     </div>
