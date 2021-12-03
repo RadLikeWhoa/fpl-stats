@@ -316,4 +316,71 @@
             }
         }
     }
+
+    &__section {
+        position: relative;
+        display: flex;
+        align-items: center;
+        max-width: 100rem;
+        margin: 1.5rem auto;
+        color: var(--headline-color);
+
+        span {
+            display: inline-block;
+            padding-left: 0.5rem;
+            padding-right: 1rem;
+            background-color: var(--body-background-color);
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 50%;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background-color: var(--headline-color);
+            opacity: 0.5;
+        }
+    }
+
+    &__section__toggle {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        height: 1em;
+        width: 1em;
+        background-color: var(--headline-color);
+        border-radius: $border-radius;
+
+        button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .toggle-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 0.25rem;
+            width: 1rem;
+            background-color: var(--body-background-color);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+
+            &:nth-of-type(2) {
+                transform: translate(-50%, -50%) rotate(90deg);
+            }
+        }
+    }
 }

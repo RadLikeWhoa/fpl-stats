@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import rootReducer from './reducers'
 
-const STORAGE_VERSION = '2'
+const STORAGE_VERSION = '2.1'
 
 const isStale = () => localStorage.getItem('storageVersion') !== STORAGE_VERSION
 
@@ -19,6 +19,7 @@ export default function configureAppStore() {
             settings: {
                 theme: 'light',
                 meanStrategy: 'average',
+                hiddenSections: [],
                 id: mostRecentTeamId ? Number(mostRecentTeamId) : undefined,
                 range: {
                     start: 0,
@@ -38,6 +39,7 @@ export default function configureAppStore() {
             JSON.stringify({
                 theme: state.theme,
                 meanStrategy: state.meanStrategy,
+                hiddenSections: state.hiddenSections,
             })
         )
     })

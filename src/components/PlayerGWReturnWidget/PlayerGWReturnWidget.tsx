@@ -6,6 +6,7 @@ import { StatData } from '../../types'
 import { BasePlayerWidget } from '../BasePlayerWidget'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
+import { CaptainIcon } from '../CaptainIcon'
 
 const POINTS_TITLE = 'Top GW Points'
 const BENCH_TITLE = 'Top GW Bench Points'
@@ -52,7 +53,7 @@ const PlayerGWReturnWidget: React.FC<Props> = (props: Props) => {
                         <b>{getPointsLabel(element.data[0][props.stat] || 0)}</b>
                         <div>
                             <SiteLink event={element.data[0].event.id} />
-                            {(element.data[0].multiplier || 0) > 1 ? ', C' : ''}
+                            {(element.data[0].multiplier || 0) > 1 && <CaptainIcon />}
                         </div>
                     </div>
                 </>

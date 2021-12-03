@@ -43,30 +43,8 @@ a {
 }
 
 h2 {
-    position: relative;
-    color: var(--headline-color);
-    max-width: 100rem;
     font-size: 2.5rem;
     line-height: 1.2;
-    margin: 1.5rem auto;
-
-    span {
-        display: inline-block;
-        padding-right: 1rem;
-        background-color: var(--body-background-color);
-    }
-
-    &::before {
-        content: "";
-        position: absolute;
-        z-index: -1;
-        top: 50%;
-        right: 0;
-        left: 0;
-        height: 2px;
-        background-color: var(--headline-color);
-        opacity: 0.5;
-    }
 }
 
 h3 {

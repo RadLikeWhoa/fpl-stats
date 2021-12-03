@@ -22,7 +22,7 @@ import {
     round,
 } from '../../utilities'
 import { TeamModal } from '../TeamModal'
-import { fetchDataWithId } from '../../reducers/settings'
+import { addHiddenSection, fetchDataWithId, removeHiddenSection } from '../../reducers/settings'
 import { Button } from '../Button'
 import { HistoryWidget } from '../HistoryWidget'
 import { TotsWidget } from '../TotsWidget'
@@ -109,6 +109,7 @@ const Dashboard: React.FC = () => {
 
     const id = useSelector((state: RootState) => state.settings.id)
     const theme = useSelector((state: RootState) => state.settings.theme)
+    const hiddenSections = useSelector((state: RootState) => state.settings.hiddenSections)
 
     const entry = useSelector((state: RootState) => state.entry.data)
 
@@ -175,6 +176,45 @@ const Dashboard: React.FC = () => {
               ?.total_points || 0)
         : 0
 
+    const toggleHiddenSection = (section: string) => {
+        if (hiddenSections.includes(section)) {
+            dispatch(removeHiddenSection(section))
+        } else {
+            dispatch(addHiddenSection(section))
+        }
+    }
+
+    const isSectionHidden = (section: string) => hiddenSections.includes(section)
+
+    const renderSection = (title: string, children: JSX.Element) => {
+        const id = title.toLowerCase().replace(/ /g, '-')
+        const isHidden = isSectionHidden(id)
+
+        return (
+            <>
+                <h2 className="dashboard__section">
+                    <div className="dashboard__section__toggle">
+                        <button
+                            type="button"
+                            title={isHidden ? `Expand "${title}"` : `Collapse "${title}"`}
+                            onClick={() => toggleHiddenSection(id)}
+                        ></button>
+                        {isHidden ? (
+                            <>
+                                <div className="toggle-icon"></div>
+                                <div className="toggle-icon"></div>
+                            </>
+                        ) : (
+                            <div className="toggle-icon"></div>
+                        )}
+                    </div>
+                    <span>{title}</span>
+                </h2>
+                {!isHidden && children}
+            </>
+        )
+    }
+
     return (
         <FilteredDataContext.Provider value={filteredData}>
             <Helmet>
@@ -223,146 +263,155 @@ const Dashboard: React.FC = () => {
                             </Widget>
                         </header>
                     )}
-                    <div className="dashboard__widgets">
-                        <FormWidget />
-                        <ExpectedPointsWidget gw="current" />
-                        <ExpectedPointsWidget gw="next" />
-                        <InjuryWidget />
-                        <PriceChangeWidget type="gains" />
-                        <PriceChangeWidget type="drops" />
-                        <PopularityWidget />
-                        <TransfersWidget type="in" />
-                        <TransfersWidget type="out" />
-                    </div>
-                    <h2>
-                        <span>Season</span>
-                    </h2>
-                    <div className="dashboard__widgets dashboard__widgets--split">
-                        <TotsWidget />
-                        <NearMissesWidget />
-                    </div>
-                    <div className="dashboard__widgets">
-                        <PlayerStatsWidget />
-                        <SeasonWidget />
-                        <HistoryWidget />
-                        <GameweekWidget />
-                        <MilestonesWidget />
-                    </div>
-                    <h2>
-                        <span>Improvements</span>
-                    </h2>
-                    <div className="dashboard__widgets dashboard__widgets--single">
-                        <PointsImprovementsWidget />
-                    </div>
-                    <h2>
-                        <span>Players</span>
-                    </h2>
-                    <div className="dashboard__meta">
-                        <label className="dashboard__meta__label">Sort by</label>
-                        <Select
-                            options={sortOptions}
-                            value={sort}
-                            onChange={option => setSort(option)}
-                            styles={{
-                                container: provided => ({ ...provided, width: '100%' }),
-                                menu: provided => ({ ...provided, zIndex: 20 }),
-                            }}
-                        />
-                        <div className="dashboard__legend">
-                            <div className="dashboard__color">
-                                <div className="dashboard__color__indicator dashboard__color__indicator--started"></div>
-                                Started
-                            </div>
-                            <div className="dashboard__color">
-                                <div className="dashboard__color__indicator dashboard__color__indicator--benched"></div>
-                                Benched
-                            </div>
-                            <div className="dashboard__color">
-                                <div className="dashboard__color__indicator dashboard__color__indicator--captain"></div>
-                                Captain
-                            </div>
-                            <div className="dashboard__color">
-                                <div className="dashboard__color__indicator dashboard__color__indicator--triple"></div>
-                                TC
-                            </div>
-                            <div className="dashboard__color">
-                                <div className="dashboard__color__indicator"></div>
-                                Not Selected
-                            </div>
+                    {renderSection(
+                        'Overview',
+                        <div className="dashboard__widgets">
+                            <FormWidget />
+                            <ExpectedPointsWidget gw="current" />
+                            <ExpectedPointsWidget gw="next" />
+                            <InjuryWidget />
+                            <PriceChangeWidget type="gains" />
+                            <PriceChangeWidget type="drops" />
+                            <PopularityWidget />
+                            <TransfersWidget type="in" />
+                            <TransfersWidget type="out" />
                         </div>
-                    </div>
-                    <PlayerOverview sort={sort} />
-                    <div className="dashboard__widgets dashboard__widgets--single">
-                        <PlayerComparisonWidget />
-                    </div>
-                    <div className="dashboard__widgets">
-                        <PositionsWidget />
-                        <FormationWidget />
-                        <SelectionWidget title="Frequent Selections" metric="selections" />
-                        <SelectionWidget title="Frequent Starters" metric="starts" />
-                        <SelectionWidget title="Frequent Bench Players" metric="benched" />
-                        <DifferenceWidget title="Consistent Starters" top />
-                        <DifferenceWidget title="Consistent Bench Players" />
-                    </div>
-                    <h2>
-                        <span>Returns</span>
-                    </h2>
-                    <div className="dashboard__widgets">
-                        <PlayerGWReturnWidget stat="points" />
-                        <PlayerGWReturnWidget stat="benchPoints" />
-                        <DoubleDigitHaulsWidget />
-                        <TeamGWReturnWidget />
-                    </div>
-                    <h2>
-                        <span>Teams</span>
-                    </h2>
-                    <div className="dashboard__widgets dashboard__widgets--single">
-                        <TeamsWidget />
-                    </div>
-                    <h2>
-                        <span>Captains</span>
-                    </h2>
-                    <div className="dashboard__widgets">
-                        <CaptainWidget />
-                        <CaptainOpportunityWidget />
-                        <WrongCaptainWidget />
-                    </div>
-                    <h2>
-                        <span>Streaks</span>
-                    </h2>
-                    <div className="dashboard__widgets">
-                        <StreakWidget title="Non-Blank Streaks" metric="nonBlank" showDetailedStats />
-                        <StreakWidget title="Double-Digit Haul Streaks" metric="doubleDigitHaul" showDetailedStats />
-                        <StreakWidget title="Selection Streaks" metric="selection" showDetailedStats />
-                        <StreakWidget title="Start Streaks" metric="start" showDetailedStats />
-                        <StreakWidget title="Bench Appearance Streaks" metric="bench" />
-                    </div>
-                    <h2>
-                        <span>Contributions</span>
-                    </h2>
-                    <div className="dashboard__widgets">
-                        <ContributionWidget />
-                        <TeamContributionWidget />
-                        {(range.end - range.start + 1 === rawHistory?.current?.length ||
-                            range.end - range.start === 37) && (
-                            <>
-                                <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
-                                <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />
-                            </>
-                        )}
-                    </div>
-                    {bootstrap && getPastEvents(bootstrap.events).length > 1 && (
+                    )}
+                    {renderSection(
+                        'Season',
                         <>
-                            <h2>
-                                <span>Graphs</span>
-                            </h2>
+                            <div className="dashboard__widgets dashboard__widgets--split">
+                                <TotsWidget />
+                                <NearMissesWidget />
+                            </div>
+                            <div className="dashboard__widgets">
+                                <PlayerStatsWidget />
+                                <SeasonWidget />
+                                <HistoryWidget />
+                                <GameweekWidget />
+                                <MilestonesWidget />
+                            </div>
+                        </>
+                    )}
+                    {renderSection(
+                        'Improvements',
+                        <div className="dashboard__widgets dashboard__widgets--single">
+                            <PointsImprovementsWidget />
+                        </div>
+                    )}
+                    {renderSection(
+                        'Players',
+                        <>
+                            <div className="dashboard__meta">
+                                <label className="dashboard__meta__label">Sort by</label>
+                                <Select
+                                    options={sortOptions}
+                                    value={sort}
+                                    onChange={option => setSort(option)}
+                                    styles={{
+                                        container: provided => ({ ...provided, width: '100%' }),
+                                        menu: provided => ({ ...provided, zIndex: 20 }),
+                                    }}
+                                />
+                                <div className="dashboard__legend">
+                                    <div className="dashboard__color">
+                                        <div className="dashboard__color__indicator dashboard__color__indicator--started"></div>
+                                        Started
+                                    </div>
+                                    <div className="dashboard__color">
+                                        <div className="dashboard__color__indicator dashboard__color__indicator--benched"></div>
+                                        Benched
+                                    </div>
+                                    <div className="dashboard__color">
+                                        <div className="dashboard__color__indicator dashboard__color__indicator--captain"></div>
+                                        Captain
+                                    </div>
+                                    <div className="dashboard__color">
+                                        <div className="dashboard__color__indicator dashboard__color__indicator--triple"></div>
+                                        TC
+                                    </div>
+                                    <div className="dashboard__color">
+                                        <div className="dashboard__color__indicator"></div>
+                                        Not Selected
+                                    </div>
+                                </div>
+                            </div>
+                            <PlayerOverview sort={sort} />
+                            <div className="dashboard__widgets dashboard__widgets--single">
+                                <PlayerComparisonWidget />
+                            </div>
+                            <div className="dashboard__widgets">
+                                <PositionsWidget />
+                                <FormationWidget />
+                                <SelectionWidget title="Frequent Selections" metric="selections" />
+                                <SelectionWidget title="Frequent Starters" metric="starts" />
+                                <SelectionWidget title="Frequent Bench Players" metric="benched" />
+                                <DifferenceWidget title="Consistent Starters" top />
+                                <DifferenceWidget title="Consistent Bench Players" />
+                            </div>
+                        </>
+                    )}
+                    {renderSection(
+                        'Returns',
+                        <div className="dashboard__widgets">
+                            <PlayerGWReturnWidget stat="points" />
+                            <PlayerGWReturnWidget stat="benchPoints" />
+                            <DoubleDigitHaulsWidget />
+                            <TeamGWReturnWidget />
+                        </div>
+                    )}
+                    {renderSection(
+                        'Teams',
+                        <div className="dashboard__widgets dashboard__widgets--single">
+                            <TeamsWidget />
+                        </div>
+                    )}
+                    {renderSection(
+                        'Captains',
+                        <div className="dashboard__widgets">
+                            <CaptainWidget />
+                            <CaptainOpportunityWidget />
+                            <WrongCaptainWidget />
+                        </div>
+                    )}
+                    {renderSection(
+                        'Streaks',
+                        <div className="dashboard__widgets">
+                            <StreakWidget title="Non-Blank Streaks" metric="nonBlank" showDetailedStats />
+                            <StreakWidget
+                                title="Double-Digit Haul Streaks"
+                                metric="doubleDigitHaul"
+                                showDetailedStats
+                            />
+                            <StreakWidget title="Selection Streaks" metric="selection" showDetailedStats />
+                            <StreakWidget title="Start Streaks" metric="start" showDetailedStats />
+                            <StreakWidget title="Bench Appearance Streaks" metric="bench" />
+                        </div>
+                    )}
+                    {renderSection(
+                        'Contributions',
+                        <div className="dashboard__widgets">
+                            <ContributionWidget />
+                            <TeamContributionWidget />
+                            {(range.end - range.start + 1 === rawHistory?.current?.length ||
+                                range.end - range.start === 37) && (
+                                <>
+                                    <MissedPointsShareWidget title="Most Points Scored Outside of Team" top />
+                                    <MissedPointsShareWidget title="Fewest Points Scored Outside of Team" />
+                                </>
+                            )}
+                        </div>
+                    )}
+                    {bootstrap &&
+                        getPastEvents(bootstrap.events).length > 1 &&
+                        renderSection(
+                            'Graphs',
                             <div className="dashboard__graphs">
                                 <OverallRankWidget />
                                 <PointsWidget />
                                 <ValueWidget />
                             </div>
-                        </>
-                    )}
+                        )}
                     <div className="dashboard__legal">
                         <p>
                             FPL Stats uses data from the official Premier League Fantasy API. This site is not

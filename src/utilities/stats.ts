@@ -73,7 +73,7 @@ const getStreak = (
     const streaks = statData.data.reduce((acc, curr) => {
         if (comparison(curr)) {
             if (ignoreBlanks) {
-                return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
+                return [...acc.slice(0, acc.length - 1), (acc[acc.length - 1] || 0) + 1]
             }
 
             if (!acc.length || acc[acc.length - 1] === 0) {
@@ -83,8 +83,8 @@ const getStreak = (
             return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + 1]
         }
 
-        return [...acc, 0]
-    }, (ignoreBlanks ? [0] : []) as number[])
+        return ignoreBlanks ? [...acc, ...(acc.length && acc[acc.length - 1] === 0 ? [0] : [0, 0])] : [...acc, 0]
+    }, [] as number[])
 
     const max = Math.max(...streaks)
 

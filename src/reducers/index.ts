@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { Bootstrap, History, Entry, Picks, LiveEvent, StandingsPlayer } from '../types'
 import bootstrap from './bootstrap'
 import stats from './stats'
-import settings from './settings'
+import settings, { SettingsState } from './settings'
 import entry from './entry'
 import history from './history'
 import loading from './loading'
@@ -21,11 +21,7 @@ export type RootState = {
               }[]
             | undefined
     }
-    settings: {
-        id: number | undefined
-        meanStrategy: 'average' | 'median'
-        theme: 'light' | 'dark'
-    }
+    settings: SettingsState
     history: {
         data: History | undefined
     }

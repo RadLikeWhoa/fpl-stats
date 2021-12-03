@@ -15,6 +15,7 @@ import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 import { useMeanValue } from '../../hooks'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
+import { CaptainIcon } from '../CaptainIcon'
 
 const TITLE = 'Player Stats'
 
@@ -145,7 +146,7 @@ const PlayerStatsWidget: React.FC = () => {
                                         <>
                                             {' '}
                                             ({getPointsLabel(week.points || 0)}, <SiteLink event={week.event.id} />
-                                            {(week.multiplier || 0) > 1 ? ', C' : ''})
+                                            {(week.multiplier || 0) > 1 && <CaptainIcon />})
                                         </>
                                     )
                                 }}
