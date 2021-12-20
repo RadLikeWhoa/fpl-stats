@@ -126,7 +126,7 @@ export const getBenchStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => gw.multiplier === 0, true)
 
 export const getNonBlankStreak = (statData: StatData): Streak[] | null =>
-    getStreak(statData, gw => (gw.rawPoints || 0) > 2)
+    getStreak(statData, gw => (gw.rawPoints || 0) > 3)
 
 export const getDoubleDigitHaulStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => (gw.rawPoints || 0) > 9)
