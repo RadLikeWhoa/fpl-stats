@@ -80,6 +80,7 @@ const TeamModal: React.FC<Props> = (props: Props) => {
                     placeholder="Enter your team ID"
                     value={value}
                     onChange={value => setValue(value)}
+                    type="number"
                     innerRef={callbackRef}
                 />
                 <Button

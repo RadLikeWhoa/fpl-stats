@@ -418,20 +418,20 @@ const Dashboard: React.FC = () => {
                             affiliated with the Premier League.
                         </p>
                     </div>
-                    {bootstrap && getPastEvents(bootstrap.events).length > 1 && (
-                        <div className="dashboard__slider-wrapper">
-                            <ReactSlider
-                                className="dashboard__slider"
-                                value={[range.start, range.end]}
-                                min={(head(getPastEvents(bootstrap.events))?.id || 1) - 1}
-                                max={(last(getPastEvents(bootstrap.events))?.id || 38) - 1}
-                                onChange={([start, end]) => setRange({ start, end })}
-                                renderThumb={(props, state) => <div {...props}>GW {state.valueNow + 1}</div>}
-                                pearling
-                            />
-                        </div>
-                    )}
                 </div>
+                {bootstrap && getPastEvents(bootstrap.events).length > 1 && (
+                    <div className="dashboard__slider-wrapper">
+                        <ReactSlider
+                            className="dashboard__slider"
+                            value={[range.start, range.end]}
+                            min={(head(getPastEvents(bootstrap.events))?.id || 1) - 1}
+                            max={(last(getPastEvents(bootstrap.events))?.id || 38) - 1}
+                            onChange={([start, end]) => setRange({ start, end })}
+                            renderThumb={(props, state) => <div {...props}>GW {state.valueNow + 1}</div>}
+                            pearling
+                        />
+                    </div>
+                )}
             </div>
         </FilteredDataContext.Provider>
     )

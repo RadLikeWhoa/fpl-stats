@@ -8,6 +8,7 @@ type Props = {
     placeholder?: string
     id?: string
     innerRef?: (element: any) => any
+    type?: 'text' | 'number'
 }
 
 const ModalInput: React.FC<Props> = (props: Props) => {
@@ -17,7 +18,7 @@ const ModalInput: React.FC<Props> = (props: Props) => {
             <input
                 className="modal-input__element"
                 id={props.id}
-                type="text"
+                type={props.type || 'text'}
                 placeholder={props.placeholder}
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}

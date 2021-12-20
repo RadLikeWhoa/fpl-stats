@@ -5,10 +5,8 @@
     position: relative;
 
     &__content {
-        @supports (padding: m#{a}x(0px)) {
-            padding-left: m#{a}x(0px, env(safe-area-inset-left));
-            padding-right: m#{a}x(0px, env(safe-area-inset-right));
-        }
+        padding-left: max(1.5rem, env(safe-area-inset-left));
+        padding-right: max(1.5rem, env(safe-area-inset-right));
     }
 
     &__loading {
@@ -261,10 +259,7 @@
     &__slider-wrapper {
         position: sticky;
         bottom: 0;
-        width: calc(100% + 3rem);
-        height: 4.5rem;
-        padding: 0.75rem 1.5rem;
-        margin-left: -1.5rem;
+        padding: 0.75rem max(1.5rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left));
         background-color: var(--slider-area-background-color);
         box-shadow: 0 -3px 3px var(--slider-area-shadow-color-a), 0 -1px 10px var(--slider-area-shadow-color-b);
         z-index: 10;
