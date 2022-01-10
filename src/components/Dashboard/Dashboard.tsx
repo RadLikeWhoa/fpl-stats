@@ -60,6 +60,7 @@ import { PlayerGWReturnWidget } from '../PlayerGWReturnWidget'
 import { TeamGWReturnWidget } from '../TeamGWReturnWidget'
 import { TeamContributionWidget } from '../TeamContributionWidget'
 import { PointsImprovementsWidget } from '../PointsImprovementsWidget'
+import { BonusPointsWidget } from '../BonusPointsWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -356,6 +357,7 @@ const Dashboard: React.FC = () => {
                         <div className="dashboard__widgets">
                             <PlayerGWReturnWidget stat="rawPoints" />
                             <PlayerGWReturnWidget stat="benchPoints" />
+                            <BonusPointsWidget />
                             <DoubleDigitHaulsWidget />
                             <TeamGWReturnWidget />
                         </div>
