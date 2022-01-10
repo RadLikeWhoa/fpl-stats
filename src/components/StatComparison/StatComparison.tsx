@@ -24,14 +24,14 @@ const StatComparison: React.FC<Props> = (props: Props) => {
                     'stat-comparison__left--highlight': props.compare(leftValue, rightValue),
                 })}
             >
-                {leftValue}
+                <span>{leftValue}</span>
             </div>
             <div
                 className={classNames('stat-comparison__right', props.columnClass, {
                     'stat-comparison__right--highlight': props.compare(rightValue, leftValue),
                 })}
             >
-                {rightValue}
+                <span>{rightValue}</span>
             </div>
         </li>
     )

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import Select, { ValueType } from 'react-select'
 import { useSelector } from 'react-redux'
 import { getPointsLabel, getAllPlayers } from '../../utilities'
@@ -249,7 +249,7 @@ const PlayerComparisonWidget: React.FC = () => {
                     {pointsData && (
                         <div className="player-comparison-widget__chart">
                             <ResponsiveContainer height={300} width="100%">
-                                <AreaChart data={pointsData} margin={{ bottom: 45, left: 15, right: 15 }}>
+                                <AreaChart data={pointsData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                                     <Area
                                         type="monotone"
                                         dataKey={leftKey}
@@ -268,9 +268,15 @@ const PlayerComparisonWidget: React.FC = () => {
                                         tickFormatter={value => getPointsLabel(value)}
                                         domain={['auto', 'auto']}
                                         interval="preserveStartEnd"
+                                        hide={true}
                                     />
-                                    <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
-                                    <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
+                                    <XAxis
+                                        dataKey="name"
+                                        angle={-90}
+                                        textAnchor="end"
+                                        interval="preserveStartEnd"
+                                        hide={true}
+                                    />
                                     <Tooltip
                                         isAnimationActive={false}
                                         formatter={(value, name) => [getPointsLabel(Number(value)), name]}

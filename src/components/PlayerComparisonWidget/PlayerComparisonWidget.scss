@@ -45,7 +45,7 @@
 
     .comparison-list {
         padding-left: 0;
-        margin-bottom: 3rem;
+        margin-bottom: 0;
         list-style: none;
     }
 
@@ -58,6 +58,8 @@
     }
 
     &__chart {
-        padding-right: 1.5rem;
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+        overflow: hidden;
     }
 }
