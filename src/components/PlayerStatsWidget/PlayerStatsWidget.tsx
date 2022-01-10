@@ -15,7 +15,6 @@ import { SiteLink } from '../SiteLink'
 import { Widget } from '../Widget'
 import { useMeanValue } from '../../hooks'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
-import { CaptainIcon } from '../CaptainIcon'
 
 const TITLE = 'Player Stats'
 
@@ -80,9 +79,9 @@ const PlayerStatsWidget: React.FC = () => {
         sort(
             allPlayers.map(player => ({
                 ...player,
-                data: sort([...player.data], el => el.points || 0),
+                data: sort([...player.data], el => el.rawPoints || 0),
             })),
-            el => head(el.data)?.points || 0
+            el => head(el.data)?.rawPoints || 0
         )
     )
 
@@ -145,8 +144,7 @@ const PlayerStatsWidget: React.FC = () => {
                                     return (
                                         <>
                                             {' '}
-                                            ({getPointsLabel(week.points || 0)}, <SiteLink event={week.event.id} />
-                                            {(week.multiplier || 0) > 1 && <CaptainIcon />})
+                                            ({getPointsLabel(week.points || 0)}, <SiteLink event={week.event.id} />)
                                         </>
                                     )
                                 }}

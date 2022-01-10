@@ -53,7 +53,8 @@ const WrongCaptainWidget: React.FC = () => {
             {Object.entries(improvements).length > 0 && (
                 <>
                     <div className="widget__detail">
-                        Selected the wrong captain in <b>{getGWCountLabel(totalMisses, true)}</b>.
+                        Selected the wrong captain in <b>{getGWCountLabel(totalMisses, true)}</b> (
+                        {round((totalMisses / weeks) * 100)}%).
                     </div>
                     <ul className="widget__list">
                         {sort(Object.entries(improvements), el => el[1]).map(([player, count]) => (

@@ -42,11 +42,14 @@ const PlayerComparisonWidget: React.FC = () => {
         ? allPlayers.find(el => el.element.id === Number((rightSide as OptionType).value))
         : null
 
+    const leftKey = leftSideData?.element.web_name || 'valueLeft'
+    const rightKey = rightSideData?.element.web_name || 'valueRight'
+
     const pointsData = data.history.current.map(gw => {
         return {
             name: `GW ${gw.event}`,
-            valueLeft: leftSideData?.data.find(d => d.event.id === gw.event)?.points || 0,
-            valueRight: rightSideData?.data.find(d => d.event.id === gw.event)?.points || 0,
+            [leftKey]: leftSideData?.data.find(d => d.event.id === gw.event)?.rawPoints || 0,
+            [rightKey]: rightSideData?.data.find(d => d.event.id === gw.event)?.rawPoints || 0,
         }
     })
 
@@ -249,14 +252,14 @@ const PlayerComparisonWidget: React.FC = () => {
                                 <AreaChart data={pointsData} margin={{ bottom: 45, left: 15, right: 15 }}>
                                     <Area
                                         type="monotone"
-                                        dataKey="valueLeft"
+                                        dataKey={leftKey}
                                         stroke="#177B47"
                                         fill="#177B47"
                                         fillOpacity="0.75"
                                     />
                                     <Area
                                         type="monotone"
-                                        dataKey="valueRight"
+                                        dataKey={rightKey}
                                         stroke="#00FF87"
                                         fill="#00FF87"
                                         fillOpacity="0.75"
@@ -270,7 +273,7 @@ const PlayerComparisonWidget: React.FC = () => {
                                     <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
                                     <Tooltip
                                         isAnimationActive={false}
-                                        formatter={(value, name) => [getPointsLabel(Number(value)), 'Points']}
+                                        formatter={(value, name) => [getPointsLabel(Number(value)), name]}
                                         separator=": "
                                     />
                                 </AreaChart>

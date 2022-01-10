@@ -67,7 +67,7 @@ const TeamGWReturnWidget: React.FC = () => {
                             points: allPlayers
                                 .filter(player => player.element.team === team.id)
                                 .reduce((acc: number | null, curr) => {
-                                    const points = curr.data.find(item => item.event.id === event.event)?.points
+                                    const points = curr.data.find(item => item.event.id === event.event)?.rawPoints
 
                                     if (points !== undefined && points !== null) {
                                         players += 1

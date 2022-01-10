@@ -68,7 +68,8 @@ export const getTopStatAggregate = (players: StatData[], key: keyof StatAggregat
 const getStreak = (
     statData: StatData,
     comparison: (gw: StatDataGameweek) => boolean,
-    ignoreBlanks: boolean = false
+    ignoreBlanks: boolean = false,
+    getPoints: (event: StatDataGameweek) => number | null = gw => gw.rawPoints
 ): Streak[] | null => {
     const streaks = statData.data.reduce((acc, curr) => {
         if (comparison(curr)) {
@@ -102,7 +103,7 @@ const getStreak = (
             const end = start - 1 + length
 
             const points = (start === end ? statData.data : statData.data.slice(start, end + 1)).map(
-                event => event.points || 0
+                event => getPoints(event) || 0
             )
 
             return {
@@ -130,6 +131,14 @@ export const getNonBlankStreak = (statData: StatData): Streak[] | null =>
 
 export const getDoubleDigitHaulStreak = (statData: StatData): Streak[] | null =>
     getStreak(statData, gw => (gw.rawPoints || 0) > 9)
+
+export const getBonusStreak = (statData: StatData): Streak[] | null =>
+    getStreak(
+        statData,
+        gw => (gw.bonusPoints || 0) > 0,
+        false,
+        gw => gw.stats?.bonus || null
+    )
 
 const MIN_GK = 1
 const MAX_GK = 2
@@ -200,6 +209,7 @@ const emptyAggregates = {
         bench: null,
         nonBlank: null,
         doubleDigitHaul: null,
+        bonus: null,
     },
 }
 
@@ -238,6 +248,7 @@ export const filterStatData = async (
                         points: null,
                         rawPoints: null,
                         benchPoints: null,
+                        bonusPoints: null,
                         stats: null,
                         position: null,
                     })),
@@ -246,6 +257,7 @@ export const filterStatData = async (
             }
 
             const points = gw.live.elements.find(el => el.id === item.element)?.stats.total_points || null
+            const bonus = gw.live.elements.find(el => el.id === item.element)?.stats.bonus || null
 
             stats[item.element] = {
                 ...stats[item.element],
@@ -257,6 +269,7 @@ export const filterStatData = async (
                         points: points !== null ? points * item.multiplier : points,
                         rawPoints: points,
                         benchPoints: item.multiplier === 0 ? points : 0,
+                        bonusPoints: bonus,
                         stats: gw.live.elements.find(el => el.id === item.element)?.stats || null,
                         position: item.position,
                     },
@@ -278,6 +291,7 @@ export const filterStatData = async (
                             points: null,
                             rawPoints: null,
                             benchPoints: null,
+                            bonusPoints: null,
                             stats: null,
                             position: null,
                         },
@@ -321,6 +335,7 @@ export const filterStatData = async (
                 bench: getBenchStreak(player),
                 nonBlank: getNonBlankStreak(player),
                 doubleDigitHaul: getDoubleDigitHaulStreak(player),
+                bonus: getBonusStreak(player),
             },
         }
     })

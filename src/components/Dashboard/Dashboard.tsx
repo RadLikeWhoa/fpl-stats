@@ -354,7 +354,7 @@ const Dashboard: React.FC = () => {
                     {renderSection(
                         'Returns',
                         <div className="dashboard__widgets">
-                            <PlayerGWReturnWidget stat="points" />
+                            <PlayerGWReturnWidget stat="rawPoints" />
                             <PlayerGWReturnWidget stat="benchPoints" />
                             <DoubleDigitHaulsWidget />
                             <TeamGWReturnWidget />
@@ -383,6 +383,7 @@ const Dashboard: React.FC = () => {
                                 metric="doubleDigitHaul"
                                 showDetailedStats
                             />
+                            <StreakWidget title="Bonus Streaks" metric="bonus" showDetailedStats />
                             <StreakWidget title="Selection Streaks" metric="selection" showDetailedStats />
                             <StreakWidget title="Start Streaks" metric="start" showDetailedStats />
                             <StreakWidget title="Bench Appearance Streaks" metric="bench" />

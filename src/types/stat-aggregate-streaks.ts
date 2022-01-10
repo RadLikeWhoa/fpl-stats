@@ -6,4 +6,5 @@ export type StatAggregateStreaks = {
     bench: Streak[] | null
     nonBlank: Streak[] | null
     doubleDigitHaul: Streak[] | null
+    bonus: Streak[] | null
 }

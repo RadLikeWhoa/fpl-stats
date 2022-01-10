@@ -6,21 +6,20 @@ import { StatData } from '../../types'
 import { BasePlayerWidget } from '../BasePlayerWidget'
 import { Player } from '../Player'
 import { SiteLink } from '../SiteLink'
-import { CaptainIcon } from '../CaptainIcon'
 
 const POINTS_TITLE = 'Top GW Points'
 const BENCH_TITLE = 'Top GW Bench Points'
 const MAX_ITEMS = 10
 
 type Props = {
-    stat: 'points' | 'benchPoints'
+    stat: 'rawPoints' | 'benchPoints'
 }
 
 const PlayerGWReturnWidget: React.FC<Props> = (props: Props) => {
     const data = useContext(FilteredDataContext)
 
     if (!data) {
-        return <Widget title={props.stat === 'points' ? POINTS_TITLE : BENCH_TITLE} />
+        return <Widget title={props.stat === 'rawPoints' ? POINTS_TITLE : BENCH_TITLE} />
     }
 
     const stats = data.stats.data
@@ -30,7 +29,7 @@ const PlayerGWReturnWidget: React.FC<Props> = (props: Props) => {
             (acc, curr) => [
                 ...acc,
                 ...curr.data
-                    .filter(item => (props.stat === 'points' ? (item.multiplier || 0) > 0 : item.multiplier === 0))
+                    .filter(item => (props.stat === 'rawPoints' ? (item.multiplier || 0) > 0 : item.multiplier === 0))
                     .map(item => ({
                         ...curr,
                         data: [item],
@@ -43,7 +42,7 @@ const PlayerGWReturnWidget: React.FC<Props> = (props: Props) => {
 
     return (
         <BasePlayerWidget
-            title={props.stat === 'points' ? POINTS_TITLE : BENCH_TITLE}
+            title={props.stat === 'rawPoints' ? POINTS_TITLE : BENCH_TITLE}
             players={elements}
             max={MAX_ITEMS}
             renderItem={element => (
@@ -53,7 +52,6 @@ const PlayerGWReturnWidget: React.FC<Props> = (props: Props) => {
                         <b>{getPointsLabel(element.data[0][props.stat] || 0)}</b>
                         <div>
                             <SiteLink event={element.data[0].event.id} />
-                            {(element.data[0].multiplier || 0) > 1 && <CaptainIcon />}
                         </div>
                     </div>
                 </>
