@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
-import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, head, sort, thousandsSeparator, thousandsShorthand } from '../../utilities'
@@ -39,8 +39,8 @@ const OverallRankWidget: React.FC = () => {
     return (
         <Widget title={TITLE}>
             <div className="chart chart--reversed">
-                <ResponsiveContainer height={300} width="100%">
-                    <AreaChart data={rankData} margin={{ bottom: 45, left: 15, right: 15 }}>
+                <ResponsiveContainer height={200} width="100%">
+                    <AreaChart data={rankData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                         <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="0.75" />
                         <Area
                             type="monotone"
@@ -55,9 +55,9 @@ const OverallRankWidget: React.FC = () => {
                             domain={[1, max]}
                             interval="preserveStartEnd"
                             tickCount={10}
+                            hide={true}
                         />
-                        <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
-                        <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
+                        <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" hide={true} />
                         <Tooltip
                             isAnimationActive={false}
                             formatter={(value, name) =>

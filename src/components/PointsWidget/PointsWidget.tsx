@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
-import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Tooltip } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
 import { getShortName, initialCaps } from '../../utilities'
@@ -8,7 +8,7 @@ import { FilteredDataContext } from '../Dashboard/Dashboard'
 
 const TITLE = 'Gameweek Points'
 
-const OverallRankWidget: React.FC = () => {
+const PointsWidget: React.FC = () => {
     const data = useContext(FilteredDataContext)
 
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
@@ -32,13 +32,12 @@ const OverallRankWidget: React.FC = () => {
     return (
         <Widget title={TITLE}>
             <div className="chart">
-                <ResponsiveContainer height={300} width="100%">
-                    <AreaChart data={pointsData} margin={{ bottom: 45, left: 15, right: 15 }}>
+                <ResponsiveContainer height={200} width="100%">
+                    <AreaChart data={pointsData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                         <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" fillOpacity="0.75" />
                         <Area type="monotone" dataKey="bench" stroke="#00FF87" fill="#00FF87" fillOpacity="0.75" />
-                        <YAxis interval="preserveStartEnd" />
-                        <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" />
-                        <CartesianGrid stroke="rgba(192, 192, 192, 0.5)" strokeDasharray="3 3" />
+                        <YAxis interval="preserveStartEnd" hide={true} />
+                        <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" hide={true} />
                         <Tooltip
                             isAnimationActive={false}
                             formatter={(value, name) => [value, initialCaps(name)]}
@@ -51,4 +50,4 @@ const OverallRankWidget: React.FC = () => {
     )
 }
 
-export default OverallRankWidget
+export default PointsWidget

@@ -189,11 +189,17 @@
         margin: 0 auto;
 
         .widget__content {
-            padding: 1.5rem 1.5rem 1rem 0;
+            padding: 0;
         }
 
         .widget__empty {
             margin: -1.5rem 0;
+        }
+
+        .chart {
+            border-bottom-left-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+            overflow: hidden;
         }
     }
 

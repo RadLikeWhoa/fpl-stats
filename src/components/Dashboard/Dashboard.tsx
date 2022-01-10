@@ -61,6 +61,7 @@ import { TeamGWReturnWidget } from '../TeamGWReturnWidget'
 import { TeamContributionWidget } from '../TeamContributionWidget'
 import { PointsImprovementsWidget } from '../PointsImprovementsWidget'
 import { BonusPointsWidget } from '../BonusPointsWidget'
+import { CaptainPointsWidget } from '../CaptainPointsWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -285,6 +286,13 @@ const Dashboard: React.FC = () => {
                                 <TotsWidget />
                                 <NearMissesWidget />
                             </div>
+                            {bootstrap && getPastEvents(bootstrap.events).length > 1 && (
+                                <div className="dashboard__graphs">
+                                    <OverallRankWidget />
+                                    <PointsWidget />
+                                    <ValueWidget />
+                                </div>
+                            )}
                             <div className="dashboard__widgets">
                                 <PlayerStatsWidget />
                                 <SeasonWidget />
@@ -370,11 +378,16 @@ const Dashboard: React.FC = () => {
                     )}
                     {renderSection(
                         'Captains',
-                        <div className="dashboard__widgets">
-                            <CaptainWidget />
-                            <CaptainOpportunityWidget />
-                            <WrongCaptainWidget />
-                        </div>
+                        <>
+                            <div className="dashboard__graphs">
+                                <CaptainPointsWidget />
+                            </div>
+                            <div className="dashboard__widgets">
+                                <CaptainWidget />
+                                <CaptainOpportunityWidget />
+                                <WrongCaptainWidget />
+                            </div>
+                        </>
                     )}
                     {renderSection(
                         'Streaks',
@@ -405,16 +418,6 @@ const Dashboard: React.FC = () => {
                             )}
                         </div>
                     )}
-                    {bootstrap &&
-                        getPastEvents(bootstrap.events).length > 1 &&
-                        renderSection(
-                            'Graphs',
-                            <div className="dashboard__graphs">
-                                <OverallRankWidget />
-                                <PointsWidget />
-                                <ValueWidget />
-                            </div>
-                        )}
                     <div className="dashboard__legal">
                         <p>
                             FPL Stats uses data from the official Premier League Fantasy API. This site is not

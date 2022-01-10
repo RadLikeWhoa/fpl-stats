@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux'
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts'
 import { RootState } from '../../reducers'
 import { Widget } from '../Widget'
-import { getShortName, initialCaps } from '../../utilities'
+import { getAllPlayers, getShortName, initialCaps } from '../../utilities'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
 
-const TITLE = 'Team Value Evolution'
+const TITLE = 'Captain Points'
 
-const ValueWidget: React.FC = () => {
+const CaptainPointsWidget: React.FC = () => {
     const data = useContext(FilteredDataContext)
 
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
@@ -18,13 +18,15 @@ const ValueWidget: React.FC = () => {
     }
 
     const history = data.history
+    const players = getAllPlayers(data.stats.data)
 
-    const valueData = history.current.map(entry => {
+    const pointsData = history.current.map((entry, index) => {
+        const captain = players.find(player => (player.data?.[index]?.multiplier || 0) > 1)
         const event = bootstrap.events.find(event => event.id === entry.event)
 
         return {
             name: `GW ${event ? getShortName(event) : entry.event}`,
-            value: entry.value + entry.bank,
+            points: captain?.data[index].points || 0,
         }
     })
 
@@ -32,18 +34,13 @@ const ValueWidget: React.FC = () => {
         <Widget title={TITLE}>
             <div className="chart">
                 <ResponsiveContainer height={200} width="100%">
-                    <AreaChart data={valueData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-                        <Area type="monotone" dataKey="value" stroke="#177B47" fill="#177B47" fillOpacity="0.75" />
-                        <YAxis
-                            tickFormatter={value => `£${value / 10}`}
-                            domain={['auto', 'auto']}
-                            interval="preserveStartEnd"
-                            hide={true}
-                        />
+                    <AreaChart data={pointsData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                        <Area type="monotone" dataKey="points" stroke="#177B47" fill="#177B47" fillOpacity="0.75" />
+                        <YAxis interval="preserveStartEnd" hide={true} />
                         <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" hide={true} />
                         <Tooltip
                             isAnimationActive={false}
-                            formatter={(value, name) => [`£${Number(value) / 10}`, initialCaps(name)]}
+                            formatter={(value, name) => [value, initialCaps(name)]}
                             separator=": "
                         />
                     </AreaChart>
@@ -53,4 +50,4 @@ const ValueWidget: React.FC = () => {
     )
 }
 
-export default ValueWidget
+export default CaptainPointsWidget
