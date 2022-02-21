@@ -10,7 +10,7 @@ export const fetchBootstrap = createAsyncThunk('bootstrap/fetch', async (id: num
     thunkAPI.dispatch(fetchBootstrapStart())
     thunkAPI.dispatch(startLoading())
 
-    const data = await fetchApi('https://fantasy.premierleague.com/api/bootstrap-static/')
+    const data = await fetchApi('bootstrap-static/')
 
     await Promise.all([
         thunkAPI.dispatch(fetchStatData({ bootstrap: data, entry: id })),

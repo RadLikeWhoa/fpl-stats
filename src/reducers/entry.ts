@@ -7,7 +7,7 @@ export const fetchEntry = createAsyncThunk('entry/fetch', async (id: number, thu
     thunkAPI.dispatch(fetchEntryStart())
     thunkAPI.dispatch(startLoading())
 
-    const data = await fetchApi(`https://fantasy.premierleague.com/api/entry/${id}/`)
+    const data = await fetchApi(`entry/${id}/`)
 
     thunkAPI.dispatch(fetchEntrySuccess(data))
     thunkAPI.dispatch(finishLoading())

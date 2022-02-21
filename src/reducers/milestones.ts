@@ -6,9 +6,7 @@ import { finishLoading, startLoading } from './loading'
 const OVERALL_ID = 314
 
 const fetchStanding = async (page: number): Promise<Standings> => {
-    return await fetchApi(
-        `https://fantasy.premierleague.com/api/leagues-classic/${OVERALL_ID}/standings?page_standings=${page}`
-    )
+    return await fetchApi(`leagues-classic/${OVERALL_ID}/standings?page_standings=${page}`)
 }
 
 export const fetchMilestones = createAsyncThunk('milestones/fetch', async (arg: undefined, thunkAPI) => {

@@ -6,7 +6,7 @@ export const fetchHistory = createAsyncThunk('history/fetch', async (entry: numb
     thunkAPI.dispatch(fetchHistoryStart())
     thunkAPI.dispatch(startLoading())
 
-    const data = await fetchApi(`https://fantasy.premierleague.com/api/entry/${entry}/history/`)
+    const data = await fetchApi(`entry/${entry}/history/`)
 
     thunkAPI.dispatch(fetchHistorySuccess(data))
     thunkAPI.dispatch(finishLoading())

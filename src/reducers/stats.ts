@@ -36,11 +36,11 @@ const stats = createSlice({
 export const { fetchStatsStart, fetchStatsSuccess } = stats.actions
 
 const fetchPicks = async (event: number, entry: number): Promise<Picks> => {
-    return await fetchApi(`https://fantasy.premierleague.com/api/entry/${entry}/event/${event}/picks/`)
+    return await fetchApi(`entry/${entry}/event/${event}/picks/`)
 }
 
 const fetchEvent = async (event: number): Promise<LiveEvent> => {
-    return await fetchApi(`https://fantasy.premierleague.com/api/event/${event}/live/`)
+    return await fetchApi(`event/${event}/live/`)
 }
 
 const fetchGameweekInformation = async (event: number, entry: number): Promise<{ pick: Picks; live: LiveEvent }> => {
