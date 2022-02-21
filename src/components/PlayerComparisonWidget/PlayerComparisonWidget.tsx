@@ -248,7 +248,7 @@ const PlayerComparisonWidget: React.FC = () => {
                     </ul>
                     {pointsData && (
                         <div className="player-comparison-widget__chart">
-                            <ResponsiveContainer height={300} width="100%">
+                            <ResponsiveContainer height={200} width="100%">
                                 <AreaChart data={pointsData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                                     <Area
                                         type="monotone"

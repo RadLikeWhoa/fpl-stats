@@ -1,18 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { Standings } from '../types'
-import { head, last } from '../utilities'
+import { fetchApi, head, last } from '../utilities'
 import { finishLoading, startLoading } from './loading'
 
 const OVERALL_ID = 314
 
 const fetchStanding = async (page: number): Promise<Standings> => {
-    const response = await fetch(
-        `https://jsonp.afeld.me/?url=${encodeURIComponent(
-            `https://fantasy.premierleague.com/api/leagues-classic/${OVERALL_ID}/standings?page_standings=${page}`
-        )}`
+    return await fetchApi(
+        `https://fantasy.premierleague.com/api/leagues-classic/${OVERALL_ID}/standings?page_standings=${page}`
     )
-
-    return await response.json()
 }
 
 export const fetchMilestones = createAsyncThunk('milestones/fetch', async (arg: undefined, thunkAPI) => {

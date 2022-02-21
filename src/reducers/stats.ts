@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { Bootstrap, Picks, LiveEvent } from '../types'
-import { getPastEvents } from '../utilities'
+import { fetchApi, getPastEvents } from '../utilities'
 import { finishLoading, startLoading } from './loading'
 
 export const fetchStatData = createAsyncThunk(
@@ -36,21 +36,11 @@ const stats = createSlice({
 export const { fetchStatsStart, fetchStatsSuccess } = stats.actions
 
 const fetchPicks = async (event: number, entry: number): Promise<Picks> => {
-    const response = await fetch(
-        `https://jsonp.afeld.me/?url=${encodeURIComponent(
-            `https://fantasy.premierleague.com/api/entry/${entry}/event/${event}/picks/`
-        )}`
-    )
-    return await response.json()
+    return await fetchApi(`https://fantasy.premierleague.com/api/entry/${entry}/event/${event}/picks/`)
 }
 
 const fetchEvent = async (event: number): Promise<LiveEvent> => {
-    const response = await fetch(
-        `https://jsonp.afeld.me/?url=${encodeURIComponent(
-            `https://fantasy.premierleague.com/api/event/${event}/live/`
-        )}`
-    )
-    return await response.json()
+    return await fetchApi(`https://fantasy.premierleague.com/api/event/${event}/live/`)
 }
 
 const fetchGameweekInformation = async (event: number, entry: number): Promise<{ pick: Picks; live: LiveEvent }> => {

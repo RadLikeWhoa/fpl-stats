@@ -1,16 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { Entry } from '../types'
+import { fetchApi } from '../utilities'
 import { finishLoading, startLoading } from './loading'
 
 export const fetchEntry = createAsyncThunk('entry/fetch', async (id: number, thunkAPI) => {
     thunkAPI.dispatch(fetchEntryStart())
     thunkAPI.dispatch(startLoading())
 
-    const response = await fetch(
-        `https://jsonp.afeld.me/?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${id}/`)}`
-    )
-
-    const data = await response.json()
+    const data = await fetchApi(`https://fantasy.premierleague.com/api/entry/${id}/`)
 
     thunkAPI.dispatch(fetchEntrySuccess(data))
     thunkAPI.dispatch(finishLoading())

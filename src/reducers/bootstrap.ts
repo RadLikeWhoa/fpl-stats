@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { fetchApi } from '../utilities'
 import { fetchEntry } from './entry'
 import { fetchHistory } from './history'
 import { finishLoading, startLoading } from './loading'
@@ -9,11 +10,7 @@ export const fetchBootstrap = createAsyncThunk('bootstrap/fetch', async (id: num
     thunkAPI.dispatch(fetchBootstrapStart())
     thunkAPI.dispatch(startLoading())
 
-    const response = await fetch(
-        `https://jsonp.afeld.me/?url=${encodeURIComponent('https://fantasy.premierleague.com/api/bootstrap-static/')}`
-    )
-
-    const data = await response.json()
+    const data = await fetchApi('https://fantasy.premierleague.com/api/bootstrap-static/')
 
     await Promise.all([
         thunkAPI.dispatch(fetchStatData({ bootstrap: data, entry: id })),
