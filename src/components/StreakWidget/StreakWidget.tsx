@@ -37,8 +37,8 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
 
     const stats = data.stats.data
 
-    const streaks = sort(
-        getAllPlayers(stats).reduce(
+    const streaks = getAllPlayers(stats)
+        .reduce(
             (acc, player) => [
                 ...acc,
                 ...(player.aggregates.streaks[props.metric] || [])?.map(streak => ({
@@ -47,9 +47,18 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
                 })),
             ],
             [] as PlayerStreak[]
-        ),
-        el => el.length
-    )
+        )
+        .sort((a, b) => {
+            if (a.length !== b.length) {
+                return b.length - a.length
+            }
+
+            if (props.showDetailedStats && a.totalPoints !== b.totalPoints) {
+                return b.totalPoints - a.totalPoints
+            }
+
+            return a.player.web_name.localeCompare(b.player.web_name)
+        })
 
     return (
         <WidgetWithModal
@@ -66,7 +75,7 @@ const StreakWidget: React.FC<Props> = (props: Props) => {
                                 {streak.start.id !== streak.end.id && (
                                     <>
                                         {' '}
-                                        – <SiteLink event={streak.end.id} />
+                                        - <SiteLink event={streak.end.id} />
                                     </>
                                 )}
                             </div>
