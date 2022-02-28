@@ -27,7 +27,7 @@ const TransfersWidget: React.FC<Props> = (props: Props) => {
     const picks = last(stats)?.pick.picks.map(el => el.element)
     const elements = sort(
         bootstrap.elements.filter(el => picks?.includes(el.id)),
-        el => Number(props.type === 'in' ? el.transfers_in_event : el.transfers_out)
+        el => Number(props.type === 'in' ? el.transfers_in_event : el.transfers_out_event)
     )
 
     return (
@@ -39,7 +39,9 @@ const TransfersWidget: React.FC<Props> = (props: Props) => {
                 <>
                     <Player id={element.id} />
                     <b>
-                        {thousandsSeparator(props.type === 'in' ? element.transfers_in_event : element.transfers_out)}
+                        {thousandsSeparator(
+                            props.type === 'in' ? element.transfers_in_event : element.transfers_out_event
+                        )}
                     </b>
                 </>
             )}
