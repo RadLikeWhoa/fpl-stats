@@ -1,13 +1,18 @@
 import React, { useContext } from 'react'
-import { head, last, round, sort, thousandsSeparator } from '../../utilities'
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { useSelector } from 'react-redux'
+import { head, last, round, sort, thousandsSeparator, thousandsShorthand } from '../../utilities'
 import { Widget } from '../Widget'
 import { useMeanValue, useMeanLabel } from '../../hooks'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
+import { RootState } from '../../reducers'
+import './HistoryWidget.scss'
 
 const TITLE = 'Historical Data'
 
 const HistoryWidget: React.FC = () => {
     const data = useContext(FilteredDataContext)
+    const theme = useSelector((state: RootState) => state.settings.theme)
 
     const meanLabel = useMeanLabel()
     const meanValue = useMeanValue()
@@ -32,8 +37,50 @@ const HistoryWidget: React.FC = () => {
     const top100k = pastSeasonsByRank.filter(season => season.rank <= 100000).length
     const top1m = pastSeasonsByRank.filter(season => season.rank <= 1000000).length
 
+    let rankData = history.past.map(season => ({
+        name: season.season_name,
+        value: season.rank,
+    }))
+
+    const max = (head(sort([...rankData], el => el.value))?.value || 0) * 1.05
+
+    rankData = [...rankData].map(element => ({
+        ...element,
+        max,
+    }))
+
     return (
-        <Widget title={TITLE}>
+        <Widget title={TITLE} cssClasses="history-widget">
+            {rankData.length > 1 && (
+                <ResponsiveContainer height={100} width="100%">
+                    <AreaChart data={rankData} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                        <Area type="monotone" dataKey="max" fill="#177B47" fillOpacity="0.75" />
+                        <Area
+                            type="monotone"
+                            dataKey="value"
+                            stroke="#177B47"
+                            fill={theme === 'dark' ? '#3a4556' : '#fff'}
+                            fillOpacity="1"
+                        />
+                        <YAxis
+                            reversed={true}
+                            tickFormatter={value => thousandsShorthand(value)}
+                            domain={[1, max]}
+                            interval="preserveStartEnd"
+                            tickCount={10}
+                            hide={true}
+                        />
+                        <XAxis dataKey="name" angle={-90} textAnchor="end" interval="preserveStartEnd" hide={true} />
+                        <Tooltip
+                            isAnimationActive={false}
+                            formatter={(value, name) =>
+                                name === 'max' ? [undefined, undefined] : [thousandsSeparator(Number(value)), 'Rank']
+                            }
+                            separator=": "
+                        />
+                    </AreaChart>
+                </ResponsiveContainer>
+            )}
             <ul className="widget__list">
                 {bestRankedSeason && (
                     <li className="widget__list__item">
