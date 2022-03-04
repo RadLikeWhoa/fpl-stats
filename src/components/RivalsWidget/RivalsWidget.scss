@@ -1,0 +1,35 @@
+@import "../../styles/mixins";
+
+.rivals-widget {
+    &__selection {
+        display: flex;
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--widget-separator-color);
+
+        .modal-input {
+            flex-grow: 1;
+            margin-right: 0.5rem;
+        }
+    }
+
+    &__rivals {
+        display: flex;
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--widget-separator-color);
+
+        .button + .button {
+            margin-left: 1rem;
+        }
+    }
+
+    &__metric {
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--widget-separator-color);
+    }
+
+    &__chart {
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+        overflow: hidden;
+    }
+}

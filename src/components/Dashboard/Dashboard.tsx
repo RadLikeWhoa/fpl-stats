@@ -62,6 +62,7 @@ import { TeamContributionWidget } from '../TeamContributionWidget'
 import { PointsImprovementsWidget } from '../PointsImprovementsWidget'
 import { BonusPointsWidget } from '../BonusPointsWidget'
 import { CaptainPointsWidget } from '../CaptainPointsWidget'
+import { RivalsWidget } from '../RivalsWidget'
 import './Dashboard.scss'
 
 export type OptionType = {
@@ -301,6 +302,12 @@ const Dashboard: React.FC = () => {
                                 <MilestonesWidget />
                             </div>
                         </>
+                    )}
+                    {renderSection(
+                        'Rivals',
+                        <div className="dashboard__widgets dashboard__widgets--single">
+                            <RivalsWidget />
+                        </div>
                     )}
                     {renderSection(
                         'Improvements',

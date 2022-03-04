@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useMeanValue } from '../../hooks'
 import { StatAggregateStreaks, Streak, Element } from '../../types'
-import { getAllPlayers, getGWCountLabel, getPointsLabel, normaliseDiacritics, round, sort } from '../../utilities'
+import { getAllPlayers, getGWCountLabel, getPointsLabel, normaliseDiacritics, round } from '../../utilities'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { Metric } from '../Metric'
 import { Player } from '../Player'
