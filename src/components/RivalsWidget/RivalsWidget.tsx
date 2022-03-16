@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import Select, { ValueType } from 'react-select'
+import classNames from 'classnames'
 import { Widget } from '../Widget'
 import { FilteredDataContext } from '../Dashboard/Dashboard'
 import { RootState } from '../../reducers'
@@ -9,6 +10,7 @@ import { ModalInput } from '../ModalInput'
 import { Button } from '../Button'
 import { fetchApi, getPointsLabel } from '../../utilities'
 import { CurrentHistory, History } from '../../types'
+import { Spinner } from '../Spinner'
 import './RivalsWidget.scss'
 
 const TITLE = 'Rivals'
@@ -32,6 +34,7 @@ const RivalsWidget: React.FC = () => {
     const [value, setValue] = useState<string>('')
     const [rivalData, setRivalData] = useState<Record<string, History>>({})
     const [display, setDisplay] = useState<ValueType<OptionType>>(displayOptions[0])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const bootstrap = useSelector((state: RootState) => state.bootstrap.data)
 
@@ -40,6 +43,8 @@ const RivalsWidget: React.FC = () => {
     }
 
     const addRival = async () => {
+        setIsLoading(true)
+
         const [history, entry] = await Promise.all([fetchApi(`entry/${value}/history/`), fetchApi(`entry/${value}/`)])
 
         setRivalData(existing => ({
@@ -48,6 +53,7 @@ const RivalsWidget: React.FC = () => {
         }))
 
         setValue('')
+        setIsLoading(false)
     }
 
     const removeRival = (rival: string) => {
@@ -156,6 +162,13 @@ const RivalsWidget: React.FC = () => {
                     </ResponsiveContainer>
                 </div>
             )}
+            <div
+                className={classNames('rivals-widget__loading', {
+                    'rivals-widget__loading--hidden': !isLoading,
+                })}
+            >
+                <Spinner />
+            </div>
         </Widget>
     )
 }

@@ -1,6 +1,25 @@
 @import "../../styles/mixins";
 
 .rivals-widget {
+    position: relative;
+
+    &__loading {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--body-background-color);
+        opacity: 0.8;
+
+        &--hidden {
+            display: none;
+        }
+    }
+
     &__selection {
         display: flex;
         padding: 0.5rem;
