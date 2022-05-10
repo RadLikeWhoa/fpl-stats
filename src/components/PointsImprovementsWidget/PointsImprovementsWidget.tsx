@@ -121,7 +121,8 @@ const PointsImprovementsWidget: React.FC = () => {
 
         let benchGk: StatData = JSON.parse(
             JSON.stringify(
-                players.find(player => (player.data[0]?.multiplier || 0) === 0 && player.element.element_type === 1)
+                players.find(player => (player.data[0]?.multiplier || 0) === 0 && player.element.element_type === 1) ||
+                    players.find(player => player.element.element_type === 1)
             )
         )
 
