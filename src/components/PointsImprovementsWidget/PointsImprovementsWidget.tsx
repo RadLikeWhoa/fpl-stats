@@ -139,7 +139,7 @@ const PointsImprovementsWidget: React.FC = () => {
             subs = [{ in: gk, out: benchGk }, ...subs]
         }
 
-        const rotatedPlayers = [gk, ...outfieldXi]
+        const rotatedPlayers = [gk, benchGk, ...outfieldXi].filter(player => player.data[0]?.multiplier !== 0)
 
         const actualCaptain = players.find(player => (player.data[0]?.multiplier || 0) > 1)
         const initialCaptain = rotatedPlayers.find(player => (player.data[0]?.multiplier || 0) > 1)
@@ -147,13 +147,20 @@ const PointsImprovementsWidget: React.FC = () => {
 
         subs = subs.filter(sub => subs.filter(subCheck => subCheck.out.element.id === sub.in.element.id).length === 0)
 
+        if (event.event === 29) {
+            console.log(
+                event.event,
+                rotatedPlayers,
+                rotatedPlayers.map(p => p.data[0].rawPoints)
+            )
+        }
+
         return {
             event,
             actualPoints: event.points,
             idealPoints:
                 reduce(rotatedPlayers, player => (player.data[0].rawPoints || 0) * (player.data[0].multiplier || 0)) +
-                (idealCaptain?.data[0]?.rawPoints || 0) -
-                (initialCaptain?.data[0]?.rawPoints || 0),
+                ((idealCaptain?.data[0]?.rawPoints || 0) - (initialCaptain?.data[0]?.rawPoints || 0)),
             actualFormation: getFormation(Object.keys(data.stats.data), players),
             idealFormation: getFormation(Object.keys(data.stats.data), rotatedPlayers),
             actualCaptain,

@@ -46,7 +46,6 @@ import { MissedPointsShareWidget } from '../MissedPointsShareWidget'
 import { NearMissesWidget } from '../NearMissesWidget'
 import { StreakWidget } from '../StreakWidget'
 import { SettingsModal } from '../SettingsModal'
-import { MilestonesWidget } from '../MilestonesWidget'
 import { PlayerOverview } from '../PlayerOverview/PlayerOverview'
 import { FormWidget } from '../FormWidget'
 import { PriceChangeWidget } from '../PriceChangeWidget'
@@ -299,7 +298,6 @@ const Dashboard: React.FC = () => {
                                 <SeasonWidget />
                                 <HistoryWidget />
                                 <GameweekWidget />
-                                <MilestonesWidget />
                             </div>
                         </>
                     )}

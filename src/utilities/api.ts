@@ -1,7 +1,7 @@
 export const fetchApi = async (endpoint: string): Promise<any> => {
     const response = await fetch(
-        `https://api.allorigins.win/get?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/${endpoint}`)}`
+        `https://corsproxy.io/?${encodeURIComponent(`https://fantasy.premierleague.com/api/${endpoint}`)}`
     )
 
-    return JSON.parse((await response.json()).contents)
+    return await response.json()
 }
